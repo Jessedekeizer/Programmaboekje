@@ -3,6 +3,9 @@ namespace DigitaalProgrammaBoekje.Pages.Database.Models;
 
 public class Blok
 {
+    public int Blok_id { get; set; }
+    [Required]
+    public int Festival_id { get; set; }
     [Required]
     public DateTime Begintijd { get; set; }
     [Required]

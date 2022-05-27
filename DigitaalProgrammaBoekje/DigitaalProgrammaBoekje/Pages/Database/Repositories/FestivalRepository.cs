@@ -18,11 +18,21 @@ public class FestivalRepository
         string sql = "SELECT * FROM Festival WHERE Festival_id = @festival_id";
 
         using var connection = GetConnection();
-        var festivals = connection.Query<Festival>(sql, new {festival_id});
+        var festival = connection.Query<Festival>(sql, new {festival_id});
+        return festival;
+    }
+    
+    public IEnumerable<Festival> FestivalsGet()
+    {
+        string sql = @"SELECT * FROM festival
+        ORDER BY festival_id DESC";
+
+        using var connection = GetConnection();
+        var festivals = connection.Query<Festival>(sql, new {});
         return festivals;
     }
     
-    public void AddFestival(String Name, DateOnly Date, string Logo, int User)
+    public void AddFestival(String Name, DateTime Date, string Logo, int User)
     {
         //Voeg een festival toe
         string sql = @"
