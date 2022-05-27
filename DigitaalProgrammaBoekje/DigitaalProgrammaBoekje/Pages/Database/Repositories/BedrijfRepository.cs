@@ -12,13 +12,13 @@ public class BedrijfRepository
         return new DbUtils().Connect();
     }
     
-    public IEnumerable<Bedrijf> Get(int bedrijf_id)
+    public IEnumerable<Bedrijf> Get(int Bedrijf_id)
     {
         //Haalt alles op van een bepaald bedrijf
-        string sql = "SELECT * FROM Bedrijf WHERE Bedrijf_id = @bedrijf_id";
+        string sql = "SELECT * FROM Bedrijf WHERE bedrijf_id = @Bedrijf_id";
 
         using var connection = GetConnection();
-        var bedrijfen = connection.Query<Bedrijf>(sql, new {bedrijf_id});
+        var bedrijfen = connection.Query<Bedrijf>(sql, new {Bedrijf_id});
         return bedrijfen;
     }
     
@@ -33,13 +33,13 @@ public class BedrijfRepository
         connection.Query<Bedrijf>(sql, new {Name, Link});
     }
     
-    public void DeleteBedrijf(int bedrijf_id)
+    public void DeleteBedrijf(int Bedrijf_id)
     {
         //Verwijdert een bepaald bedrijf
         string sql = @"DELETE FROM bedrijf WHERE bedrijf_id = @Bedrijf_id";
 
         using var connection = GetConnection();
-        connection.Query(sql, new {bedrijf_id});
+        connection.Query(sql, new {Bedrijf_id});
     }
     
     public void UpdateBedrijf(int Id, string Name, string Link)

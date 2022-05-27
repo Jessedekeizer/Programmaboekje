@@ -12,13 +12,13 @@ public class JurylidRepository
         return new DbUtils().Connect();
     }
 
-    public IEnumerable<Jurylid> Get(int jury_id)
+    public IEnumerable<Jurylid> Get(int Jury_id)
     {
         //Haalt alles op van een bepaald jurylid
-        string sql = "SELECT * FROM Jurylid WHERE Jury_id = @jury_id";
+        string sql = "SELECT * FROM Jurylid WHERE jury_id = @Jury_id";
 
         using var connection = GetConnection();
-        var juryleden = connection.Query<Jurylid>(sql, new {jury_id});
+        var juryleden = connection.Query<Jurylid>(sql, new {Jury_id});
         return juryleden;
     }
 
@@ -33,13 +33,13 @@ public class JurylidRepository
         connection.Query<Jurylid>(sql, new {Name, Bio});
     }
 
-    public void DeleteFestival(int jury_id)
+    public void DeleteFestival(int Jury_id)
     {
         //Verwijdert een bepaald jurylid
         string sql = @"DELETE FROM Jurylid WHERE jury_id = @Jury_id";
 
         using var connection = GetConnection();
-        connection.Query(sql, new {jury_id});
+        connection.Query(sql, new {Jury_id});
     }
 
     public void UpdateJurylid(int Id, string Name, string Bio)
