@@ -56,7 +56,7 @@ public class FestivalRepository
     {
         //Hier kan je de velden van een festivallen aanpassen.
         string sql = @"
-                UPDATE Stripboek SET 
+                UPDATE festival SET 
                     festival_naam = @Name,
                     festival_datum = @Date,
                     festival_logo = @Logo,
