@@ -3,7 +3,7 @@ using Dapper;
 using Microsoft.Extensions.Configuration;
 using MySql.Data.MySqlClient;
 
-namespace ProjectWebDev.Pages.Databasestuff
+namespace DigitaalProgrammaBoekje.Pages.Database
 {
     public class DbUtils
     {   
