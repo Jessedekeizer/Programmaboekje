@@ -15,4 +15,15 @@
       <Folder Include="Pages\Database\Session" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Pages\Database\Categories\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Database\Categories\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Database\Categories\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Database\Categories\Update.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Database\Products\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Database\Products\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Database\Products\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Database\Products\Update.cshtml" />
+    </ItemGroup>
+
 </Project>
