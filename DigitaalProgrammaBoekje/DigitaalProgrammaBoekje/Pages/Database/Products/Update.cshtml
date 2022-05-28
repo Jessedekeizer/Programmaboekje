@@ -1,0 +1,25 @@
+@page
+@model DigitaalProgrammaBoekje.Pages.Database.Products.Update
+
+@{
+    Layout = null;
+}
+
+<h1>Update Product</h1>
+<form method="POST">
+    <input type="hidden" asp-for="Product.ProductId"/>
+    <div>
+        <label asp-for="Product.Name">Name:</label>
+        <input asp-for="Product.Name"/>
+        <span asp-validation-for="Product.Name"></span>
+    </div>
+    <div>
+            <label asp-for="Product.Price">Price:</label>
+            <input asp-for="Product.Price"/>
+            <span asp-validation-for="Product.Price"></span>
+        </div>
+    <div>
+        <button type="submit">Update</button>
+        <button asp-page-handler="Cancel">Cancel</button>
+    </div>
+</form>
