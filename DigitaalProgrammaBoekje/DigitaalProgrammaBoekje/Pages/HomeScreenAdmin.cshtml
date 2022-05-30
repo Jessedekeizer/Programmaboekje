@@ -2,27 +2,18 @@
 @model DigitaalProgrammaBoekje.Pages.HomeScreenAdmin
 
 @{
-    Layout = null;
+    ViewData["Title"] = "Home admin";
 }
 
-<!DOCTYPE html>
 
-<html>
-<head>
-    <link rel="stylesheet" href="/css/HomeScreen.css"/>
-    <title>HomepaginaAdmin</title>
-</head>
-<body>
 <div class="container">
     <div class="row">
         <button id="knop" type="button">Festival 1</button>
         <button id="knop" type="button">Festival 2</button>
         <button id="knop" type="button">Festival 3</button>
         <button id="knop" type="button">Festival 4</button>
-        <form asp-page-handler="Addfestival" method="post">
+        <form asp-page-handler="Addfestival" method="post" style="width: 100%">
             <button id="knop2">+</button>
         </form>
     </div>
 </div>
-</body>
-</html>
