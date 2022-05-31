@@ -10,8 +10,4 @@ public class HomeScreenAdmin : PageModel
         
     }
     
-    public IActionResult OnPostAddfestival()
-    {
-        return RedirectToPage("/AddFestival");
-    }
 }

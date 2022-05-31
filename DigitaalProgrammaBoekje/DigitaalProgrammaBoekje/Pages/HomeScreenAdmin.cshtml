@@ -5,6 +5,26 @@
     ViewData["Title"] = "Home admin";
 }
 
+<div class="bg-modal">
+    <div class="modal-content">
+
+        <div class="close">+</div>
+
+        <div class="row" style="margin-top: 50px">
+            <label id="Label1">Naam festival</label>
+            <input id="input1"/>
+        </div>
+        <div class="row">
+            <label id="Label1">Locatie festival</label>
+            <input id="input1"/>
+        </div>
+        <div class="row">
+            <label id="Label1">datum festival</label>
+            <input type="date" id="input1"/>
+        </div>
+        <button id="knop" style="background-color: #7d3ec9; color: white; border: none; border-radius: 3px; margin-top: 20px; height: 25px; width: 170px; margin-left: 212px">Voeg festival toe</button>
+    </div>
+</div>
 
 <div class="container">
     <div class="row">
@@ -12,8 +32,8 @@
         <button id="knop" type="button">Festival 2</button>
         <button id="knop" type="button">Festival 3</button>
         <button id="knop" type="button">Festival 4</button>
-        <form asp-page-handler="Addfestival" method="post" style="width: 100%">
-            <button id="knop2">+</button>
-        </form>
+        <button id="knop2">+</button>
     </div>
+    <script src="/css/HomeScreen.js"></script>
+
 </div>
