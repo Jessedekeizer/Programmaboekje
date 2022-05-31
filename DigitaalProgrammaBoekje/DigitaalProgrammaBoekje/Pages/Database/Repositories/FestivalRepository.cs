@@ -28,7 +28,7 @@ public class FestivalRepository
         ORDER BY festival_id DESC";
 
         using var connection = GetConnection();
-        var festivals = connection.Query<Festival>(sql, new {});
+        var festivals = connection.Query<Festival>(sql);
         return festivals;
     }
     
