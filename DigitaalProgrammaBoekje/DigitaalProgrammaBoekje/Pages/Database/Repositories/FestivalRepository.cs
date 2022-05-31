@@ -32,15 +32,26 @@ public class FestivalRepository
         return festivals;
     }
     
-    public void AddFestival(String Name, DateTime Date, string Logo, int User)
+    public void AddFestival(string Name, string Location, DateTime Date, string Logo, int User)
     {
         //Voeg een festival toe
         string sql = @"
-                INSERT INTO festival (festival_naam, festival_datum, festival_logo, gebruiker_id) 
-                VALUES (@Name, @Date, @Logo, @User)";
+                INSERT INTO festival (festival_naam, festival_locatie, festival_datum, festival_logo, gebruiker_id) 
+                VALUES (@Name,@Location, @Date, @Logo, @User)";
 
         using var connection = GetConnection();
-        connection.Query<Festival>(sql, new{Name, Date, Logo, User});
+        connection.Query<Festival>(sql, new{Name, Location, Date, Logo, User});
+    }
+    
+    public void AddTestFestival(string Name, string Location, DateTime Date, string Logo)
+    {
+        //Voeg een festival toe
+        string sql = @"
+                INSERT INTO festival (festival_naam, festival_locatie, festival_datum, festival_logo) 
+                VALUES (@Name,@Location, @Date, @Logo)";
+
+        using var connection = GetConnection();
+        connection.Query<Festival>(sql, new{Name, Location, Date, Logo});
     }
     
     public void DeleteFestival(int Festival_id)
@@ -52,7 +63,7 @@ public class FestivalRepository
         connection.Query(sql, new { Festival_id });
     }
     
-    public void UpdateFestival(int Id, String Name, DateOnly Date, string Logo)
+    public void UpdateFestival(int Id, string Name, string Location, DateOnly Date, string Logo)
     {
         //Hier kan je de velden van een festivallen aanpassen.
         string sql = @"
@@ -63,6 +74,6 @@ public class FestivalRepository
                 WHERE festival_id = @Id;";
             
         using var connection = GetConnection();
-        connection.Query<Festival>(sql, new{Id, Name, Date, Logo});
+        connection.Query<Festival>(sql, new{Id, Name, Location, Date, Logo});
     }
 }
