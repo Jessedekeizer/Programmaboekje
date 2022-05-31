@@ -8,10 +8,13 @@ namespace DigitaalProgrammaBoekje.Pages;
 public class HomeScreenAdmin : PageModel
 {
     public IEnumerable<Festival> Festivallist { get; set; }
-    public IActionResult OnGet()    
+    public void OnGet()    
     {
         Festivallist = new FestivalRepository().FestivalsGet();
+    }
+
+    public IActionResult OnPostAddFestival()
+    {
         return Page();
     }
-    
 }

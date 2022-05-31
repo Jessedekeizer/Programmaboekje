@@ -28,11 +28,14 @@
     </div>
 </div>
 
+
 <div class="container" id="FestivalListGeneraetor">
     <div class="row col-12">
-        @foreach (var Festivalitem in Model.Festivallist)
+        @if (Model.Festivallist != null)
         {
-            <div class="card col-3">
+        foreach (var Festivalitem in Model.Festivallist)
+        {
+            <div class="card col-3" id="cart">
                 <img class="card-img-top" src="@Festivalitem.Festival_logo" alt="Card image cap">
                 <div class="card-body">
                     <h5 class="card-title">@Festivalitem.Festival_naam</h5>
@@ -47,10 +50,10 @@
                 </div>
             </div>
         }
+        }
         
-        <form asp-page-handler="Addfestival" method="post" style="width: 100%">
             <button id="knop2">+</button>
-        </form>
+
     </div>
 </div>
  <script src="/css/HomeScreen.js"></script>
