@@ -64,3 +64,8 @@
     margin-left: 85px;
 }
 
+#FestivalListGeneraetor{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}

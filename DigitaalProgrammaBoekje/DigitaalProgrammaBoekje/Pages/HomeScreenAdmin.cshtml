@@ -1,4 +1,5 @@
 ﻿@page
+@using DigitaalProgrammaBoekje.Pages.Database.Models
 @model DigitaalProgrammaBoekje.Pages.HomeScreenAdmin
 
 @{
@@ -27,14 +28,29 @@
     </div>
 </div>
 
-<div class="container">
-    <div class="row">
-        <button id="knop" type="button">Festival 1</button>
-        <button id="knop" type="button">Festival 2</button>
-        <button id="knop" type="button">Festival 3</button>
-        <button id="knop" type="button">Festival 4</button>
-        <button id="knop2">+</button>
+<div class="container" id="FestivalListGeneraetor">
+    <div class="row col-12">
+        @foreach (var Festivalitem in Model.Festivallist)
+        {
+            <div class="card col-3">
+                <img class="card-img-top" src="@Festivalitem.Festival_logo" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">@Festivalitem.Festival_naam</h5>
+                    <p class="card-text">@Festivalitem.Festival_datum</p>
+                    <p class="card-text">@Festivalitem.Festival_locatie</p>
+                    <form asp-page-handler="Update" method="post">
+                        <input type="hidden" name="Festival_id" value="@Festivalitem.Festival_id"/>
+                        <button id="" style=" background-color: mediumpurple; border: none;">
+                            Bewerk
+                        </button>
+                    </form>
+                </div>
+            </div>
+        }
+        
+        <form asp-page-handler="Addfestival" method="post" style="width: 100%">
+            <button id="knop2">+</button>
+        </form>
     </div>
-    <script src="/css/HomeScreen.js"></script>
-
 </div>
+ <script src="/css/HomeScreen.js"></script>
