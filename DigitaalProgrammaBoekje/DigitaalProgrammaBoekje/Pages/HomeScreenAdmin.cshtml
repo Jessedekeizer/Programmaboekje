@@ -33,7 +33,7 @@
         @foreach (var Festivalitem in Model.Festivallist)
         {
             <div class="card col-3">
-                <img class="card-img-top" src="@Festivalitem.Festival_logo" alt="Card image cap">
+                <img class="card-img-top" src="~/content/@Festivalitem.Festival_logo" alt="Card image cap">
                 <div class="card-body">
                     <h5 class="card-title">@Festivalitem.Festival_naam</h5>
                     <p class="card-text">@Festivalitem.Festival_datum</p>
