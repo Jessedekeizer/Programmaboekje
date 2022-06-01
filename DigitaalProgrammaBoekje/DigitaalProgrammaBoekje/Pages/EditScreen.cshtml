@@ -1,0 +1,32 @@
+﻿@page
+@using Org.BouncyCastle.Asn1.X509
+@model DigitaalProgrammaBoekje.Pages.EditScreen
+
+@{
+ViewData["Title"] = "Edit Page";
+}
+
+<div style="width: 320px; overflow: auto">
+    <table class="table">
+    @foreach (var blok in Model.Bloks)
+                {
+                    @if (blok.Blok_type == 't')
+                    {
+                        <P>@blok.Tekstvak</P>
+                    }
+                    <tbody>
+                    <tr>
+                        <td><div class="d-flex; flex-column">
+                                            <button></button>
+                                            <button></button>
+                                        </div></td>
+                        <td>@(blok.Begintijd.ToString(@"hh\:mm"))</td>
+                        <td>@blok.Orkestgroep.Orkestnaam <br/>
+                            @blok.Orkestgroep.Muziekstukken
+                        </td>
+                        <td>@blok.Orkestgroep.Cijfer</td>
+                    </tr>
+                    </tbody>
+                }
+    </table>
+</div>

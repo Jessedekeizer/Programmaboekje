@@ -9,5 +9,7 @@ public class Orkestgroep
     [Required]
     public string Orkestnaam { get; set; }
     
+    public string Muziekstukken { get; set; }
+    
     public int Cijfer { get; set; }
 }
