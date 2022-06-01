@@ -48,7 +48,7 @@
                 <img class="card-img-top" src="~/content/@Festivalitem.Festival_logo" alt="Card image cap">
                 <div class="card-body">
                     <h5 class="card-title">@Festivalitem.Festival_naam</h5>
-                    <p class="card-text">@Festivalitem.Festival_datum</p>
+                    <p class="card-text">@(Festivalitem.Festival_datum.ToString("yyyy-MM-dd"))</p>
                     <p class="card-text">@Festivalitem.Festival_locatie</p>
                     <form asp-page-handler="Update" method="post">
                         <input type="hidden" name="Festival_id" value="@Festivalitem.Festival_id"/>

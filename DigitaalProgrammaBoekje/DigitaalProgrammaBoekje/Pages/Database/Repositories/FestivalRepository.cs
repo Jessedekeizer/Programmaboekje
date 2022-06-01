@@ -32,7 +32,7 @@ public class FestivalRepository
         return festivals;
     }
     
-    public void AddFestival(string Name, string Location, DateOnly Date, string Logo, int User)
+    public void AddFestival(string Name, string Location, DateTime Date, string Logo, int User)
     {
         //Voeg een festival toe
         string sql = @"
@@ -43,7 +43,7 @@ public class FestivalRepository
         connection.Query<Festival>(sql, new{Name, Location, Date, Logo, User});
     }
     
-    public void AddTestFestival(string Name, string Location, DateOnly Date, string Logo)
+    public void AddTestFestival(string Name, string Location, DateTime Date, string Logo)
     {
         //Voeg een festival toe
         string sql = @"
@@ -63,7 +63,7 @@ public class FestivalRepository
         connection.Query(sql, new { Festival_id });
     }
     
-    public void UpdateFestival(int Id, string Name, string Location, DateOnly Date, string Logo)
+    public void UpdateFestival(int Id, string Name, string Location, DateTime Date, string Logo)
     {
         //Hier kan je de velden van een festivallen aanpassen.
         string sql = @"
