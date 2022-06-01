@@ -66,7 +66,7 @@ public class BlokRepository
         connection.Query<Blok>(sql, new{Blok_id, Starttime, Type, Number, Text});
     }
     
-    public IEnumerable<Blok> hoi()
+    public IEnumerable<Blok> GetAll()
     {
         string sql = @"select * from blok b 
                 inner join festival f on b.festival_id = f.festival_id
@@ -80,5 +80,13 @@ public class BlokRepository
             return Blok;
         }, splitOn: "Festival_id, Orkest_id" );
         return products;
+    }
+
+    public void ChangeRanking(int Bloknummer, int Blok_id, int Festival_id)
+    {
+        string sql = @"Update blok SET bloknummer = bloknummer + 1
+WHERE blok_id = blok_id; UPDATE blok SET bloknummer = bloknummer -1 WHERE festival_id = Festival_id AND bloknummer < ";
+        using var connection = GetConnection();
+        connection.Query(sql, new{Bloknummer, Blok_id, Festival_id});
     }
 }

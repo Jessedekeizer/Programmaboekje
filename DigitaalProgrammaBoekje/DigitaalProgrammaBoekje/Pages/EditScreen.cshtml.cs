@@ -13,8 +13,19 @@ public class EditScreen : PageModel
 
     public IActionResult OnGet()
     {
-        Bloks = new BlokRepository().hoi();
+        Bloks = new BlokRepository().GetAll();
         Orkestgroeps = new OrkestgroepRepository().Get(1);
+        return Page();
+    }
+
+    public IActionResult OnPostUp(int bloknummer)
+    {
+        
+        return Page();
+    }
+    
+    public IActionResult OnPostDown(int bloknummer)
+    {
         return Page();
     }
 }

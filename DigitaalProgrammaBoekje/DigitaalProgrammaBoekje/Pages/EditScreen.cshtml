@@ -16,10 +16,18 @@ ViewData["Title"] = "Edit Page";
                     }
                     <tbody>
                     <tr>
-                        <td><div class="d-flex; flex-column">
-                                            <button></button>
-                                            <button></button>
-                                        </div></td>
+                        <td>
+                            <div class="d-flex; flex-column">
+                                <form asp-page-handler="Up">
+                                    <input type="hidden" value="@blok.Bloknummer"/>
+                                    <button type="submit"></button>
+                                </form>
+                                <form asp-page-handler="Down">
+                                    <input type="hidden" value="@blok.Bloknummer"/>
+                                    <button type="submit"></button>
+                                </form>
+                            </div>
+                        </td>
                         <td>@(blok.Begintijd.ToString(@"hh\:mm"))</td>
                         <td>@blok.Orkestgroep.Orkestnaam <br/>
                             @blok.Orkestgroep.Muziekstukken
