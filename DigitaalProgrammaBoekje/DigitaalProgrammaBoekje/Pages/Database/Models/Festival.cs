@@ -9,7 +9,7 @@ public class Festival
     [Required]
     public string Festival_locatie { get; set; }
     [Required]
-    public DateTime Festival_datum { get; set; }
+    public DateOnly Festival_datum { get; set; }
     [Required]
     public string Festival_logo { get; set; }
     
