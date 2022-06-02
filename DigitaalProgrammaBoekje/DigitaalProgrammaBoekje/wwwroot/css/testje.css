@@ -1,0 +1,6 @@
+﻿.carousel {
+    height: 400px;
+    width: 800px;
+    position: relative;
+    overflow: hidden;
+}
