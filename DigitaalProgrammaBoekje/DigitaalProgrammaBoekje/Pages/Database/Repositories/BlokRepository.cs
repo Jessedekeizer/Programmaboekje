@@ -70,7 +70,7 @@ public class BlokRepository
     {
         string sql = @"select * from blok b 
                 inner join festival f on b.festival_id = f.festival_id
-                left join orkestgroep o on b.blok_id = o.blok_id";
+                left join orkestgroep o on b.blok_id = o.blok_id ORDER BY bloknummer";
 
         using var connection = GetConnection();
         var products = connection.Query<Blok, Festival, Orkestgroep, Blok>(sql, (Blok, Festival, Orkestgroep) =>
@@ -82,11 +82,34 @@ public class BlokRepository
         return products;
     }
 
-    public void ChangeRanking(int Bloknummer, int Blok_id, int Festival_id)
+    public void ChangeRankingDown(int Bloknummer, int Blok_id, int Festival_id)
     {
-        string sql = @"Update blok SET bloknummer = bloknummer + 1
-WHERE blok_id = blok_id; UPDATE blok SET bloknummer = bloknummer -1 WHERE festival_id = Festival_id AND bloknummer < ";
+        int BlokIncrease = Bloknummer + 1;
+        
+        string sql = @"Update blok SET 
+                bloknummer = bloknummer -1
+                WHERE festival_id = @Festival_id and bloknummer LIKE " + BlokIncrease + ""; 
+            string sql2 = @"
+                UPDATE blok SET 
+                bloknummer = bloknummer +1 
+                WHERE blok_id = @Blok_id";
         using var connection = GetConnection();
-        connection.Query(sql, new{Bloknummer, Blok_id, Festival_id});
+        connection.Query(sql, new{Bloknummer, Festival_id, BlokIncrease});
+        connection.Query(sql2, new{Blok_id});
+    }
+    
+    public void ChangeRankingUp(int Bloknummer, int Blok_id, int Festival_id)
+    {
+        int BlokDecrease = Bloknummer - 1;
+        string sql = @"Update blok SET 
+                bloknummer = bloknummer +1
+                WHERE festival_id = @Festival_id and bloknummer LIKE " + BlokDecrease + @"";
+        string sql2 = @"
+                UPDATE blok SET 
+                bloknummer = bloknummer -1 
+                WHERE blok_id = @Blok_id";
+        using var connection = GetConnection();
+        connection.Query(sql, new{Bloknummer, Festival_id, BlokDecrease});
+        connection.Query(sql2, new{Blok_id});
     }
 }

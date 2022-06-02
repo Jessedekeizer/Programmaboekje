@@ -3,38 +3,63 @@
 @model DigitaalProgrammaBoekje.Pages.EditScreen
 
 @{
-ViewData["Title"] = "Edit Page";
+    ViewData["Title"] = "Edit Page";
 }
 
 <div style="width: 320px; overflow: auto">
     <table class="table">
-    @foreach (var blok in Model.Bloks)
+        @foreach (var blok in Model.Bloks)
+        {
+            <tbody>
+            <tr>
+                <td>
+                    <div class="d-flex; flex-column">
+                        @if (blok != Model.Bloks.First())
+                        {
+                            <form method="post" asp-page-handler="Up">
+                                <input type="hidden" value="@blok.Blok_id" name="blok_id"/>
+                                <input type="hidden" value="@blok.Bloknummer" name="bloknummer"/>
+                                <input type="hidden" value="@blok.Festival_id" name="festival_id"/>
+                                <button type="submit">
+                                    <i class="fa fa-arrow-up"></i>
+                                </button>
+
+                            </form>
+                        }
+                        @if (blok != Model.Bloks.Last())
+                        {
+                            <form method="post" asp-page-handler="Down">
+                                <input type="hidden" value="@blok.Blok_id" name="blok_id"/>
+                                <input type="hidden" value="@blok.Bloknummer" name="bloknummer"/>
+                                <input type="hidden" value="@blok.Festival_id" name="festival_id"/>
+                                <button type="submit">
+                                    <i class="fa fa-arrow-down"></i>
+                                </button>
+                            </form>
+                        }
+                    </div>
+                </td>
+                @if (blok.Blok_type != 't')
                 {
-                    @if (blok.Blok_type == 't')
+                    <td>@(blok.Begintijd.ToString(@"hh\:mm"))</td>
+                    @if (blok.Blok_type == 'o')
                     {
-                        <P>@blok.Tekstvak</P>
-                    }
-                    <tbody>
-                    <tr>
                         <td>
-                            <div class="d-flex; flex-column">
-                                <form asp-page-handler="Up">
-                                    <input type="hidden" value="@blok.Bloknummer"/>
-                                    <button type="submit"></button>
-                                </form>
-                                <form asp-page-handler="Down">
-                                    <input type="hidden" value="@blok.Bloknummer"/>
-                                    <button type="submit"></button>
-                                </form>
-                            </div>
-                        </td>
-                        <td>@(blok.Begintijd.ToString(@"hh\:mm"))</td>
-                        <td>@blok.Orkestgroep.Orkestnaam <br/>
+                            @blok.Orkestgroep.Orkestnaam
+                            <br/>
                             @blok.Orkestgroep.Muziekstukken
                         </td>
-                        <td>@blok.Orkestgroep.Cijfer</td>
-                    </tr>
-                    </tbody>
+                        <td>
+                            @blok.Orkestgroep.Cijfer
+                        </td>
+                    }
                 }
+                else
+                {
+                    <td colspan="3">@blok.Tekstvak</td>
+                }
+            </tr>
+            </tbody>
+        }
     </table>
 </div>

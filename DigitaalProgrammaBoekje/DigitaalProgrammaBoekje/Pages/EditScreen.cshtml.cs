@@ -8,24 +8,28 @@ namespace DigitaalProgrammaBoekje.Pages;
 public class EditScreen : PageModel
 {
     public IEnumerable<Blok> Bloks { get; set; }
-    public IEnumerable<Orkestgroep> Orkestgroeps { get; set; }
     
+    [BindProperty]
+    public Blok Blok { get; set; }
+
 
     public IActionResult OnGet()
     {
         Bloks = new BlokRepository().GetAll();
-        Orkestgroeps = new OrkestgroepRepository().Get(1);
         return Page();
     }
 
-    public IActionResult OnPostUp(int bloknummer)
+    public IActionResult OnPostUp( int blok_id, int bloknummer, int festival_id)
     {
-        
-        return Page();
+        BlokRepository BlokCommand = new BlokRepository();
+        BlokCommand.ChangeRankingUp(bloknummer, blok_id, festival_id);
+        return RedirectToPage();
     }
     
-    public IActionResult OnPostDown(int bloknummer)
+    public IActionResult OnPostDown(int blok_id, int bloknummer, int festival_id)
     {
-        return Page();
+        BlokRepository BlokCommand = new BlokRepository();
+        BlokCommand.ChangeRankingDown( bloknummer, blok_id, festival_id);
+        return RedirectToPage();
     }
 }
