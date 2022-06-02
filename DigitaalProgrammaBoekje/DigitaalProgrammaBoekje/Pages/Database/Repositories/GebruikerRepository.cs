@@ -46,4 +46,20 @@ public class GebruikerRepository
         return amount;
     }
     
+    public int Gebruiker_ID (string Username)
+    {
+        string sql = @"SELECT gebruiker_id FROM gebruikers WHERE naam = @Username";
+        using var connection = GetConnection();
+        int Gebruiker_ID = connection.ExecuteScalar<int>(sql, new {Username});
+        return Gebruiker_ID;
+    }
+    
+    public string GetPassword(int Gebruiker_id)
+    {
+        string sql = @"SELECT wachtwoord FROM gebruikers WHERE gebruiker_id = @Gebruiker_id";
+        using var connection = GetConnection();
+        string amount = connection.ExecuteScalar<string>(sql, new {Gebruiker_id});
+        return amount;
+    }
+    
 }
