@@ -2,7 +2,7 @@
 @model DigitaalProgrammaBoekje.Pages.Register
 
 @{
-     ViewData["Title"] = "Register";
+    ViewData["Title"] = "Register";
 }
 <div class="container border" style="padding:20px">
     <form method="post">
@@ -25,21 +25,51 @@
             </div>
             <span class="text-danger" asp-validation-for="RegisterCredential.Email"></span>
         </div>
+
         <div class="form-group row m-3">
             <div class="col-3">
-                <label asp-for="RegisterCredential.Password"></label>
+                <label asp-for="RegisterCredential.Telefoonnummer"></label>
             </div>
             <div class="col-5">
-                <input type="password" asp-for="RegisterCredential.Password" class="form-control"/>
+                <input type="text" asp-for="RegisterCredential.Telefoonnummer" class="form-control"/>
             </div>
-            <span class="text-danger" asp-validation-for="RegisterCredential.Password"></span>
+            <span class="text-danger" asp-validation-for="RegisterCredential.Telefoonnummer"></span>
+        </div>
+
+        <div class="form-group row m-3">
+            <div class="col-3">
+                <label asp-for="RegisterCredential.Dirigent"></label>
+            </div>
+            <div class="col-5">
+                <input type="text" asp-for="RegisterCredential.Dirigent" class="form-control"/>
+            </div>
+            <span class="text-danger" asp-validation-for="RegisterCredential.Dirigent"></span>
+        </div>
+
+        <div class="form-group row m-3">
+            <div class="col-3">
+                <label asp-for="RegisterCredential.Divisie"></label>
+            </div>
+            <div class="col-5">
+                <input type="text" asp-for="RegisterCredential.Divisie" class="form-control"/>
+            </div>
+            <span class="text-danger" asp-validation-for="RegisterCredential.Divisie"></span>
+        </div>
+
+        <div class="form-group row m-3">
+            <div class="col-3">
+                <label asp-for="RegisterCredential.Wachtwoord"></label>
+            </div>
+            <div class="col-5">
+                <input type="password" asp-for="RegisterCredential.Wachtwoord" class="form-control"/>
+            </div>
+            <span class="text-danger" asp-validation-for="RegisterCredential.Wachtwoord"></span>
         </div>
         <div class="form-group row">
             <div class="col-3 m-4">
                 <input href="/Login" type="submit" class="btn btn-primary" value="Register"/>
             </div>
-            <span class="text-danger" > @Model.Warning </span>
+            <span class="text-danger"> @Model.Warning </span>
         </div>
     </form>
 </div>
- 

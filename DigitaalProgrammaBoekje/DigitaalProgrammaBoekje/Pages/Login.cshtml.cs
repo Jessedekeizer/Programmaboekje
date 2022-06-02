@@ -30,13 +30,13 @@ public class Login : PageModel
     public class LoginCredentials
     {
         [Required]
-        [Display(Name ="User Name")]
-        public string Username { get; set; }
+        [Display(Name ="Orkest Naam")]
+        public string Orkest { get; set; }
         
         
 
         [Required]
         [DataType(DataType.Password)]
-        public string Password { get; set; }
+        public string Wachtwoord { get; set; }
     }
 }

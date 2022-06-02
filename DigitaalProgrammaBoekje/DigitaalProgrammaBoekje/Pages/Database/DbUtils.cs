@@ -9,7 +9,7 @@ namespace DigitaalProgrammaBoekje.Pages.Database
     {   
         public IDbConnection Connect()
         {
-            string connectionString = "Server=127.0.0.1;Port=3306;Database=progboekdb;Uid=root;Pwd=jorislops-2022;";
+            string connectionString = "Server=127.0.0.1;Port=3306;Database=progboekdb;Uid=root;Pwd=Cactus123!1;";
             return new MySqlConnection(connectionString);
         }
     }

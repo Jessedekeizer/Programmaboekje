@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using DigitaalProgrammaBoekje.Pages.Database.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -23,13 +25,37 @@ public class Register : PageModel
                 break;
         }
     }
-
     
+    public IActionResult OnPost()
+    {
+        if (!ModelState.IsValid)
+        {
+            return Page();
+        }
+        
+        bool chkUser = new GebruikerRepository().checkUsername(RegisterCredential.Username);
+        bool chkEmail = new GebruikerRepository().checkEmail(RegisterCredential.Email);
+        if (!chkUser && !chkEmail)
+        {
+            var hashedPassword = new PasswordHasher<object?>().HashPassword(null, RegisterCredential.Wachtwoord);
+            new GebruikerRepository().AddUser(RegisterCredential.Username, RegisterCredential.Email, hashedPassword, 'u', RegisterCredential.Telefoonnummer, RegisterCredential.Dirigent);
+            return RedirectToPage();
+        }
+        if (chkUser)
+            return RedirectToPage(new {warning = 1});
+        
+        if (chkEmail)
+            return RedirectToPage(new {warning = 2});
+        
+        return RedirectToPage();
+    }
+}
+
     
     public class LoginCredentials
     {
         [Required]
-        [Display(Name ="User Name")]
+        [Display(Name ="Orkest Naam")]
         public string Username { get; set; }
          
         [Required]
@@ -37,6 +63,14 @@ public class Register : PageModel
 
         [Required]
         [DataType(DataType.Password)]
-        public string Password { get; set; }
+        public string Wachtwoord { get; set; }
+        
+        [DataType(DataType.PhoneNumber)]
+        public int Telefoonnummer { get; set; }
+        
+        [Required]
+        public string Dirigent { get; set; }
+        
+        [Required]
+        public char Divisie { get; set; }
     }
-}

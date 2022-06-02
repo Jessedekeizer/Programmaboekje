@@ -16,6 +16,6 @@ public class Gebruiker
     public  char functie { get; set; }
     [Required]
     public int telefoonnummer { get; set; }
-    
+    [Required]
     public string dirigent { get; set; }
 }
