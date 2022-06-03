@@ -1,19 +1,70 @@
 ﻿@page
+@using DigitaalProgrammaBoekje.Pages.Database.Models
 @model DigitaalProgrammaBoekje.Pages.HomeScreenAdmin
 
 @{
     ViewData["Title"] = "Home admin";
 }
 
+<div class="bg-modal">
+    <form method="post" enctype="multipart/form-data" style="height: 100%">
+        <div class="modal-content">
 
-<div class="container">
-    <div class="row">
-        <button id="knop" type="button">Festival 1</button>
-        <button id="knop" type="button">Festival 2</button>
-        <button id="knop" type="button">Festival 3</button>
-        <button id="knop" type="button">Festival 4</button>
-        <form asp-page-handler="Addfestival" method="post" style="width: 100%">
-            <button id="knop2">+</button>
-        </form>
+            <div class="close">+</div>
+
+            <div class="row" style="margin-top: 50px">
+                <label id="Label1">Naam festival</label>
+                <input asp-for="Festival.Festival_naam" type="text" id="input1" class="form-control" placeholder="Festival Naam" required style="text-align: center"/>
+                <span class="invalid-feedback" asp-validation-for="Festival.Festival_naam"></span>
+            </div>
+            <div class="row">
+                <label id="Label1">Locatie festival</label>
+                <input asp-for="Festival.Festival_locatie" type="text" id="input1" class="form-control" placeholder="Festival Locatie" required style="text-align: center"/>
+                <span class="invalid-feedback" asp-validation-for="Festival.Festival_locatie"></span>
+            </div>
+            <div class="row">
+                <label id="Label1">datum festival</label>
+                <input asp-for="Festival.Festival_datum" type="date" id="input1" class="form-control" placeholder="Festival Datum" required style="text-align: center"/>
+                <span class="invalid-feedback" asp-validation-for="Festival.Festival_datum"></span>
+            </div>
+            <div class="row">
+                <label id="Label1">Logo festival</label>
+                <span class="kop spacing">Selecteer logo festival:</span>
+                <input for="photoButton" id="input1" type="file" name="frontPosted" class="photoButton" accept="image/jpeg, image/png, image/jpg"/>
+            </div>
+            <input type="submit" id="knop" style="background-color: #7d3ec9; color: white; border: none; border-radius: 3px; margin-top: 10px; height: 25px; width: 170px; margin-left: 212px" asp-page-handler="Upload">Voeg festival toe</input>
+        </div>
+    </form>
+</div>
+
+
+<div class="container" id="FestivalListGeneraetor">
+    <div class="row col-12">
+        @if (Model.Festivallist != null)
+        {
+            foreach (var Festivalitem in Model.Festivallist)
+            {
+                <div class="col-3" id="cart" style="width: 300px; height: 300px;">
+                    <div class="card" style="width: 300px; height: 300px;">
+                        <img class="card-img-top" id="FImg1" style="object-fit: fill; height: 150px; width: 300px;" src="~/content/@Festivalitem.Festival_logo" alt="Card image cap">
+                        <div class="card-body" style="height: 150px; width: 300px;">
+                            <h5 class="card-title" style="margin: 0px">@Festivalitem.Festival_naam</h5>
+                            <p class="card-text">@(Festivalitem.Festival_datum.ToString("yyyy-MM-dd"))</p>
+                            <p class="card-text">@Festivalitem.Festival_locatie</p>
+                            <form asp-page-handler="Update" method="post">
+                                <input type="hidden" name="Festival_id" value="@Festivalitem.Festival_id"/>
+                                <button id="" style=" background-color: mediumpurple; border: none;">
+                                    Bewerk
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+
+        <button id="knop2">+</button>
+
     </div>
 </div>
+<script src="/css/HomeScreen.js"></script>

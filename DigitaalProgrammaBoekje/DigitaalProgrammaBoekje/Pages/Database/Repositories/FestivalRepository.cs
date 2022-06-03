@@ -28,7 +28,7 @@ public class FestivalRepository
         ORDER BY festival_id DESC";
 
         using var connection = GetConnection();
-        var festivals = connection.Query<Festival>(sql, new {});
+        var festivals = connection.Query<Festival>(sql);
         return festivals;
     }
     
@@ -63,7 +63,7 @@ public class FestivalRepository
         connection.Query(sql, new { Festival_id });
     }
     
-    public void UpdateFestival(int Id, string Name, string Location, DateOnly Date, string Logo)
+    public void UpdateFestival(int Id, string Name, string Location, DateTime Date, string Logo)
     {
         //Hier kan je de velden van een festivallen aanpassen.
         string sql = @"
