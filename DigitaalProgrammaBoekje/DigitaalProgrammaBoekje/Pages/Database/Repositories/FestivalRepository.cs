@@ -76,4 +76,9 @@ public class FestivalRepository
         using var connection = GetConnection();
         connection.Query<Festival>(sql, new{Id, Name, Location, Date, Logo});
     }
+
+    
+    
+        
+
 }

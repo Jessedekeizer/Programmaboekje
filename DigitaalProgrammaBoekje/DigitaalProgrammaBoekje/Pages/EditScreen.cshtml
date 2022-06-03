@@ -1,0 +1,86 @@
+﻿@page
+@using Org.BouncyCastle.Asn1.X509
+@using DigitaalProgrammaBoekje.Pages.Database.Models
+@model DigitaalProgrammaBoekje.Pages.EditScreen
+
+@{
+    ViewData["Title"] = "Edit Page";
+}
+<div class="d-flex; flex-row">
+    <div>
+        cijfers
+    </div>
+    <div style="width: 320px; overflow: auto">
+        <table class="table">
+            @foreach (var blok in Model.Bloks)
+            {
+                <tbody>
+                <tr>
+                    <td>
+                        <div class="d-flex; flex-column">
+                            @if (blok != Model.Bloks.First())
+                            {
+                                <form method="post" asp-page-handler="Up">
+                                    <input type="hidden" value="@blok.Blok_id" name="blok_id"/>
+                                    <input type="hidden" value="@blok.Bloknummer" name="bloknummer"/>
+                                    <input type="hidden" value="@blok.Festival_id" name="festival_id"/>
+                                    <button type="submit">
+                                        <i class="fa fa-arrow-up"></i>
+                                    </button>
+
+                                </form>
+                            }
+                            @if (blok != Model.Bloks.Last())
+                            {
+                                <form method="post" asp-page-handler="Down">
+                                    <input type="hidden" value="@blok.Blok_id" name="blok_id"/>
+                                    <input type="hidden" value="@blok.Bloknummer" name="bloknummer"/>
+                                    <input type="hidden" value="@blok.Festival_id" name="festival_id"/>
+                                    <button type="submit">
+                                        <i class="fa fa-arrow-down"></i>
+                                    </button>
+                                </form>
+                            }
+                        </div>
+                    </td>
+                    @if (blok.Blok_type != 't')
+                    {
+                        <td>@(blok.Begintijd.ToString(@"hh\:mm"))</td>
+                        @if (blok.Blok_type == 'o')
+                        {
+                            <td>
+                                @blok.Orkestgroep.Orkestnaam
+                                <br/>
+                                @blok.Orkestgroep.Muziekstukken
+                            </td>
+                            <td>
+                                Cijfer:<br/>
+                                @blok.Orkestgroep.Cijfer
+                            </td>
+                        }
+                    }
+                    else
+                    {
+                        <td colspan="3">@blok.Tekstvak</td>
+                    }
+                </tr>
+                </tbody>
+            }
+        </table>
+        <form method="post" asp-page-handler="Selection">
+            <button>
+                <i class="fa fa-plus-circle"></i>
+            </button>
+        </form>
+    </div>
+    
+    <form method="post">
+                        <div class="row">
+                            <textarea name="Text1" id="Text1" cols="60" rows="10" form="TextNotes"></textarea>
+                        </div>
+                        <div class="row">
+                            <button asp-page-handler="save">opslaan</button>
+                            <button asp-page-handler="remove">verwijder</button>
+                        </div>
+                    </form>
+            </div>
