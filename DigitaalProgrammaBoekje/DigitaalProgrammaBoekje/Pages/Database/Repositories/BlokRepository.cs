@@ -31,11 +31,11 @@ public class BlokRepository
         return blok;
     }
     
-    public void AddBlok(int Fest_id, DateTime Starttime, string Type, int Number, string Text)
+    public void AddBlok(int Fest_id, TimeSpan Starttime, char Type, int Number, string Text)
     {
         //Voeg een blok toe
         string sql = @"
-                INSERT INTO Blok (festival_id, begintijd, type, bloknummer, tekstvak) 
+                INSERT INTO Blok (festival_id, begintijd, blok_type, bloknummer, tekstvak) 
                 VALUES (@Fest_id, @Starttime, @Type, @Number, @Text)";
 
         using var connection = GetConnection();
@@ -111,5 +111,13 @@ public class BlokRepository
         using var connection = GetConnection();
         connection.Query(sql, new{Bloknummer, Festival_id, BlokDecrease});
         connection.Query(sql2, new{Blok_id});
+    }
+
+    public string Text(int Blok_id)
+    {
+        string sql = @"SELECT tekstvak FROM blok WHERE blok_id = @Blok_id";
+        using var connection = GetConnection();
+        string Text = connection.ExecuteScalar<string>(sql, new {Blok_id });
+        return Text;
     }
 }
