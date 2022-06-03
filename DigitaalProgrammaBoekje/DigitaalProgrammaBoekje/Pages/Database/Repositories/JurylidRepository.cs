@@ -12,28 +12,31 @@ public class JurylidRepository
         return new DbUtils().Connect();
     }
 
-    public IEnumerable<Jurylid> Get(int Jury_id)
+    public IEnumerable<Jurylid> GetJury(int festival_id)
     {
         //Haalt alles op van een bepaald jurylid
-        string sql = "SELECT * FROM Jurylid WHERE jury_id = @Jury_id";
+        string sql = @"SELECT * FROM Jurylid j
+        left join neemt_deel nd on j.jury_id = nd.jury_id 
+        WHERE festival_id = @Festival_id
+        ORDER BY j.jury_id DESC";
 
         using var connection = GetConnection();
-        var juryleden = connection.Query<Jurylid>(sql, new {Jury_id});
+        var juryleden = connection.Query<Jurylid>(sql, new {festival_id});
         return juryleden;
     }
 
-    public void AddJurylid(string Name, string Bio)
+    public void AddJurylid(string Name, string Bio, string Foto)
     {
         //Voegt een jurylid toe
         string sql = @"
-                INSERT INTO jurylid (jury_naam, jury_bio) 
-                VALUES (@Name, @Bio)";
+                INSERT INTO jurylid (jury_naam, jury_bio, jury_foto) 
+                VALUES (@Name, @Bio, @Foto)";
 
         using var connection = GetConnection();
-        connection.Query<Jurylid>(sql, new {Name, Bio});
+        connection.Query<Jurylid>(sql, new {Name, Bio, Foto});
     }
 
-    public void DeleteFestival(int Jury_id)
+    public void DeleteJury(int Jury_id)
     {
         //Verwijdert een bepaald jurylid
         string sql = @"DELETE FROM Jurylid WHERE jury_id = @Jury_id";
@@ -42,16 +45,17 @@ public class JurylidRepository
         connection.Query(sql, new {Jury_id});
     }
 
-    public void UpdateJurylid(int Id, string Name, string Bio)
+    public void UpdateJurylid(int Id, string Name, string Bio, string Foto)
     {
         //Hier kan je de velden van een jurylid aanpassen.
         string sql = @"
                 UPDATE Jurylid SET 
                    jury_naam = @Name,
-                    jury_bio = @Bio
+                    jury_bio = @Bio,
+                    jury_foto = @Foto,
                 WHERE jury_id = @Id;";
 
         using var connection = GetConnection();
-        connection.Query<Jurylid>(sql, new {Id, Name, Bio});
+        connection.Query<Jurylid>(sql, new {Id, Name, Bio, Foto});
     }
 }
