@@ -7,11 +7,15 @@ public class Blok
     [Required]
     public int Festival_id { get; set; }
     [Required]
-    public DateTime Begintijd { get; set; }
+    public TimeSpan Begintijd { get; set; }
     [Required]
     public char Blok_type { get; set; }
     [Required]
     public int Bloknummer { get; set; }
     
     public string Tekstvak { get; set; }
+    
+    public Festival Festival { get; set; }
+    
+    public Orkestgroep Orkestgroep { get; set; }
 }

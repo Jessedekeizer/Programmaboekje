@@ -1,0 +1,28 @@
+@page
+@using DigitaalProgrammaBoekje.Pages.Database.Models
+@model DigitaalProgrammaBoekje.Pages.TestJuryAdd
+
+@{
+    ViewData["Title"] = "Jury admin view";
+}
+
+
+<div class="container" id="FestivalListGeneraetor">
+    <div class="row col-12">
+        @if (Model.Jurylist != null)
+        {
+            foreach (var Jurylid in Model.Jurylist)
+            {
+                <div class="col-3" id="cart" style="width: 300px; height: 300px;">
+                    <div class="card" style="width: 300px; height: 300px;">
+                        <img class="card-img-top" id="FImg1" style="object-fit: fill; height: 150px; width: 300px;" src="~/content/@Jurylid.jury_foto" alt="Card image cap">
+                        <div class="card-body" style="height: 150px; width: 300px;">
+                            <h5 class="card-title" style="margin: 0px">@Jurylid.jury_naam</h5>
+                            <p class="card-text" style="resize: none; white-space:  pre-wrap;">@Jurylid.jury_bio</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>

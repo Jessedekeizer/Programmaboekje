@@ -9,5 +9,7 @@ public class Jurylid
     [Required]
     public string jury_naam { get; set; }
     
+    public string jury_foto { get; set; }
+    
     public string jury_bio { get; set; }
 }

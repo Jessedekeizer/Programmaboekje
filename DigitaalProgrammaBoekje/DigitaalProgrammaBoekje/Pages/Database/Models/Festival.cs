@@ -14,4 +14,6 @@ public class Festival
     public string Festival_logo { get; set; }
     
     public int Gebruiker_id { get; set; }
+    
+    public ICollection<Blok> Bloks { get; set; }
 }

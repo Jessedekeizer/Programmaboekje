@@ -1,0 +1,26 @@
+@page
+@using DigitaalProgrammaBoekje.Pages.Database.Models
+@model DigitaalProgrammaBoekje.Pages.TestJuryAdd
+
+@{
+    ViewData["Title"] = "Jury admin";
+}
+
+<div>
+    <form method="post" name="AddJury" id="AddJury" enctype="multipart/form-data" style="height: 100%">
+        <div class="row" style="margin-top: 50px">
+            <label id="Label1">Jury Naam</label>
+            <input asp-for="Jurylid.jury_naam" type="text" id="input1" class="form-control" placeholder="Jury Naam" required style="text-align: center"/>
+            <span class="invalid-feedback" asp-validation-for="Jurylid.jury_naam"></span>
+        </div>
+        <div class="row w-25">
+            <textarea name="Text1" id="Text1" cols="5" rows="5" form="AddJury"></textarea>
+        </div>
+        <div class="row">
+            <label id="Label1">Logo festival</label>
+            <span class="kop spacing">Selecteer logo festival:</span>
+            <input for="photoButton" id="input1" type="file" name="frontPosted" class="photoButton" accept="image/jpeg, image/png, image/jpg"/>
+        </div>
+        <input type="submit" id="knop" style="background-color: #7d3ec9; color: white; border: none; border-radius: 3px; margin-top: 10px; height: 25px; width: 170px; margin-left: 212px" asp-page-handler="Upload">Voeg festival toe</input>
+    </form>
+</div>

@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
     <link rel="stylesheet" href="_Layout.cshtml.css"/>
     <link rel="stylesheet" href="~/DigitaalProgrammaBoekje.styles.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
 <header>
@@ -25,7 +26,6 @@
                     </li>
                     
                     <li class="nav-item dropdown">
-                       
                         <select name="cars" id="cars" style="border: none; background-color: transparent; color: white;">
                             
                             <form method="post" asp-page-handler="nummer1"><option value="2019">2019</option></form>
@@ -36,17 +36,6 @@
                         </form>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Login"><div style="color: white">Login</div></a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-</header>
-
-    <main role="main">
-        @RenderBody()
-    </main>
 
 
 
