@@ -2,6 +2,7 @@
 @using Org.BouncyCastle.Asn1.X509
 @using DigitaalProgrammaBoekje.Pages.Database.Models
 @using System.Net.Mime
+@using DigitaalProgrammaBoekje.Pages.Database.Repositories
 @model DigitaalProgrammaBoekje.Pages.EditScreen
 
 @{
@@ -92,32 +93,52 @@
         </form>
     </div>
     <div class="row col-8">
-      <div class="col-4">
-        <div class="list-group" id="list-tab" role="tablist">
-          <a class="list-group-item list-group-item-action active" id="list-Text-list" data-bs-toggle="list" href="#list-Text" role="tab" aria-controls="list-Text">Tekstvak</a>
-          <a class="list-group-item list-group-item-action" id="list-profile-list" data-bs-toggle="list" href="#list-profile" role="tab" aria-controls="list-profile">Profile</a>
-          <a class="list-group-item list-group-item-action" id="list-messages-list" data-bs-toggle="list" href="#list-messages" role="tab" aria-controls="list-messages">Messages</a>
-          <a class="list-group-item list-group-item-action" id="list-settings-list" data-bs-toggle="list" href="#list-settings" role="tab" aria-controls="list-settings">Settings</a>
-        </div>
-      </div>
-      <div class="col-8">
-        <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane fade show active" id="list-Text" role="tabpanel" aria-labelledby="list-Text-list">
-                <form method="post" name="TextNotes" id="TextNotes">
-                    <div class="row">
-                        <textarea name="Text1" id="Text1" cols="60" rows="10" form="TextNotes">@Model.Text</textarea>
-                    </div>
-                    <div class="row">
-                        <button asp-page-handler="save">opslaan</button>
-                        <button asp-page-handler="remove">verwijder</button>
-                    </div>
-                </form>
+        @if (Model.Blok_id == 0)
+        {
+            <div class="col-4">
+                <div class="list-group" id="list-tab" role="tablist">
+                    <a class="list-group-item list-group-item-action" id="list-Text-list" data-bs-toggle="list" href="#list-Text" role="tab" aria-controls="list-Text">Tekstvak</a>
+                    <a class="list-group-item list-group-item-action" id="list-pauze-list" data-bs-toggle="list" href="#list-pauze" role="tab" aria-controls="list-pauze">Pauze</a>
+                    <a class="list-group-item list-group-item-action" id="list-messages-list" data-bs-toggle="list" href="#list-messages" role="tab" aria-controls="list-messages">Messages</a>
+                    <a class="list-group-item list-group-item-action" id="list-settings-list" data-bs-toggle="list" href="#list-settings" role="tab" aria-controls="list-settings">Settings</a>
+                </div>
             </div>
-          <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">...</div>
-          <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">...</div>
-          <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">...</div>
+        }
+        else
+        {
+            <a href="/EditScreen">Nieuwe</a>
+        }
+        <div class="col-8">
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade @Model.active_tekstvak" id="list-Text" role="tabpanel" aria-labelledby="list-Text-list">
+                    <form method="post" name="TextNotes" id="TextNotes">
+                        <div class="row">
+                            <textarea name="Text1" id="Text1" cols="60" rows="10" form="TextNotes">@Model.Text</textarea>
+                        </div>
+                        <div class="row">
+                            <input type="hidden" asp-for="Blok.Blok_id" value="@Model.Blok_id"/>
+                            <input type="hidden" asp-for="Blok.Blok_type" value="t"/>
+                            <input type="hidden" asp-for="Blok.Begintijd" value="@TimeSpan.Zero"/>
+                            <button asp-page-handler="save">opslaan</button>
+                            <button asp-page-handler="remove">verwijder</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="tab-pane fade @Model.active_pauze" id="list-pauze" role="tabpanel" aria-labelledby="list-pauze-list">
+                    <form method="post" name="TextNotes" id="TextNotes">
+                        <input type="Time" asp-for="Blok.Begintijd" value="@Model.Time"/>
+                        <input type="hidden" asp-for="Blok.Blok_id" value="@Model.Blok_id"/>
+                                                    <input type="hidden" asp-for="Blok.Blok_type" value="p"/>
+                        <div class="row">
+                                                <button asp-page-handler="save">opslaan</button>
+                                                <button asp-page-handler="remove">verwijder</button>
+                                            </div>
+                                        </form>
+                </div>
+                <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">...</div>
+                <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">...</div>
+            </div>
         </div>
-      </div>
     </div>
 <!--
 

@@ -11,15 +11,47 @@ public class EditScreen : PageModel
     
     [BindProperty]
     public Blok Blok { get; set; }
-    
+
     public string Text { get; set; }
+    
+    public string Time { get; set; }
+
+    public int Blok_id { get; set; } = 0;
+    
+    public string active_pauze { get; set; }
+    public string active_orkest { get; set; }
+    public string active_tekstvak { get; set; }
+    
 
 
-    public IActionResult OnGet([FromQuery] int Blok_id)
+    public IActionResult OnGet([FromQuery] int blok_id)
     {
+        Blok_id = blok_id;
         Bloks = new BlokRepository().GetAll();
         if (Blok_id != null)
-            Text = new BlokRepository().Text(Blok_id);
+            
+        foreach (var blok in Bloks)
+        {
+            if (blok.Blok_id == Blok_id)
+            {
+                switch (blok.Blok_type)
+                {
+                    case 'p':
+                        active_pauze = "show active";
+                        Time = blok.Begintijd.ToString(@"hh\:mm");
+                        break;
+                      case 't':
+                          active_tekstvak = "show active";
+                        Text = blok.Tekstvak;
+                          break;
+                      case 'o':
+                          active_orkest = "show active";
+                          break;
+                }
+            }
+                
+        }
+        
         return Page();
     }
 
@@ -40,7 +72,7 @@ public class EditScreen : PageModel
     public IActionResult OnPostUpdate(int blok_id)
     {
         BlokRepository BlokCommand = new BlokRepository();
-        ;
+        
         return RedirectToPage(new{Blok_id = blok_id});
     }
     
@@ -48,7 +80,7 @@ public class EditScreen : PageModel
     {
         string note = Request.Form["Text1"];
         BlokRepository BlokCommand = new BlokRepository();
-        BlokCommand.AddBlok(1, TimeSpan.Zero, 't', 8, note);
+        BlokCommand.AddBlok(Blok.Blok_id, 1, Blok.Begintijd , Blok.Blok_type, note);
         return RedirectToPage();
     }
 }

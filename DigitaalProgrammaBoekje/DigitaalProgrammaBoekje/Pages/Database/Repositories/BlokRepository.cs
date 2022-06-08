@@ -31,15 +31,22 @@ public class BlokRepository
         return blok;
     }
     
-    public void AddBlok(int Fest_id, TimeSpan Starttime, char Type, int Number, string Text)
+    public void AddBlok(int Blok_id, int Fest_id, TimeSpan Starttime, char Type, string Text)
     {
-        //Voeg een blok toe
-        string sql = @"
+        if (Blok_id != 0)
+        {
+            UpdateBlok(Blok_id, Starttime, Type, Text);
+        }
+        else
+        {
+            int Number = 1 + CheckRanking(Fest_id);
+            string sql = @"
                 INSERT INTO Blok (festival_id, begintijd, blok_type, bloknummer, tekstvak) 
                 VALUES (@Fest_id, @Starttime, @Type, @Number, @Text)";
 
-        using var connection = GetConnection();
-        connection.Query<Blok>(sql, new{Fest_id, Starttime, Type, Number, Text});
+            using var connection = GetConnection();
+            connection.Query<Blok>(sql, new {Fest_id, Starttime, Type, Number, Text});
+        }
     }
     
     public void DeleteBlok(int Blok_id)
@@ -51,19 +58,18 @@ public class BlokRepository
         connection.Query(sql, new { Blok_id });
     }
     
-    public void UpdateBlok(int Blok_id, DateTime Starttime, string Type, int Number, string Text)
+    public void UpdateBlok(int Blok_id, TimeSpan Starttime, char Type, string Text)
     {
         //Hier kan je de velden van een blokken aanpassen.
         string sql = @"
                 UPDATE Blok SET 
                     begintijd = @Starttime,
-                    type = @Type,
-                    bloknummer = @Number,
-                    tekstvak = @Text,
+                    blok_type = @Type,
+                    tekstvak = @Text
                 WHERE blok_id = @Blok_id;";
             
         using var connection = GetConnection();
-        connection.Query<Blok>(sql, new{Blok_id, Starttime, Type, Number, Text});
+        connection.Query<Blok>(sql, new{Blok_id, Starttime, Type, Text});
     }
     
     public IEnumerable<Blok> GetAll()
@@ -113,11 +119,11 @@ public class BlokRepository
         connection.Query(sql2, new{Blok_id});
     }
 
-    public string Text(int Blok_id)
+    public int CheckRanking (int Festival_id)
     {
-        string sql = @"SELECT tekstvak FROM blok WHERE blok_id = @Blok_id";
+        string sql = @"SELECT MAX(bloknummer) FROM blok WHERE festival_id = @Festival_id";
         using var connection = GetConnection();
-        string Text = connection.ExecuteScalar<string>(sql, new {Blok_id });
-        return Text;
+        int Check = connection.ExecuteScalar<int>(sql, new {Festival_id });
+        return Check;
     }
 }
