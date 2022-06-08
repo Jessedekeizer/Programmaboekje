@@ -50,15 +50,19 @@
                         <td>@(blok.Begintijd.ToString(@"hh\:mm"))</td>
                         @if (blok.Blok_type == 'o')
                         {
-                            <td style="white-space: pre-wrap;">
+                            <td >
                                 @blok.Orkestgroep.Orkestnaam
                                 <br/>
-                                @blok.Orkestgroep.Muziekstukken
+                                <p style="white-space: pre-wrap;">@blok.Orkestgroep.Muziekstukken</p> 
                             </td>
                             <td>
                                 Cijfer:<br/>
                                 @blok.Orkestgroep.Cijfer
                             </td>
+                        }
+                        else
+                        {
+                            <td colspan="2">Pauze</td> 
                         }
                     }
                     else
@@ -70,13 +74,13 @@
                             <form method="post" asp-page-handler="Update">
                                 <input type="hidden" value="@blok.Blok_id" name="blok_id"/>
                                 <button type="submit">
-                                    <i class="fa fa-arrow-up"></i>
+                                    <i class="fa fa-pencil"></i>
                                 </button>
                             </form>
                             <form method="post" asp-page-handler="Delete">
                                 <input type="hidden" value="@blok.Blok_id" name="blok_id"/>
                                 <button type="submit">
-                                    <i class="fa fa-arrow-down"></i>
+                                    <i class="fa fa-trash"></i>
                                 </button>
                             </form>
                             
@@ -99,7 +103,7 @@
                 <div class="list-group" id="list-tab" role="tablist">
                     <a class="list-group-item list-group-item-action" id="list-Text-list" data-bs-toggle="list" href="#list-Text" role="tab" aria-controls="list-Text">Tekstvak</a>
                     <a class="list-group-item list-group-item-action" id="list-pauze-list" data-bs-toggle="list" href="#list-pauze" role="tab" aria-controls="list-pauze">Pauze</a>
-                    <a class="list-group-item list-group-item-action" id="list-messages-list" data-bs-toggle="list" href="#list-messages" role="tab" aria-controls="list-messages">Messages</a>
+                    <a class="list-group-item list-group-item-action" id="list-orkest-list" data-bs-toggle="list" href="#list-orkest" role="tab" aria-controls="list-orkest">Orkest</a>
                     <a class="list-group-item list-group-item-action" id="list-settings-list" data-bs-toggle="list" href="#list-settings" role="tab" aria-controls="list-settings">Settings</a>
                 </div>
             </div>
@@ -128,14 +132,30 @@
                     <form method="post" name="TextNotes" id="TextNotes">
                         <input type="Time" asp-for="Blok.Begintijd" value="@Model.Time"/>
                         <input type="hidden" asp-for="Blok.Blok_id" value="@Model.Blok_id"/>
-                                                    <input type="hidden" asp-for="Blok.Blok_type" value="p"/>
+                        <input type="hidden" asp-for="Blok.Blok_type" value="p"/>
                         <div class="row">
-                                                <button asp-page-handler="save">opslaan</button>
-                                                <button asp-page-handler="remove">verwijder</button>
-                                            </div>
-                                        </form>
+                            <button asp-page-handler="save">opslaan</button>
+                            <button asp-page-handler="remove">verwijder</button>
+                        </div>
+                    </form>
                 </div>
-                <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">...</div>
+                <div class="tab-pane fade @Model.active_orkest" id="list-orkest" role="tabpanel" aria-labelledby="list-orkest-list">
+                    <form method="post" name="Text2Notes" id="Text2Notes">
+                        <input type="Time" asp-for="Blok.Begintijd" value="@Model.Time"/>
+                        <input type="Text" asp-for="Blok.Orkestgroep.Orkestnaam" value="@Model.OrkestNaam"/>
+                        <input type="number" asp-for="Blok.Orkestgroep.divisie" value="@Model.Divisie"/>
+                        <div class="row">
+                            <textarea name="Text2" id="Text2" cols="60" rows="10" form="Text2Notes">@Model.Text</textarea>
+                        </div>
+                        <div class="row">
+                            <input type="hidden" asp-for="Blok.Blok_type" value="o"/>
+                            <input type="hidden" asp-for="Blok.Orkestgroep.Orkest_id" value="@Model.Orkest_id"/>
+
+                            <button asp-page-handler="save">opslaan</button>
+                            <button asp-page-handler="remove">verwijder</button>
+                        </div>
+                    </form>
+                </div>
                 <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">...</div>
             </div>
         </div>
