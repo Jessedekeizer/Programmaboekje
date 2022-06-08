@@ -1,9 +1,8 @@
 ﻿@page
-@using DigitaalProgrammaBoekje.Pages.Database.Models
-@model DigitaalProgrammaBoekje.Pages.HomeScreenAdmin
+@model DigitaalProgrammaBoekje.Pages.HomeScreen
 
 @{
-    ViewData["Title"] = "Home admin";
+    ViewData["Title"] = "Home screen";
 }
 
 <div class="bg-modal">
@@ -19,7 +18,7 @@
             </div>
             <div class="row">
                 <label id="Label1">Locatie festival</label>
-                <input maxlength="100" asp-for="Festival.Festival_locatie" type="text" id="input1" class="form-control" placeholder="Festival Locatie" required style="text-align: center"/>
+                <input asp-for="Festival.Festival_locatie" type="text" id="input1" class="form-control" placeholder="Festival Locatie" required style="text-align: center"/>
                 <span class="invalid-feedback" asp-validation-for="Festival.Festival_locatie"></span>
             </div>
             <div class="row">
@@ -53,17 +52,13 @@
                             <p class="card-text">@Festivalitem.Festival_locatie</p>
                             <form asp-page-handler="Update" method="post">
                                 <input type="hidden" name="Festival_id" value="@Festivalitem.Festival_id"/>
-                                <button id="" style=" background-color: mediumpurple; border: none;">
-                                    Bewerk
-                                </button>
                             </form>
                         </div>
                     </div>
                 </div>
             }
         }
-
-        <button id="knop2">+</button>
+        
 
     </div>
 </div>
