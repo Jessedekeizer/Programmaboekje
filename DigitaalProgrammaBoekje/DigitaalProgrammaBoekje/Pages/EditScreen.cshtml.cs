@@ -105,4 +105,19 @@ public class EditScreen : PageModel
         }
         return RedirectToPage();
     }
+
+    public IActionResult OnPostDelete(int blok_id)
+    {
+        OrkestgroepRepository OrkestCommand = new OrkestgroepRepository();
+        int Orkest_id = OrkestCommand.CheckIfOrkestgroep(blok_id);
+        if (Orkest_id == 0)
+        {
+            new BlokRepository().DeleteBlok(blok_id);
+        }
+        else
+        {
+            OrkestCommand.DeleteOrkestgroep(Orkest_id, blok_id);
+        }
+        return RedirectToPage();
+    }
 }

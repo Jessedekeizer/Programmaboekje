@@ -47,6 +47,14 @@ public class OrkestgroepRepository
         }
         
     }
+
+    public int CheckIfOrkestgroep(int Blok_id)
+    {
+        string sql = @"SELECT orkest_id FROM orkestgroep WHERE blok_id =@Blok_id";
+        using var connection = GetConnection();
+        int check = connection.ExecuteScalar<int>(sql, new { Blok_id});
+        return check;
+    }
     
     public void DeleteOrkestgroep(int Orkest_id, int Blok_id)
     {
