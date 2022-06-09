@@ -1,4 +1,5 @@
-﻿using DigitaalProgrammaBoekje.Pages.Database.Models;
+﻿using System.Globalization;
+using DigitaalProgrammaBoekje.Pages.Database.Models;
 using DigitaalProgrammaBoekje.Pages.Database.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -10,16 +11,29 @@ public class HomeScreen : PageModel
    private string Photo;
            private IWebHostEnvironment Environment;
            public IEnumerable<Festival> Festivallist { get; set; }
-   
+           
+           public IEnumerable<Festival> FestivalYears { get; set; }  
+
            [BindProperty] 
            public Festival Festival { get; set; }
    
           
    
-           public void OnGet()
+           public void OnGet([FromQuery]string Jaartal)
            {
+              
+               
+               //string Jaartal = Request.Cookies["jaar"];
                FestivalRepository festivallist = new FestivalRepository();
-               Festivallist = festivallist.FestivalsGet();
+
+               //Als settingsStr == null, dat betekend dat er geen cookie bestaat, dus maakt hij een nieuwe cookie aan voor settings.
+               if (Jaartal != null)
+               {
+                   Jaartal = Jaartal + "-05-08 14:40:52";
+                   Festivallist = festivallist.Getfestival(DateTime.Parse(Jaartal));
+               }
+               FestivalYears = festivallist.FestivalsGetYears();
+               
            }
    
            public IActionResult OnPostAddFestival()
@@ -62,5 +76,20 @@ public class HomeScreen : PageModel
                FestivalRepository festival = new FestivalRepository();
                festival.AddFestival(Festival.Festival_naam, Festival.Festival_locatie, Festival.Festival_datum, Photo, 1);
                return RedirectToPage("/HomeScreenAdmin");
+           }
+
+           public IActionResult OnPostJaartje([FromForm] string jaar)
+           {
+               
+               //Als settingsStr == null, dat betekend dat er geen cookie bestaat, dus maakt hij een nieuwe cookie aan voor settings.
+               
+                   Response.Cookies.Append("jaar", jaar, new CookieOptions()
+                   {
+                       Expires = DateTimeOffset.Now.AddDays(30)
+                   });
+                   
+                  
+               
+               return Page();
            }
 }

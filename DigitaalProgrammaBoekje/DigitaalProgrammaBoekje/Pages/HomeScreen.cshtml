@@ -2,9 +2,59 @@
 @model DigitaalProgrammaBoekje.Pages.HomeScreen
 
 @{
-    ViewData["Title"] = "Home screen";
+    Layout = null;
 }
 
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/css/HomeScreen.css"/>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="_Layout.cshtml.css"/>
+    <link rel="stylesheet" href="~/DigitaalProgrammaBoekje.styles.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title></title>
+</head>
+
+<body>
+<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-red border-bottom" style="background-color: #f5958c">
+    <div class="container">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+            <ul class="navbar-nav justify-content-between flex-grow-1">
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-page="/Index">
+                        <div style="color: white">Festivals</div>
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Dropdown
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        @foreach (var jaar in Model.FestivalYears)
+                        {
+                            <li>
+                                <a class="dropdown-item" href="?Jaartal=@jaar.Festival_datum.ToString("yyyy")">@jaar.Festival_datum.ToString("yyyy")</a>
+                            </li>
+                        }
+                        
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-page="/Login">
+                        <div style="color: white">Login</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
 <div class="bg-modal">
     <form method="post" enctype="multipart/form-data" style="height: 100%">
         <div class="modal-content">
@@ -58,8 +108,11 @@
                 </div>
             }
         }
-        
+
 
     </div>
 </div>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/css/HomeScreen.js"></script>
+</body>
+</html>

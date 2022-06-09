@@ -23,7 +23,7 @@ public class HomeScreenAdmin : PageModel
         public void OnGet()
         {
             FestivalRepository festivallist = new FestivalRepository();
-            Festivallist = festivallist.FestivalsGet();
+            
         }
 
         public IActionResult OnPostAddFestival()

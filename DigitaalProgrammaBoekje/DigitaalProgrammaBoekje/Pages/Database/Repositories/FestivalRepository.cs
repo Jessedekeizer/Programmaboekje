@@ -22,14 +22,13 @@ public class FestivalRepository
         return festival;
     }
     
-    public IEnumerable<Festival> FestivalsGet()
+    public IEnumerable<Festival> FestivalsGetYears()
     {
-        string sql = @"SELECT * FROM festival
-        ORDER BY festival_id DESC";
+        string sql = "SELECT * FROM Festival GROUP BY YEAR(Festival_datum)";
 
         using var connection = GetConnection();
-        var festivals = connection.Query<Festival>(sql);
-        return festivals;
+        var festival = connection.Query<Festival>(sql);
+        return festival;
     }
     
     public void AddFestival(string Name, string Location, DateTime Date, string Logo, int User)
@@ -75,6 +74,16 @@ public class FestivalRepository
             
         using var connection = GetConnection();
         connection.Query<Festival>(sql, new{Id, Name, Location, Date, Logo});
+    }
+
+    public IEnumerable<Festival> Getfestival(DateTime Jaar)
+    {
+        //Haalt alles op van een bepaald festival
+        string sql = "SELECT * FROM Festival WHERE YEAR(festival_datum) = YEAR(@Jaar)";
+
+        using var connection = GetConnection();
+        var festival = connection.Query<Festival>(sql, new {Jaar});
+        return festival;
     }
 
     
