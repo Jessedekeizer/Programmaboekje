@@ -56,15 +56,18 @@ public class OrkestgroepRepository
         return check;
     }
     
-    public void DeleteOrkestgroep(int Orkest_id, int Blok_id)
+    public void DeleteOrkestgroep(int Orkest_id, int Blok_id, int BLoknummer)
     {
         
-        string sql1 = @"DELETE FROM Orkestgroep WHERE orkest_id = @Orkest_id";
-        string sql2 = @"DELETE FROM Blok WHERE blok_id = @Blok_id";
+        string sql1 = @"Update blok SET 
+                        bloknummer = bloknummer - 1
+                        WHERE bloknummer > @Bloknummer ;
+DELETE FROM Orkestgroep WHERE orkest_id = @Orkest_id;
+                        DELETE FROM Blok WHERE blok_id = @Blok_id";
         
         using var connection = GetConnection(); 
-        connection.Query(sql1, new { Orkest_id });
-        connection.Query(sql2, new { Blok_id });
+        connection.Query(sql1, new { Orkest_id, Blok_id, BLoknummer });
+        
         
     }
     
@@ -85,5 +88,12 @@ public class OrkestgroepRepository
             
         using var connection = GetConnection();
         connection.Query<Orkestgroep>(sql, new{Orkest_id, Musiclist, Orkestname, Number, Divisie, Blok_id, Starttime});
+    }
+
+    public void UpdateCijfer(int Orkest_id, int Number)
+    {
+        string sql = @"UPDATE orkestgroep SET cijfer = @Number WHERE orkest_id = @Orkest_id";
+        using var connection = GetConnection();
+        connection.Query(sql, new {Orkest_id, Number });
     }
 }
