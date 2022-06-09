@@ -150,6 +150,7 @@
                         <div class="row">
                             <input type="hidden" asp-for="Blok.Blok_type" value="o"/>
                             <input type="hidden" asp-for="Blok.Orkestgroep.Orkest_id" value="@Model.Orkest_id"/>
+                            <input type="hidden" asp-for="Blok.Blok_id" value="@Model.Blok_id"/>
 
                             <button asp-page-handler="save">opslaan</button>
                             <button asp-page-handler="remove">verwijder</button>

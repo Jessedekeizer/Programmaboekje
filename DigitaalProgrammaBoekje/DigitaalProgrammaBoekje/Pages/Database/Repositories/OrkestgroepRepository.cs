@@ -37,13 +37,13 @@ public class OrkestgroepRepository
             int blok_id = connection.QuerySingle<int>(sql, new {Fest_id, Starttime, Type, Number});
             
             sql = @"
-                INSERT INTO Orkestgroep (blok_id, muziekstukken, orkestnaam, divisie, cijfer) 
-                VALUES (@blok_id, @Musiclist, @Orkestname,@Divisie, @Number)";
-            connection.Query<Orkestgroep>(sql, new{blok_id, Musiclist, Orkestname,Divisie, Number});
+                INSERT INTO Orkestgroep (blok_id, muziekstukken, orkestnaam, divisie) 
+                VALUES (@blok_id, @Musiclist, @Orkestname,@Divisie)";
+            connection.Query<Orkestgroep>(sql, new{blok_id, Musiclist, Orkestname, Divisie});
         }
         else
         {
-            UpdateOrkestgroep(orkest_id, Musiclist, Orkestname, Divisie, Number);
+            UpdateOrkestgroep(orkest_id, Musiclist, Orkestname, Divisie, Number, Blok_id, Starttime);
         }
         
     }
@@ -61,14 +61,14 @@ public class OrkestgroepRepository
         
         string sql1 = @"DELETE FROM Orkestgroep WHERE orkest_id = @Orkest_id";
         string sql2 = @"DELETE FROM Blok WHERE blok_id = @Blok_id";
-
+        
         using var connection = GetConnection(); 
         connection.Query(sql1, new { Orkest_id });
         connection.Query(sql2, new { Blok_id });
         
     }
     
-    public void UpdateOrkestgroep(int Orkest_id, string Musiclist, string Orkestname, int Divisie, int Number)
+    public void UpdateOrkestgroep(int Orkest_id, string Musiclist, string Orkestname, int Divisie, int Number, int Blok_id, TimeSpan Starttime)
     {
         //Hier kan je de velden van een Orkestgroepen aanpassen.
         string sql = @"
@@ -77,9 +77,13 @@ public class OrkestgroepRepository
                     orkestnaam = @Orkestname,
                     cijfer = @Number,
                     divisie = @Divisie
-                WHERE orkest_id = @Orkest_id;";
+                WHERE orkest_id = @Orkest_id;
+                UPDATE blok SET 
+                begintijd = @Starttime
+                WHERE blok_id = @Blok_id";
+        
             
         using var connection = GetConnection();
-        connection.Query<Orkestgroep>(sql, new{Orkest_id, Musiclist, Orkestname, Number, Divisie});
+        connection.Query<Orkestgroep>(sql, new{Orkest_id, Musiclist, Orkestname, Number, Divisie, Blok_id, Starttime});
     }
 }
