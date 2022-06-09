@@ -8,101 +8,116 @@ namespace DigitaalProgrammaBoekje.Pages;
 
 public class EditScreen : PageModel
 {
+    private string Photo;
+    private IWebHostEnvironment Environment;
     public IEnumerable<Blok> Bloks { get; set; }
-    
-    [BindProperty]
-    public Blok Blok { get; set; }
+    public IEnumerable<Jurylid> Jurylist { get; set; }
 
+
+    [BindProperty] public Blok Blok { get; set; }
+
+    [BindProperty] public Jurylid Jurylid { get; set; }
+
+    public string Jurynaam { get; set; }
+    public string Jurybio { get; set; }
     public string Text { get; set; }
-    
+
     public string OrkestNaam { get; set; }
-    
+
     public int Divisie { get; set; }
-    
+
     public string Time { get; set; }
 
     public int Blok_id { get; set; } = 0;
 
     public int Orkest_id { get; set; } = 0;
-    
+    public int Jury_id { get; set; } = 0;
+
     public string active_pauze { get; set; }
     public string active_orkest { get; set; }
     public string active_tekstvak { get; set; }
-    
+    public string active_jury { get; set; }
 
+
+    public EditScreen(IWebHostEnvironment _environment)
+    {
+        Environment = _environment;
+    }
 
     public IActionResult OnGet([FromQuery] int blok_id)
     {
         Blok_id = blok_id;
         Bloks = new BlokRepository().GetAll();
+        JurylidRepository jurylist = new JurylidRepository();
+        Jurylist = jurylist.GetJury(1);
         if (Blok_id != null)
-            
-        foreach (var blok in Bloks)
-        {
-            if (blok.Blok_id == Blok_id)
+
+            foreach (var blok in Bloks)
             {
-                switch (blok.Blok_type)
+                if (blok.Blok_id == Blok_id)
                 {
-                    case 'p':
-                        active_pauze = "show active";
-                        Time = blok.Begintijd.ToString(@"hh\:mm");
-                        break;
-                      case 't':
-                          active_tekstvak = "show active";
-                        Text = blok.Tekstvak;
-                          break;
-                      case 'o':
-                          Time = blok.Begintijd.ToString(@"hh\:mm");
-                          OrkestNaam = blok.Orkestgroep.Orkestnaam;
-                          Divisie = blok.Orkestgroep.divisie;
-                          Orkest_id = blok.Orkestgroep.Orkest_id;
-                          Text = blok.Orkestgroep.Muziekstukken;
-                          active_orkest = "show active";
-                          break;
+                    switch (blok.Blok_type)
+                    {
+                        case 'p':
+                            active_pauze = "show active";
+                            Time = blok.Begintijd.ToString(@"hh\:mm");
+                            break;
+                        case 't':
+                            active_tekstvak = "show active";
+                            Text = blok.Tekstvak;
+                            break;
+                        case 'o':
+                            Time = blok.Begintijd.ToString(@"hh\:mm");
+                            OrkestNaam = blok.Orkestgroep.Orkestnaam;
+                            Divisie = blok.Orkestgroep.divisie;
+                            Orkest_id = blok.Orkestgroep.Orkest_id;
+                            Text = blok.Orkestgroep.Muziekstukken;
+                            active_orkest = "show active";
+                            break;
+                    }
                 }
             }
-                
-        }
-        
+
         return Page();
     }
 
-    public IActionResult OnPostUp( int blok_id, int bloknummer, int festival_id)
+    public IActionResult OnPostUp(int blok_id, int bloknummer, int festival_id)
     {
         BlokRepository BlokCommand = new BlokRepository();
         BlokCommand.ChangeRankingUp(bloknummer, blok_id, festival_id);
         return RedirectToPage();
     }
-    
+
     public IActionResult OnPostDown(int blok_id, int bloknummer, int festival_id)
     {
         BlokRepository BlokCommand = new BlokRepository();
-        BlokCommand.ChangeRankingDown( bloknummer, blok_id, festival_id);
+        BlokCommand.ChangeRankingDown(bloknummer, blok_id, festival_id);
         return RedirectToPage();
     }
-    
+
     public IActionResult OnPostUpdate(int blok_id)
     {
         BlokRepository BlokCommand = new BlokRepository();
-        
-        return RedirectToPage(new{Blok_id = blok_id});
+
+        return RedirectToPage(new {Blok_id = blok_id});
     }
-    
+
     public IActionResult OnPostSave()
     {
         string note = Request.Form["Text1"];
         BlokRepository blokCommand = new BlokRepository();
         if (Blok.Blok_type != 'o')
         {
-            blokCommand.AddBlok(Blok.Blok_id, 1, Blok.Begintijd , Blok.Blok_type, note);
+            blokCommand.AddBlok(Blok.Blok_id, 1, Blok.Begintijd, Blok.Blok_type, note);
         }
         else
         {
             note = Request.Form["Text2"];
-            new OrkestgroepRepository().AddOrkestgroep(note, Blok.Orkestgroep.Orkestnaam, 
+            new OrkestgroepRepository().AddOrkestgroep(note, Blok.Orkestgroep.Orkestnaam,
                 Blok.Orkestgroep.divisie, Blok.Orkestgroep.Cijfer, Blok.Orkestgroep.Orkest_id,
-                Blok.Blok_id, 1, Blok.Begintijd , Blok.Blok_type);
+                Blok.Blok_id, 1, Blok.Begintijd, Blok.Blok_type);
         }
+
         return RedirectToPage();
     }
 
@@ -118,6 +133,46 @@ public class EditScreen : PageModel
         {
             OrkestCommand.DeleteOrkestgroep(Orkest_id, blok_id);
         }
+
+        return RedirectToPage();
+    }
+
+    public IActionResult OnPostAddjury(List<IFormFile> frontPosted)
+    {
+        string note = Request.Form["TextJury"];
+
+        string path = Path.Combine(this.Environment.WebRootPath, "content");
+        if (!Directory.Exists(path))
+        {
+            Directory.CreateDirectory(path);
+        }
+
+        foreach (IFormFile postedFile in frontPosted)
+        {
+            string fileName = null;
+            int i = 0;
+            string extension = Path.GetExtension(postedFile.FileName);
+            while (i == 0)
+            {
+                fileName = Path.GetRandomFileName();
+                fileName = Path.ChangeExtension(fileName, extension);
+
+                if (!System.IO.File.Exists(fileName))
+                {
+                    i++;
+                    Photo = fileName;
+                }
+            }
+
+            using (FileStream stream = new FileStream(Path.Combine(path, fileName), FileMode.Create))
+            {
+                postedFile.CopyTo(stream);
+            }
+        }
+
+
+        JurylidRepository jury = new JurylidRepository();
+        jury.AddJurylid(Jurylid.jury_naam, note, Photo, 1);
         return RedirectToPage();
     }
 }

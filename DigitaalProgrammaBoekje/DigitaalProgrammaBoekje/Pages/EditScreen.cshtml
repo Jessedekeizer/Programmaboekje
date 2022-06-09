@@ -53,7 +53,7 @@
                             <td >
                                 @blok.Orkestgroep.Orkestnaam
                                 <br/>
-                                <p style="white-space: pre-wrap;">@blok.Orkestgroep.Muziekstukken</p> 
+                                <p style="white-space: pre-wrap;">@blok.Orkestgroep.Muziekstukken</p>
                             </td>
                             <td>
                                 Cijfer:<br/>
@@ -62,7 +62,7 @@
                         }
                         else
                         {
-                            <td colspan="2">Pauze</td> 
+                            <td colspan="2">Pauze</td>
                         }
                     }
                     else
@@ -83,18 +83,30 @@
                                     <i class="fa fa-trash"></i>
                                 </button>
                             </form>
-                            
+
                         </div>
                     </td>
                 </tr>
                 </tbody>
             }
         </table>
-        <form method="post" asp-page-handler="Selection">
-            <button>
-                <i class="fa fa-plus-circle"></i>
-            </button>
-        </form>
+        <div class="row">
+                @if (Model.Jurylist != null)
+                {
+                    foreach (var Jurylid in Model.Jurylist)
+                    {
+                        <div class="col-3" id="cart" style="width: 320px;">
+                            <div class="card" style="width: 320px;">
+                                <img class="card-img-top" id="FImg1" style="object-fit: fill; height: 150px; width: 300px;" src="~/content/@Jurylid.jury_foto" alt="Card image cap">
+                                <div class="card-body" style="width: 320px;">
+                                    <h5 class="card-title" style="margin: 0px">@Jurylid.jury_naam</h5>
+                                    <p class="card-text" style="resize: none; white-space:  pre-wrap;">@Jurylid.jury_bio</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
     </div>
     <div class="row col-8">
         @if (Model.Blok_id == 0)
@@ -104,6 +116,7 @@
                     <a class="list-group-item list-group-item-action" id="list-Text-list" data-bs-toggle="list" href="#list-Text" role="tab" aria-controls="list-Text">Tekstvak</a>
                     <a class="list-group-item list-group-item-action" id="list-pauze-list" data-bs-toggle="list" href="#list-pauze" role="tab" aria-controls="list-pauze">Pauze</a>
                     <a class="list-group-item list-group-item-action" id="list-orkest-list" data-bs-toggle="list" href="#list-orkest" role="tab" aria-controls="list-orkest">Orkest</a>
+                    <a class="list-group-item list-group-item-action" id="list-jury-list" data-bs-toggle="list" href="#list-jury" role="tab" aria-controls="list-jury">Jury</a>
                     <a class="list-group-item list-group-item-action" id="list-settings-list" data-bs-toggle="list" href="#list-settings" role="tab" aria-controls="list-settings">Settings</a>
                 </div>
             </div>
@@ -156,11 +169,30 @@
                         </div>
                     </form>
                 </div>
+                <div class="tab-pane fade @Model.active_jury" id="list-jury" role="tabpanel" aria-labelledby="list-jury-list">
+                    <form method="post" name="TextJuryNotes" id="TextJuryNotes" enctype="multipart/form-data">
+                        <input type="Text" asp-for="Jurylid.jury_naam" value="@Model.Jurynaam"/>
+                        <div class="row">
+                            <textarea name="TextJury" id="TextJury" cols="60" rows="10" form="TextJuryNotes">@Model.Jurybio</textarea>
+                        </div>
+                        <div class="row">
+                            <label id="Label1">Jury Foto</label>
+                            <span class="kop spacing">Selecteer Jury foto:</span>
+                            <input for="photoButton" id="input1" type="file" name="frontPosted" class="photoButton" accept="image/jpeg, image/png, image/jpg, image/jfif"/>
+                        </div>
+                        <div class="row">
+                            <input type="hidden" asp-for="Jurylid.jury_id" value="@Model.Jury_id"/>
+
+                            <input type="submit" id="knop" style="background-color: #7d3ec9; color: white; border: none; border-radius: 3px; margin-top: 10px; height: 25px; width: 170px; margin-left: 212px" asp-page-handler="Addjury">Voeg Jury toe</input>
+                        </div>
+                    </form>
+                </div>
+
                 <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">...</div>
             </div>
         </div>
     </div>
-<!--
+    <!--
 
--->
+    -->
 </div>
