@@ -23,15 +23,37 @@ public class OrkestgroepRepository
     
     
     
-    public void AddOrkestgroep(int Blok_id, string Musiclist, string Orkestname, int Number)
+    public void AddOrkestgroep(string Musiclist, string Orkestname,int Divisie, int Number,
+        int orkest_id, int Blok_id, int Fest_id, TimeSpan Starttime, char Type)
     {
-        //Voeg een Orkestgroep toe
-        string sql = @"
-                INSERT INTO Orkestgroep (blok_id, muziekstukken, orkestnaam, cijfer) 
-                VALUES (@Blok_id, @Musiclist, @Orkestname, @Number)";
+        if (orkest_id == 0)
+        {
+            Number = 1 + new BlokRepository().CheckRanking(Fest_id);
+            string sql = @"
+                INSERT INTO Blok (festival_id, begintijd, blok_type, bloknummer) 
+                VALUES (@Fest_id, @Starttime, @Type, @Number); SELECT LAST_INSERT_ID()";
 
+            using var connection = GetConnection();
+            int blok_id = connection.QuerySingle<int>(sql, new {Fest_id, Starttime, Type, Number});
+            
+            sql = @"
+                INSERT INTO Orkestgroep (blok_id, muziekstukken, orkestnaam, divisie, cijfer) 
+                VALUES (@blok_id, @Musiclist, @Orkestname,@Divisie, @Number)";
+            connection.Query<Orkestgroep>(sql, new{blok_id, Musiclist, Orkestname,Divisie, Number});
+        }
+        else
+        {
+            UpdateOrkestgroep(orkest_id, Musiclist, Orkestname, Divisie, Number);
+        }
+        
+    }
+
+    public int CheckIfOrkestgroep(int Blok_id)
+    {
+        string sql = @"SELECT orkest_id FROM orkestgroep WHERE blok_id =@Blok_id";
         using var connection = GetConnection();
-        connection.Query<Orkestgroep>(sql, new{Blok_id, Musiclist, Orkestname, Number});
+        int check = connection.ExecuteScalar<int>(sql, new { Blok_id});
+        return check;
     }
     
     public void DeleteOrkestgroep(int Orkest_id, int Blok_id)
@@ -46,7 +68,7 @@ public class OrkestgroepRepository
         
     }
     
-    public void UpdateOrkestgroep(int Orkest_id, string Musiclist, string Orkestname, int Number)
+    public void UpdateOrkestgroep(int Orkest_id, string Musiclist, string Orkestname, int Divisie, int Number)
     {
         //Hier kan je de velden van een Orkestgroepen aanpassen.
         string sql = @"
@@ -54,9 +76,10 @@ public class OrkestgroepRepository
                     muziekstukken = @Musiclist,
                     orkestnaam = @Orkestname,
                     cijfer = @Number,
+                    divisie = @Divisie
                 WHERE orkest_id = @Orkest_id;";
             
         using var connection = GetConnection();
-        connection.Query<Orkestgroep>(sql, new{Orkest_id, Musiclist, Orkestname, Number});
+        connection.Query<Orkestgroep>(sql, new{Orkest_id, Musiclist, Orkestname, Number, Divisie});
     }
 }

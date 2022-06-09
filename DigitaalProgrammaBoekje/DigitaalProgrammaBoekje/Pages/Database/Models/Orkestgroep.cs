@@ -7,6 +7,8 @@ public class Orkestgroep
     
     public int Blok_id { get; set; }
     
+    public int divisie { get; set; }
+    
     public string Orkestnaam { get; set; }
     
     public string Muziekstukken { get; set; }

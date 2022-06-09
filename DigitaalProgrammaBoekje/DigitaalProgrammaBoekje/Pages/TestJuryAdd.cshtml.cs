@@ -60,7 +60,7 @@ public class TestJuryAdd : PageModel
 
 
         JurylidRepository jury = new JurylidRepository();
-        jury.AddJurylid(Jurylid.jury_naam, note, Photo);
+        jury.AddJurylid(Jurylid.jury_naam, note, Photo, 1);
         return RedirectToPage("/HomeScreenAdmin");
     }
 }

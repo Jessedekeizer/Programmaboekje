@@ -25,15 +25,19 @@ public class JurylidRepository
         return juryleden;
     }
 
-    public void AddJurylid(string Name, string Bio, string Foto)
+    public void AddJurylid(string Name, string Bio, string Foto, int Festival_id)
     {
-        //Voegt een jurylid toe
         string sql = @"
                 INSERT INTO jurylid (jury_naam, jury_bio, jury_foto) 
-                VALUES (@Name, @Bio, @Foto)";
+                VALUES (@Name, @Bio, @Foto); SELECT LAST_INSERT_ID()";
 
         using var connection = GetConnection();
-        connection.Query<Jurylid>(sql, new {Name, Bio, Foto});
+        int Jury_id = connection.QuerySingle<int>(sql, new {Name, Bio, Foto});
+            
+        sql = @"
+                INSERT INTO neemt_deel (jury_id, festival_id) 
+                VALUES (@Jury_id, @Festival_id)";
+        connection.Query<Orkestgroep>(sql, new{Jury_id, Festival_id});
     }
 
     public void DeleteJury(int Jury_id)
