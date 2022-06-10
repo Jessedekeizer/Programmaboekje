@@ -25,7 +25,7 @@ public class HomeScreenAdmin : PageModel
         public IActionResult OnGet()
         {
             Rolechecker rolechecker = new Rolechecker(HttpContext.Session);
-            if (rolechecker.Loged_in())
+            if (!rolechecker.Loged_in())
             {
                 return RedirectToPage("/login");
             }
