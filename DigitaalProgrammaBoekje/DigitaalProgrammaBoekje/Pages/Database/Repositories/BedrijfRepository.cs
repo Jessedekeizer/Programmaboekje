@@ -11,8 +11,16 @@ public class BedrijfRepository
     {
         return new DbUtils().Connect();
     }
-    
-    public IEnumerable<Bedrijf> Get(int Bedrijf_id)
+    public IEnumerable<Bedrijf> GetAllbedrijf()
+    {
+        //Haalt alles op van een bepaald bedrijf
+        string sql = "SELECT * FROM Bedrijf";
+
+        using var connection = GetConnection();
+        var bedrijfen = connection.Query<Bedrijf>(sql);
+        return bedrijfen;
+    }
+    public IEnumerable<Bedrijf> Getbedrijf(int Bedrijf_id)
     {
         //Haalt alles op van een bepaald bedrijf
         string sql = "SELECT * FROM Bedrijf WHERE bedrijf_id = @Bedrijf_id";

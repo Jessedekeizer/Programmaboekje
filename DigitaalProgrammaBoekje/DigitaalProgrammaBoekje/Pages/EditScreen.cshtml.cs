@@ -13,6 +13,9 @@ public class EditScreen : PageModel
     public IEnumerable<Blok> Bloks { get; set; }
     public IEnumerable<Jurylid> Jurylist { get; set; }
     public IEnumerable<Jurylid> AllJurieslist { get; set; }
+    public IEnumerable<Bedrijf> Bedrijflist { get; set; }
+    public IEnumerable<Sponsort> Reclamelist { get; set; }
+    
 
 
     [BindProperty] public Blok Blok { get; set; }
@@ -34,11 +37,15 @@ public class EditScreen : PageModel
 
     public int Orkest_id { get; set; } = 0;
     public int Jury_id { get; set; } = 0;
+    public int Bedrijf_id { get; set; } = 0;
 
     public string active_pauze { get; set; }
     public string active_orkest { get; set; }
     public string active_tekstvak { get; set; }
     public string active_jury { get; set; }
+    public string active_reclame { get; set; }
+    
+    public string bedrijf_naam { get; set; }
 
 
     public EditScreen(IWebHostEnvironment _environment)
@@ -46,14 +53,19 @@ public class EditScreen : PageModel
         Environment = _environment;
     }
 
-    public IActionResult OnGet([FromQuery] int blok_id, [FromQuery] int jury_id)
+    public IActionResult OnGet([FromQuery] int blok_id, [FromQuery] int jury_id, [FromQuery] int bedrijf_id)
     {
         Blok_id = blok_id;
         Jury_id = jury_id;
+        Bedrijf_id = bedrijf_id;
         Bloks = new BlokRepository().GetAll();
         JurylidRepository jurylist = new JurylidRepository();
         Jurylist = jurylist.GetJury(1);
         AllJurieslist = jurylist.GetAllJury();
+        SponsortRepository Sponsort = new SponsortRepository();
+        Reclamelist = Sponsort.GetSponsors();
+        BedrijfRepository bedrijf = new BedrijfRepository();
+        Bedrijflist = bedrijf.GetAllbedrijf();
         if (Blok_id != null)
         {
             foreach (var blok in Bloks)
@@ -93,6 +105,17 @@ public class EditScreen : PageModel
                     Jurynaam = jury.jury_naam;
                     Jurybio = jury.jury_bio;
                     Juryfoto = jury.jury_foto;
+                }
+            }
+        }
+        if (Bedrijf_id != null)
+        {
+            foreach (var bedrijfs in Bedrijflist)
+            {
+                if (bedrijfs.bedrijf_id == Bedrijf_id)
+                {
+                    active_reclame = "show active";
+                    bedrijf_naam = bedrijfs.bedrijf_naam;
                 }
             }
         }
@@ -217,6 +240,41 @@ public class EditScreen : PageModel
 
         JurylidRepository jury = new JurylidRepository();
         jury.AddExistingjury(Jurylid.jury_id, 1);
+        return RedirectToPage();
+    }
+
+    public IActionResult OnPostAddReclame(List<IFormFile> frontPosted, [FromForm] int bedrijf_id,[FromForm] string bedrijf_naam)
+    {
+        string path = Path.Combine(this.Environment.WebRootPath, "content");
+        if (!Directory.Exists(path))
+        {
+            Directory.CreateDirectory(path);
+        }
+
+        foreach (IFormFile postedFile in frontPosted)
+        {
+            string fileName = null;
+            int i = 0;
+            string extension = Path.GetExtension(postedFile.FileName);
+            while (i == 0)
+            {
+                fileName = Path.GetRandomFileName();
+                fileName = Path.ChangeExtension(fileName, extension);
+
+                if (!System.IO.File.Exists(fileName))
+                {
+                    i++;
+                    Photo = fileName;
+                }
+            }
+
+            using (FileStream stream = new FileStream(Path.Combine(path, fileName), FileMode.Create))
+            {
+                postedFile.CopyTo(stream);
+            }
+        }
+        
+        new SponsortRepository().AddSponsor(bedrijf_id, 1, Photo);
         return RedirectToPage();
     }
 }

@@ -10,7 +10,14 @@ public class SponsortRepository
     {
         return new DbUtils().Connect();
     }
-    
+    public IEnumerable<Sponsort> GetSponsors()
+    {
+        string sql = @"SELECT * FROM Sponsort";
+        
+        using var connection = GetConnection();
+        var sponsorts = connection.Query<Sponsort>(sql);
+        return sponsorts;
+    }
     public void AddSponsor(int Bedrijf_id, int Festival_id, string Foto_link)
     {
         string sql = @"INSERT INTO Sponsort(bedrijf_id, festival_id, foto_link)
