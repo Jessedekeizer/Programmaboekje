@@ -8,6 +8,54 @@
 @{
     ViewData["Title"] = "Edit Page";
 }
+<div class="d-flex flex-row">
+    <div class="col-3" style="margin: 10px">
+        <table class="table table-bordered align-right">
+            <thead>
+            <tr>
+            <th class="col-3">Orkestnaam</th>
+            <th class="col-1">Punten</th>
+            <tr>
+            </thead>
+            
+            @foreach (var blok in Model.Bloks)
+            {
+                if (blok.Blok_type == 'o')
+                {
+                    <tbody>
+                    <td>
+                        @blok.Orkestgroep.Orkestnaam
+                    </td>
+                    <form method="post" asp-page-handler="UpdateCijfer">
+                        <td>
+                            <input type="number" name="Number" value="@blok.Orkestgroep.Cijfer"/>
+                            <input type="hidden" name="Orkest_id" value="@blok.Orkestgroep.Orkest_id"/>
+                            <button type="submit"><i class="fa fa-floppy-o"></i></button>
+                        </td>
+                    </form>
+                    </tbody>
+                }
+            }
+            
+        </table>
+    </div>
+    <div class="col-3" style="width: 320px; overflow: auto; margin: 10px">
+        <table class="table">
+            @foreach (var blok in Model.Bloks)
+            {
+                <tbody>
+                <tr>
+                    <td>
+                        <div class="d-flex; flex-column">
+                            @if (blok != Model.Bloks.First())
+                            {
+                                <form method="post" asp-page-handler="Up">
+                                    <input type="hidden" value="@blok.Blok_id" name="blok_id"/>
+                                    <input type="hidden" value="@blok.Bloknummer" name="bloknummer"/>
+                                    <input type="hidden" value="@blok.Festival_id" name="festival_id"/>
+                                    <button type="submit">
+                                        <i class="fa fa-arrow-up"></i>
+                                    </button>
 
 @{ int number1 = 1; }
 <div class="d-flex flex-row">
@@ -316,5 +364,4 @@
     <!--
 
     -->
-</div>
 </div>

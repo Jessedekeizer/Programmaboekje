@@ -162,7 +162,7 @@ public class EditScreen : PageModel
         return RedirectToPage();
     }
 
-    public IActionResult OnPostDelete(int blok_id)
+    public IActionResult OnPostDelete(int blok_id, int bloknummer)
     {
         OrkestgroepRepository OrkestCommand = new OrkestgroepRepository();
         int Orkest_id = OrkestCommand.CheckIfOrkestgroep(blok_id);
@@ -172,7 +172,7 @@ public class EditScreen : PageModel
         }
         else
         {
-            OrkestCommand.DeleteOrkestgroep(Orkest_id, blok_id);
+            OrkestCommand.DeleteOrkestgroep(Orkest_id, blok_id, bloknummer);
         }
 
         return RedirectToPage();
@@ -275,6 +275,13 @@ public class EditScreen : PageModel
         }
         
         new SponsortRepository().AddSponsor(bedrijf_id, 1, Photo);
+        return RedirectToPage();
+    }
+
+    public IActionResult OnPostUpdateCijfer(int Orkest_id, int Number)
+    {
+        new OrkestgroepRepository().UpdateCijfer(Orkest_id, Number);
+        
         return RedirectToPage();
     }
 }
