@@ -11,6 +11,16 @@ public class JurylidRepository
     {
         return new DbUtils().Connect();
     }
+    
+    public IEnumerable<Jurylid> GetAllJury()
+    {
+        //Haalt alles op van een bepaald jurylid
+        string sql = @"SELECT * FROM Jurylid";
+
+        using var connection = GetConnection();
+        var juryleden = connection.Query<Jurylid>(sql);
+        return juryleden;
+    }
 
     public IEnumerable<Jurylid> GetJury(int festival_id)
     {
@@ -25,19 +35,35 @@ public class JurylidRepository
         return juryleden;
     }
 
-    public void AddJurylid(string Name, string Bio, string Foto, int Festival_id)
+    public void AddJurylid(int Jury_id, string Name, string Bio, string Foto, int Festival_id)
     {
-        string sql = @"
+        if (Jury_id != 0)
+        {
+            UpdateJurylid(Jury_id, Name, Bio, Foto);
+        }
+        else
+        {
+            string sql = @"
                 INSERT INTO jurylid (jury_naam, jury_bio, jury_foto) 
                 VALUES (@Name, @Bio, @Foto); SELECT LAST_INSERT_ID()";
 
-        using var connection = GetConnection();
-        int Jury_id = connection.QuerySingle<int>(sql, new {Name, Bio, Foto});
-            
-        sql = @"
+            using var connection = GetConnection();
+            Jury_id = connection.QuerySingle<int>(sql, new {Name, Bio, Foto});
+
+            sql = @"
                 INSERT INTO neemt_deel (jury_id, festival_id) 
                 VALUES (@Jury_id, @Festival_id)";
-        connection.Query<Orkestgroep>(sql, new{Jury_id, Festival_id});
+            connection.Query(sql, new {Jury_id, Festival_id});
+        }
+    }
+
+    public void AddExistingjury(int Jury_id, int Festival_id)
+    {
+        string sql = @"
+                INSERT INTO neemt_deel (jury_id, festival_id) 
+                VALUES (@Jury_id, @Festival_id)";
+        using var connection = GetConnection();
+        connection.Query(sql, new {Jury_id, Festival_id});
     }
 
     public void DeleteJury(int Jury_id)
@@ -49,6 +75,15 @@ public class JurylidRepository
         connection.Query(sql, new {Jury_id});
     }
 
+    public void UnassignJury(int Jury_id)
+    {
+        //Verwijdert een bepaald jurylid
+        string sql = @"DELETE FROM neemt_deel WHERE jury_id = @Jury_id";
+
+        using var connection = GetConnection();
+        connection.Query(sql, new {Jury_id});
+    }
+    
     public void UpdateJurylid(int Id, string Name, string Bio, string Foto)
     {
         //Hier kan je de velden van een jurylid aanpassen.
@@ -56,7 +91,7 @@ public class JurylidRepository
                 UPDATE Jurylid SET 
                    jury_naam = @Name,
                     jury_bio = @Bio,
-                    jury_foto = @Foto,
+                    jury_foto = @Foto
                 WHERE jury_id = @Id;";
 
         using var connection = GetConnection();

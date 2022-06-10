@@ -12,6 +12,7 @@ public class EditScreen : PageModel
     private IWebHostEnvironment Environment;
     public IEnumerable<Blok> Bloks { get; set; }
     public IEnumerable<Jurylid> Jurylist { get; set; }
+    public IEnumerable<Jurylid> AllJurieslist { get; set; }
 
 
     [BindProperty] public Blok Blok { get; set; }
@@ -20,6 +21,7 @@ public class EditScreen : PageModel
 
     public string Jurynaam { get; set; }
     public string Jurybio { get; set; }
+    public string Juryfoto { get; set; }
     public string Text { get; set; }
 
     public string OrkestNaam { get; set; }
@@ -44,14 +46,16 @@ public class EditScreen : PageModel
         Environment = _environment;
     }
 
-    public IActionResult OnGet([FromQuery] int blok_id)
+    public IActionResult OnGet([FromQuery] int blok_id, [FromQuery] int jury_id)
     {
         Blok_id = blok_id;
+        Jury_id = jury_id;
         Bloks = new BlokRepository().GetAll();
         JurylidRepository jurylist = new JurylidRepository();
         Jurylist = jurylist.GetJury(1);
+        AllJurieslist = jurylist.GetAllJury();
         if (Blok_id != null)
-
+        {
             foreach (var blok in Bloks)
             {
                 if (blok.Blok_id == Blok_id)
@@ -77,6 +81,21 @@ public class EditScreen : PageModel
                     }
                 }
             }
+        }
+
+        if (Jury_id != null)
+        {
+            foreach (var jury in Jurylist)
+            {
+                if (jury.jury_id == Jury_id)
+                {
+                    active_jury = "show active";
+                    Jurynaam = jury.jury_naam;
+                    Jurybio = jury.jury_bio;
+                    Juryfoto = jury.jury_foto;
+                }
+            }
+        }
 
         return Page();
     }
@@ -98,7 +117,6 @@ public class EditScreen : PageModel
     public IActionResult OnPostUpdate(int blok_id)
     {
         BlokRepository BlokCommand = new BlokRepository();
-
         return RedirectToPage(new {Blok_id = blok_id});
     }
 
@@ -137,6 +155,19 @@ public class EditScreen : PageModel
         return RedirectToPage();
     }
 
+    public IActionResult OnPostUpdatejury(int jury_id)
+    {
+        JurylidRepository JuryCommand = new JurylidRepository();
+        return RedirectToPage(new {Jury_id = jury_id});
+    }
+
+    public IActionResult OnPostUnassignjury(int jury_id)
+    {
+        JurylidRepository JuryCommand = new JurylidRepository();
+        JuryCommand.UnassignJury(jury_id);
+        return RedirectToPage();
+    }
+
     public IActionResult OnPostAddjury(List<IFormFile> frontPosted)
     {
         string note = Request.Form["TextJury"];
@@ -170,9 +201,22 @@ public class EditScreen : PageModel
             }
         }
 
+        if (Jurylid.jury_foto != null)
+        {
+            Photo = Jurylid.jury_foto;
+        }
 
         JurylidRepository jury = new JurylidRepository();
-        jury.AddJurylid(Jurylid.jury_naam, note, Photo, 1);
+        jury.AddJurylid(Jurylid.jury_id, Jurylid.jury_naam, note, Photo, 1);
+        return RedirectToPage();
+    }
+
+    public IActionResult OnPostAddExistingjury()
+    {
+        Photo = Jurylid.jury_foto;
+
+        JurylidRepository jury = new JurylidRepository();
+        jury.AddExistingjury(Jurylid.jury_id, 1);
         return RedirectToPage();
     }
 }
