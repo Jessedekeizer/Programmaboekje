@@ -1,7 +1,9 @@
-﻿using DigitaalProgrammaBoekje.Pages.Database.Models;
+﻿using DigitaalProgrammaBoekje.Helpers;
+using DigitaalProgrammaBoekje.Pages.Database.Models;
 using DigitaalProgrammaBoekje.Pages.Database.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Renci.SshNet;
 
 namespace DigitaalProgrammaBoekje.Pages;
 
@@ -20,10 +22,32 @@ public class HomeScreenAdmin : PageModel
             Environment = _environment;
         }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            Rolechecker rolechecker = new Rolechecker(HttpContext.Session);
+            if (rolechecker.Loged_in())
+            {
+                return RedirectToPage("/login");
+            }
+            
+            if (rolechecker.checkUser())
+            {
+                return RedirectToPage("/HomeScreen");
+            }
+            
             FestivalRepository festivallist = new FestivalRepository();
-            Festivallist = festivallist.FestivalsGet();
+            if (rolechecker.checkOrganisator())
+            {
+                Festivallist =
+                    festivallist.GetFestivalUser(
+                        Convert.ToInt16(HttpContext.Session.GetString(SessionConstant.Gebruiker_ID)));
+            }
+            else
+            {
+                Festivallist = festivallist.GetAll();
+            }
+
+            return Page();
         }
 
         public IActionResult OnPostAddFestival()

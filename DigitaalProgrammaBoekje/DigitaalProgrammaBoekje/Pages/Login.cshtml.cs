@@ -60,7 +60,7 @@ public class Login : PageModel
             //Als de hash niet veilig is, maar je kan wel inloggen
             case PasswordVerificationResult.SuccessRehashNeeded:
                 HttpContext.Session.SetString(SessionConstant.Gebruiker_ID, Gebruiker_id.ToString());
-                return RedirectToPage("/HomeScreenAdmin");
+                return RedirectToPage("/HomeScreen");
         }
         //als geen van de cases wordt uitgevoerd
         return RedirectToPage(new {warning = 2});

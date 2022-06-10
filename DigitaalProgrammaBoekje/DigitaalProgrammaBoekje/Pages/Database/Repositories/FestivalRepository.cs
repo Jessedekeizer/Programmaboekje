@@ -12,24 +12,32 @@ public class FestivalRepository
         return new DbUtils().Connect();
     }
     
-    public IEnumerable<Festival> Get(int festival_id)
+    public IEnumerable<Festival> GetAll()
     {
         //Haalt alles op van een bepaald festival
-        string sql = "SELECT * FROM Festival WHERE Festival_id = @festival_id";
-
+        string sql = "SELECT * FROM Festival";
         using var connection = GetConnection();
-        var festival = connection.Query<Festival>(sql, new {festival_id});
+        var festival = connection.Query<Festival>(sql);
         return festival;
     }
     
-    public IEnumerable<Festival> FestivalsGet()
+    public IEnumerable<Festival> GetFestivalUser(int User_id)
     {
-        string sql = @"SELECT * FROM festival
-        ORDER BY festival_id DESC";
+        //Haalt alles op van een bepaald festival
+        string sql = "SELECT * FROM Festival WHERE gebruikers_id = @User_id";
 
         using var connection = GetConnection();
-        var festivals = connection.Query<Festival>(sql);
-        return festivals;
+        var festival = connection.Query<Festival>(sql, new {User_id});
+        return festival;
+    }
+    
+    public IEnumerable<Festival> FestivalsGetYears()
+    {
+        string sql = "SELECT * FROM Festival GROUP BY YEAR(Festival_datum)";
+
+        using var connection = GetConnection();
+        var festival = connection.Query<Festival>(sql);
+        return festival;
     }
     
     public void AddFestival(string Name, string Location, DateTime Date, string Logo, int User)
@@ -75,6 +83,16 @@ public class FestivalRepository
             
         using var connection = GetConnection();
         connection.Query<Festival>(sql, new{Id, Name, Location, Date, Logo});
+    }
+
+    public IEnumerable<Festival> Getfestival(DateTime Jaar)
+    {
+        //Haalt alles op van een bepaald festival
+        string sql = "SELECT * FROM Festival WHERE YEAR(festival_datum) = YEAR(@Jaar)";
+
+        using var connection = GetConnection();
+        var festival = connection.Query<Festival>(sql, new {Jaar});
+        return festival;
     }
 
     
