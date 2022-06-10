@@ -12,13 +12,22 @@ public class FestivalRepository
         return new DbUtils().Connect();
     }
     
-    public IEnumerable<Festival> Get(int festival_id)
+    public IEnumerable<Festival> GetAll()
     {
         //Haalt alles op van een bepaald festival
-        string sql = "SELECT * FROM Festival WHERE Festival_id = @festival_id";
+        string sql = "SELECT * FROM Festival";
+        using var connection = GetConnection();
+        var festival = connection.Query<Festival>(sql);
+        return festival;
+    }
+    
+    public IEnumerable<Festival> GetFestivalUser(int User_id)
+    {
+        //Haalt alles op van een bepaald festival
+        string sql = "SELECT * FROM Festival WHERE gebruikers_id = @User_id";
 
         using var connection = GetConnection();
-        var festival = connection.Query<Festival>(sql, new {festival_id});
+        var festival = connection.Query<Festival>(sql, new {User_id});
         return festival;
     }
     

@@ -61,5 +61,13 @@ public class GebruikerRepository
         string amount = connection.ExecuteScalar<string>(sql, new {Gebruiker_id});
         return amount;
     }
+
+    public char GetUserRole(int gebruiker_id)
+    {
+        string sql = @"SELECT functie FROM gebruikers WHERE Gebruiker_id = @gebruiker_id";
+        using var connection = GetConnection();
+        char functie = connection.ExecuteScalar<char>(sql, new {gebruiker_id});
+        return functie;
+    }
     
 }
