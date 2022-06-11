@@ -309,7 +309,7 @@
                         <div class="list-group" id="list-tab" role="tablist">
                             <div class="dropdown">
                                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Dropdown button
+                                    selecteer Bedrijf
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                     @foreach (var bedrijf in Model.Bedrijflist)
@@ -325,7 +325,8 @@
                             </div>
                             <form method="post" asp-page-handler="AddReclame" enctype="multipart/form-data">
                                 <input for="photoButton" id="input2" type="file" name="frontPosted" class="photoButton" accept="image/jpeg, image/png, image/jpg, image/jfif"/>
-                                <input name="bedrijf_naam" value="@Model.bedrijf_naam"/>
+                                <input name="Company_name" value="@Model.bedrijf_naam"/>
+                                <input name="Link"/>
                                 <input type="hidden" name="bedrijf_id" value="@Model.Bedrijf_id"/>
                                 <button type="submit">VoegToe</button>
                             </form>
@@ -346,4 +347,8 @@
 
     -->
 </div>
+@if (ViewBag.QRCodeImage != null)
+    {
+        <img src="@ViewBag.QRCodeImage" alt="" style="height:150px;width:150px"/>
+    }
 </div>

@@ -4,6 +4,7 @@ using DigitaalProgrammaBoekje.Pages.Database.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
+
 namespace DigitaalProgrammaBoekje.Pages;
 
 public class EditScreen : PageModel
@@ -58,12 +59,12 @@ public class EditScreen : PageModel
         Blok_id = blok_id;
         Jury_id = jury_id;
         Bedrijf_id = bedrijf_id;
-        Bloks = new BlokRepository().GetAll();
+        Bloks = new BlokRepository().GetAll(1);
         JurylidRepository jurylist = new JurylidRepository();
         Jurylist = jurylist.GetJury(1);
         AllJurieslist = jurylist.GetAllJury();
         SponsortRepository Sponsort = new SponsortRepository();
-        Reclamelist = Sponsort.GetSponsors();
+        Reclamelist = Sponsort.GetSponsors(1);
         BedrijfRepository bedrijf = new BedrijfRepository();
         Bedrijflist = bedrijf.GetAllbedrijf();
         if (Blok_id != null)
@@ -120,6 +121,10 @@ public class EditScreen : PageModel
             }
         }
 
+        
+        
+        
+        
         return Page();
     }
 
@@ -243,7 +248,7 @@ public class EditScreen : PageModel
         return RedirectToPage();
     }
 
-    public IActionResult OnPostAddReclame(List<IFormFile> frontPosted, [FromForm] int bedrijf_id,[FromForm] string bedrijf_naam)
+    public IActionResult OnPostAddReclame(List<IFormFile> frontPosted, [FromForm] int bedrijf_id,[FromForm] string Company_name, [FromForm] string Link)
     {
         string path = Path.Combine(this.Environment.WebRootPath, "content");
         if (!Directory.Exists(path))
@@ -274,7 +279,7 @@ public class EditScreen : PageModel
             }
         }
         
-        new SponsortRepository().AddSponsor(bedrijf_id, 1, Photo);
+        new SponsortRepository().AddSponsor(bedrijf_id, 1, Photo, Company_name, Link);
         return RedirectToPage();
     }
 

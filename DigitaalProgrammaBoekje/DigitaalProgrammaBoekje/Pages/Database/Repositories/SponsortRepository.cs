@@ -10,21 +10,34 @@ public class SponsortRepository
     {
         return new DbUtils().Connect();
     }
-    public IEnumerable<Sponsort> GetSponsors()
+    public IEnumerable<Sponsort> GetSponsors(int Festival_id)
     {
-        string sql = @"SELECT * FROM Sponsort";
+        string sql = @"SELECT * FROM Sponsort WHERE festival_id = @Festival_id";
         
         using var connection = GetConnection();
-        var sponsorts = connection.Query<Sponsort>(sql);
+        var sponsorts = connection.Query<Sponsort>(sql, new{Festival_id});
         return sponsorts;
     }
-    public void AddSponsor(int Bedrijf_id, int Festival_id, string Foto_link)
+    public void AddSponsor(int Bedrijf_id, int Festival_id, string Foto_link, string Name, string Link)
     {
-        string sql = @"INSERT INTO Sponsort(bedrijf_id, festival_id, foto_link)
-            VALUES (@Bedrijf_id, @Festival_id, @Foto_link)";
+        if (Bedrijf_id == 0)
+        {
+           Bedrijf_id = new BedrijfRepository().AddBedrijf(Name, Link);
+        }
 
+        string sql1 = @"SELECT count(*) FROM sponsort WHERE bedrijf_id = @Bedrijf_id AND festival_id = @Festival_id ";
         using var connection = GetConnection();
-        connection.Query(sql, new {Bedrijf_id, Festival_id, Foto_link});
+        bool CheckRecord = connection.ExecuteScalar<bool>(sql1, new {Bedrijf_id, Festival_id });
+        if (!CheckRecord)
+        {
+            string sql2 = @"INSERT INTO Sponsort(bedrijf_id, festival_id, foto_link)
+            VALUES (@Bedrijf_id, @Festival_id, @Foto_link)";
+            connection.Query(sql2, new {Bedrijf_id, Festival_id, Foto_link});
+        }
+        else
+        {
+            UpdateSponsor(Bedrijf_id, Festival_id, Foto_link);
+        }
     }
     
     public void RemoveSponsor(int Bedrijf_id, int Festival_id)
@@ -34,6 +47,15 @@ public class SponsortRepository
 
         using var connection = GetConnection();
         connection.Query(sql, new {Bedrijf_id, Festival_id});
+    }
+    
+    public void UpdateSponsor(int Bedrijf_id, int Festival_id, string Foto_link)
+    {
+        string sql = @"Update sponsort (foto_link)
+                        SET (@Foto_link) WHERE bedrijf_id = @Bedrijf_id AND festival_id = @Festival_id";
+        
+        using var connection = GetConnection();
+        connection.Query(sql, new {Bedrijf_id, Festival_id, Foto_link}); 
     }
 
     public void ShowSponsor(int Bedrijf_id)

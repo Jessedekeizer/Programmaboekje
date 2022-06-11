@@ -30,15 +30,16 @@ public class BedrijfRepository
         return bedrijfen;
     }
     
-    public void AddBedrijf(string Name, string Link)
+    public int AddBedrijf(string Name, string Link)
     {
         //Voegt een jurylid toe
         string sql = @"
                 INSERT INTO bedrijf (bedrijf_naam, websitelink) 
-                VALUES (@Name, @Link)";
+                VALUES (@Name, @Link); SELECT LAST_INSERT_ID()";
 
         using var connection = GetConnection();
-        connection.Query<Bedrijf>(sql, new {Name, Link});
+       int bedrijf_id = connection.ExecuteScalar<int>(sql, new {Name, Link});
+       return bedrijf_id;
     }
     
     public void DeleteBedrijf(int Bedrijf_id)
