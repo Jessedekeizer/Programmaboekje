@@ -144,17 +144,39 @@
                 {
                     if (reclame == Model.Reclamelist.First())
                     {
-                        <div class="carousel-item active">
+                        <div class="carousel-item active col">
+                            <div style="display: flex; justify-content: center; margin: 5px">
+                                <form method="post" asp-page-handler="DeleteReclame">
+                                    <input type="hidden" name="Bedrijf_id" value="@reclame.Bedrijf_id"/>
+                                    <input type="hidden" name="Bedrijf_id" value="@reclame.Festival_id"/>
+                                    <button type="submit">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+
+                                </form>
+                            </div>
                             <a href="iets">
                                 <img src="~/content/@reclame.Foto_link" class="d-block" style="width: 100%"/>
                             </a>
+
                         </div>
                     }
                     else
                     {
-                        <div class="carousel-item">
+                        <div class="carousel-item col">
+                            <div style="display: flex; justify-content: center; margin: 5px">
+                                <form method="post" asp-page-handler="DeleteReclame">
+                                    <input type="hidden" name="Bedrijf_id" value="@reclame.Bedrijf_id"/>
+                                    <input type="hidden" name="Bedrijf_id" value="@reclame.Festival_id"/>
+                                    <button type="submit">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+
+                                </form>
+                            </div>
                             <a href="iets">
                                 <img src="~/content/@reclame.Foto_link" class="d-block" style="width: 100%"/>
+
                             </a>
                         </div>
                     }
@@ -228,6 +250,7 @@
                         <textarea name="Text1" id="Text1" cols="60" rows="10" form="TextNotes">@Model.Text</textarea>
                     </div>
                     <div class="row">
+                        <input type="hidden" asp-for="Blok.Festival_id" value="@Model.Festival_id"/>
                         <input type="hidden" asp-for="Blok.Blok_id" value="@Model.Blok_id"/>
                         <input type="hidden" asp-for="Blok.Blok_type" value="t"/>
                         <input type="hidden" asp-for="Blok.Begintijd" value="@TimeSpan.Zero"/>
@@ -241,6 +264,7 @@
                     <input type="Time" asp-for="Blok.Begintijd" value="@Model.Time"/>
                     <input type="hidden" asp-for="Blok.Blok_id" value="@Model.Blok_id"/>
                     <input type="hidden" asp-for="Blok.Blok_type" value="p"/>
+                    <input type="hidden" asp-for="Blok.Festival_id" value="@Model.Festival_id"/>
                     <div class="row">
                         <button asp-page-handler="save">opslaan</button>
                         <button asp-page-handler="remove">verwijder</button>
@@ -252,6 +276,7 @@
                     <input type="Time" asp-for="Blok.Begintijd" value="@Model.Time"/>
                     <input type="Text" asp-for="Blok.Orkestgroep.Orkestnaam" value="@Model.OrkestNaam"/>
                     <input type="number" asp-for="Blok.Orkestgroep.divisie" value="@Model.Divisie"/>
+                    <input type="hidden" asp-for="Blok.Festival_id" value="@Model.Festival_id"/>
                     <div class="row">
                         <textarea name="Text2" id="Text2" cols="60" rows="10" form="Text2Notes">@Model.Text</textarea>
                     </div>
@@ -278,7 +303,7 @@
                     <div class="row">
                         <input type="hidden" asp-for="Jurylid.jury_id" value="@Model.Jury_id"/>
                         <input type="hidden" asp-for="Jurylid.jury_foto" value="@Model.Juryfoto"/>
-
+                        <input type="hidden" name="Festival_id" value="@Model.Festival_id"/>
                         <input type="submit" id="knop" value="Voeg Toe" style="background-color: #7d3ec9; color: white; border: none; border-radius: 3px; margin-top: 10px; height: 25px; width: 170px; margin-left: 212px" asp-page-handler="Addjury"/>
                     </div>
                 </form>
@@ -296,6 +321,7 @@
                             </div>
                             <div class="row">
                                 <input type="hidden" asp-for="@Jurylid.jury_id" value="@Jurylid.jury_id"/>
+                                <input type="hidden" name="Festival_id" value="@Model.Festival_id"/>
                                 <input type="submit" id="knop" content="Voeg Toe" style="background-color: #7d3ec9; color: white; border: none; border-radius: 3px; margin-top: 10px; height: 25px; width: 170px; margin-left: 212px"
                                        asp-page-handler="AddExistingjury"/>
                             </div>
@@ -326,6 +352,7 @@
                             <form method="post" asp-page-handler="AddReclame" enctype="multipart/form-data">
                                 <input for="photoButton" id="input2" type="file" name="frontPosted" class="photoButton" accept="image/jpeg, image/png, image/jpg, image/jfif"/>
                                 <input name="Company_name" value="@Model.bedrijf_naam"/>
+                                <input type="hidden" name="Festival_id" value="@Model.Festival_id"/>
                                 <input name="Link"/>
                                 <input type="hidden" name="bedrijf_id" value="@Model.Bedrijf_id"/>
                                 <button type="submit">VoegToe</button>
@@ -348,7 +375,7 @@
     -->
 </div>
 @if (ViewBag.QRCodeImage != null)
-    {
-        <img src="@ViewBag.QRCodeImage" alt="" style="height:150px;width:150px"/>
-    }
+{
+    <img src="@ViewBag.QRCodeImage" alt="" style="height:150px;width:150px"/>
+}
 </div>
