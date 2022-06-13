@@ -58,6 +58,16 @@
 
         <div class="form-group row m-3">
             <div class="col-3">
+                <label asp-for="RegisterCredential.LedenAantal"></label>
+            </div>
+            <div class="col-5">
+                <input type="text" asp-for="RegisterCredential.LedenAantal" class="form-control"/>
+            </div>
+            <span class="text-danger" asp-validation-for="RegisterCredential.LedenAantal"></span>
+        </div>
+
+        <div class="form-group row m-3">
+            <div class="col-3">
                 <label asp-for="RegisterCredential.Wachtwoord"></label>
             </div>
             <div class="col-5">

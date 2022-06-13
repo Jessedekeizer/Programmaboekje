@@ -1,4 +1,5 @@
 ﻿@page
+@using DigitaalProgrammaBoekje.Pages.Database.Models
 @model DigitaalProgrammaBoekje.Pages.AccountScreen
 
 @{
@@ -33,6 +34,10 @@
                         <th>Dirigent: </th>
                         <td>@gebruiker.dirigent</td>
                     </tr>
+                    <tr>
+                        <th>Aantal leden: </th>
+                        <td>@gebruiker.Leden_aantal</td>
+                    </tr>
                 }
             </table>
 
@@ -63,6 +68,12 @@
                     <form method="post" asp-page-handler="UpdateDirigent">
                         <h7>Verander dirigent naar:</h7><input type="text" placeholder="nieuwe dirigent" name="DirigentUpd"/>
                         <button type="submit" style="background-color: blue; color: white; border-radius: 8px; border: none; margin-left: 10px; width: 175px; height: 30px; margin-top: 10px" name="Username">Verander dirigent</button>
+                    </form>
+                </div>
+                <div class="row">
+                    <form method="post" asp-page-handler="UpdateLeden">
+                        <h7>Verander aantal leden naar:</h7><input type="text" placeholder="nieuw aantal leden" name="LedenUpd"/>
+                        <button type="submit" style="background-color: blue; color: white; border-radius: 8px; border: none; margin-left: 10px; width: 175px; height: 30px; margin-top: 10px" name="Username">Verander aantal leden</button>
                     </form>
                 </div>
                 <div class="row">

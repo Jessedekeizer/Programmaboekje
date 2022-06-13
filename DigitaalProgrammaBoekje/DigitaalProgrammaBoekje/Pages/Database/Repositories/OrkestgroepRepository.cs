@@ -82,4 +82,13 @@ public class OrkestgroepRepository
         using var connection = GetConnection();
         connection.Query<Orkestgroep>(sql, new{Orkest_id, Musiclist, Orkestname, Number, Divisie});
     }
+    
+    public string UpdateAantalLeden(int Gebruiker_id, string LedenUpd)
+    {
+        string sql = @"UPDATE gebruikers SET leden_aantal = @LedenUpd WHERE gebruiker_id = @Gebruiker_id";
+        using var connection = GetConnection();
+        connection.Execute(sql, new {Gebruiker_id, LedenUpd});
+        return "Succes";
+        
+    }
 }

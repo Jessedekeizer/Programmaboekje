@@ -38,7 +38,7 @@ public class Register : PageModel
         if (!chkUser && !chkEmail)
         {
             var hashedPassword = new PasswordHasher<object?>().HashPassword(null, RegisterCredential.Wachtwoord);
-            new GebruikerRepository().AddUser(RegisterCredential.Username, RegisterCredential.Email, hashedPassword, 'u', RegisterCredential.Telefoonnummer, RegisterCredential.Dirigent);
+            new GebruikerRepository().AddUser(RegisterCredential.Username, RegisterCredential.Email, hashedPassword, 'u', RegisterCredential.Telefoonnummer, RegisterCredential.Dirigent, RegisterCredential.LedenAantal);
             return RedirectToPage();
         }
         if (chkUser)
@@ -73,4 +73,6 @@ public class Register : PageModel
         
         [Required]
         public char Divisie { get; set; }
+        
+        public int LedenAantal { get; set; }
     }

@@ -20,13 +20,14 @@ public class GebruikerRepository
         using var connection = GetConnection();
         connection.Query(sql, new { Gebruiker_id });
     }
-    
-    public void AddUser(string Username, string Email, string Password, char Functie, int Telefoonnummer, string Dirigent)
+
+    public void AddUser(string Username, string Email, string Password, char Functie, int Telefoonnummer,
+        string Dirigent, int LedenAantal)
     {
-        string sql = @" INSERT INTO gebruikers (naam, email, wachtwoord, functie, telefoonnummer, dirigent)
-                        VALUES (@Username, @Email, @Password, @Functie, @Telefoonnummer, @Dirigent)";
+        string sql = @" INSERT INTO gebruikers (naam, email, wachtwoord, functie, telefoonnummer, dirigent, leden_aantal)
+                        VALUES (@Username, @Email, @Password, @Functie, @Telefoonnummer, @Dirigent, @LedenAantal)";
         using var connection = GetConnection();
-        connection.Query<Gebruiker>(sql, new{Username, Email, Password, Functie, Telefoonnummer, Dirigent});
+        connection.Query<Gebruiker>(sql, new{Username, Email, Password, Functie, Telefoonnummer, Dirigent, LedenAantal});
     }
     
     public bool checkUsername(string Username)

@@ -18,7 +18,7 @@ public class AccountScreen : PageModel
         string Logged_in = HttpContext.Session.GetString(SessionConstant.Gebruiker_ID);
         if (Logged_in == null)
             return RedirectToPage("/Login");
-        
+        Warning = warning;
         Gebruikers = new GebruikerRepository().GetUser(Int32.Parse(HttpContext.Session.GetString(SessionConstant.Gebruiker_ID)));
         return Page();
     }
@@ -78,6 +78,13 @@ public class AccountScreen : PageModel
     public IActionResult OnPostUpdateNummer([FromForm] string NummerUpd)
     {
         new GebruikerRepository().UpdateNummer(Int32.Parse(HttpContext.Session.GetString(SessionConstant.Gebruiker_ID)), NummerUpd);
+
+        return RedirectToPage();
+    }
+
+    public IActionResult OnPostUpdateLeden([FromForm] string LedenUpd)
+    {
+        new OrkestgroepRepository().UpdateAantalLeden(Int32.Parse(HttpContext.Session.GetString(SessionConstant.Gebruiker_ID)), LedenUpd);
 
         return RedirectToPage();
     }

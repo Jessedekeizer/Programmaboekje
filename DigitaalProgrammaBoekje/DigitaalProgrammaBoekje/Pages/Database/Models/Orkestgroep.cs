@@ -14,4 +14,7 @@ public class Orkestgroep
     public string Muziekstukken { get; set; }
     
     public int Cijfer { get; set; }
+    
+    
+    public int Leden_aantal { get; set; }
 }
