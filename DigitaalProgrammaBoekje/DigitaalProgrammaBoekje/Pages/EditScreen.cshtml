@@ -281,6 +281,7 @@
                         <textarea name="Text2" id="Text2" cols="60" rows="10" form="Text2Notes">@Model.Text</textarea>
                     </div>
                     <div class="row">
+                        <input type="hidden" asp-for="Blok.Blok_id" value="@Model.Blok_id"/>
                         <input type="hidden" asp-for="Blok.Blok_type" value="o"/>
                         <input type="hidden" asp-for="Blok.Orkestgroep.Orkest_id" value="@Model.Orkest_id"/>
 
