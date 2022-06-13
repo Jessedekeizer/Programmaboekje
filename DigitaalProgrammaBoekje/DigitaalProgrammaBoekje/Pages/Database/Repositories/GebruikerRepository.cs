@@ -15,7 +15,7 @@ public class GebruikerRepository
     public void DeleteGebruiker(int Gebruiker_id)
     {
         //verwijdert gebruiker 
-        string sql = @"DELETE FROM Gebruiker WHERE gebruiker_id = @gebruiker_id";
+        string sql = @"DELETE FROM Gebruikers WHERE gebruiker_id = @gebruiker_id";
         
         using var connection = GetConnection();
         connection.Query(sql, new { Gebruiker_id });
@@ -70,4 +70,57 @@ public class GebruikerRepository
         return functie;
     }
     
+    public IEnumerable<Gebruiker> GetUser(int Gebruiker_id)
+    {
+        string sql = @"SELECT * FROM gebruikers WHERE gebruiker_id = @Gebruiker_id";
+        using var connection = GetConnection();
+        var gebruiker = connection.Query<Gebruiker>(sql, new {Gebruiker_id});
+        return gebruiker;
+    }
+    
+    public string UpdatePassword(int Gebruiker_id, string PasswordUpd)
+    {
+        string sql = @"UPDATE gebruikers SET wachtwoord = @PasswordUpd WHERE gebruiker_id = @Gebruiker_id";
+        using var connection = GetConnection();
+        connection.Execute(sql, new {Gebruiker_id, PasswordUpd});
+        return "Succes";
+        
+    }
+    
+    public int UpdateUsername(int Gebruiker_id, string UsernUpdate)
+    {
+        if (!checkUsername(UsernUpdate))
+        {
+            string sql = @"UPDATE gebruikers SET naam = @UsernUpdate WHERE gebruiker_id = @Gebruiker_id";
+            using var connection = GetConnection();
+            connection.Execute(sql, new {Gebruiker_id, UsernUpdate});
+            return 0;
+        }
+
+        return 2;
+    }
+    
+    public string UpdateEmail(int Gebruiker_id, string EmailUpd)
+    {
+        string sql = @"UPDATE gebruikers SET email = @EmailUpd WHERE gebruiker_id = @Gebruiker_id";
+        using var connection = GetConnection();
+        string email = connection.ExecuteScalar<string>(sql, new {Gebruiker_id, EmailUpd});
+        return email;
+    }
+    
+    public string UpdateDirigent(int Gebruiker_id, string DirigentUpd)
+    {
+        string sql = @"UPDATE gebruikers SET dirigent = @DirigentUpd WHERE gebruiker_id = @Gebruiker_id";
+        using var connection = GetConnection();
+        string dirigent = connection.ExecuteScalar<string>(sql, new {Gebruiker_id, DirigentUpd});
+        return dirigent;
+    }
+    
+    public string UpdateNummer(int Gebruiker_id, string NummerUpd)
+    {
+        string sql = @"UPDATE gebruikers SET telefoonnummer = @NummerUpd WHERE gebruiker_id = @Gebruiker_id";
+        using var connection = GetConnection();
+        string nummer = connection.ExecuteScalar<string>(sql, new {Gebruiker_id, NummerUpd});
+        return nummer;
+    }
 }

@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using DigitaalProgrammaBoekje.Pages.Database.Repositories
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
@@ -22,21 +24,35 @@
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav justify-content-between flex-grow-1">
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Index"><div style="color: white">Festivals</div></a>
+                        <a class="nav-link text-dark" asp-area="" asp-page="/Index">
+                            <div style="color: white">Festivals</div>
+                        </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Login"><div style="color: white">Login</div></a>
-                    </li>
+                    @if (Convert.ToBoolean(ViewData["Logged_In"]) == true)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Login">
+                                <div style="color: white">Login</div>
+                            </a>
+                        </li>
+                    }
+                    @if (Convert.ToBoolean(ViewData["Logged_In"]) == false)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/AccountScreen">
+                                <div style="color: white">Account</div>
+                            </a>
+                        </li>
+                    }
                 </ul>
             </div>
         </div>
     </nav>
 </header>
 
-    <main role="main">
-        @RenderBody()
-    </main>
-
+<main role="main">
+    @RenderBody()
+</main>
 
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>

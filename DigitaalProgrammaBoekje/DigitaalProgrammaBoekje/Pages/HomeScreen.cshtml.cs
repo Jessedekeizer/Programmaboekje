@@ -3,6 +3,7 @@ using DigitaalProgrammaBoekje.Pages.Database.Models;
 using DigitaalProgrammaBoekje.Pages.Database.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace DigitaalProgrammaBoekje.Pages;
 
@@ -13,15 +14,18 @@ public class HomeScreen : PageModel
            public IEnumerable<Festival> Festivallist { get; set; }
            
            public IEnumerable<Festival> FestivalYears { get; set; }  
+           
 
            [BindProperty] 
            public Festival Festival { get; set; }
    
-          
+          [ViewData]
+          public string Logged_In { get; set; }
    
+           
            public void OnGet([FromQuery]string Jaartal)
            {
-              
+               Logged_In = Convert.ToString(new Rolechecker(HttpContext.Session).Loged_in());
                
                //string Jaartal = Request.Cookies["jaar"];
                FestivalRepository festivallist = new FestivalRepository();

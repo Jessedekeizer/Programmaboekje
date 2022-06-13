@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using DigitaalProgrammaBoekje.Helpers;
+using Microsoft.AspNetCore.Mvc;
 using Ubiety.Dns.Core;
 
 namespace DigitaalProgrammaBoekje.Pages.Database.Repositories;
@@ -15,13 +16,16 @@ public class Rolechecker
         _session = session;
     }
 
+    
+    
+    
     public bool Loged_in()
     {
         var User_id = _session.GetString(SESSION_KEY);
         if (User_id == null)
-            return true;
-        else
             return false;
+        else
+            return true;
     }
     
     public bool checkUser()

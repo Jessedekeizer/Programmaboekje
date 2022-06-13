@@ -29,10 +29,4 @@
       <_ContentIncludedByDefault Remove="Pages\Database\Products\Update.cshtml" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Compile Update="Pages\Shared\AddFestival.cshtml.cs">
-        <DependentUpon>_Layout.cshtml</DependentUpon>
-      </Compile>
-    </ItemGroup>
-
 </Project>
