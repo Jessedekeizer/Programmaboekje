@@ -25,8 +25,8 @@
                             <br/>
                             <p style="white-space: pre-wrap;">@blok.Orkestgroep.Muziekstukken</p>
                         </td>
-                        <td>
-                            Cijfer:<br/>
+                        <td class="" style="text-align: right">
+                            Punten:<br/>
                             @blok.Orkestgroep.Cijfer
                         </td>
                     }
@@ -66,7 +66,7 @@
                 {
                     if (reclame == Model.Sponsorts.First())
                     {
-                        <div class="carousel-item active">
+                        <div class="carousel-item active" style="align-items: center">
                             <a href="iets">
                                 <img src="~/content/@reclame.Foto_link" class="d-block" style="width: 100%"/>
                             </a>
@@ -91,15 +91,15 @@
             </button>
         </div>
     </div>
-    <div class="row">
+    <div class="col container">
         @if (Model.Jurylids != null)
         {
             foreach (var Jurylid in Model.Jurylids)
             {
-                <div class="col-3" id="cart" style="width: 320px;">
-                    <div class="card" style="width: 320px;">
-                        <img class="card-img-top" id="FImg1" style="object-fit: fill; height: 150px; width: 300px;" src="~/content/@Jurylid.jury_foto" alt="Card image cap">
-                        <div class="card-body" style="width: 320px;">
+                <div class="" id="cart">
+                    <div class="card justify-content-center" style="display: flex; align-items: center">
+                        <img class="card-img-top justify-content-center" id="FImg1" style="object-fit: fill; height: 150px; width: 300px;" src="~/content/@Jurylid.jury_foto" alt="Card image cap">
+                        <div class="card-body" style="">
                             <h5 class="card-title" style="margin: 0px">@Jurylid.jury_naam</h5>
                             <p class="card-text" style="resize: none; white-space:  pre-wrap;">@Jurylid.jury_bio</p>
                         </div>
