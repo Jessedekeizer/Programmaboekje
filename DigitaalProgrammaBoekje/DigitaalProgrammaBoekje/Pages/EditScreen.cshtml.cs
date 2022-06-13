@@ -41,6 +41,8 @@ public class EditScreen : PageModel
     public int Orkest_id { get; set; } = 0;
     public int Jury_id { get; set; } = 0;
     public int Bedrijf_id { get; set; } = 0;
+    
+    public string Link { get; set; }
 
     public string active_pauze { get; set; }
     public string active_orkest { get; set; }
@@ -120,6 +122,7 @@ public class EditScreen : PageModel
                 {
                     active_reclame = "show active";
                     bedrijf_naam = bedrijfs.bedrijf_naam;
+                    Link = bedrijfs.websitelink;
                 }
             }
         }
@@ -145,7 +148,7 @@ public class EditScreen : PageModel
         return RedirectToPage();
     }
 
-    public IActionResult OnPostUpdate(int blok_id)
+    public IActionResult OnPostUpdateBlok(int blok_id)
     {
         BlokRepository BlokCommand = new BlokRepository();
         return RedirectToPage(new {Blok_id = blok_id});
@@ -170,7 +173,7 @@ public class EditScreen : PageModel
         return RedirectToPage();
     }
 
-    public IActionResult OnPostDelete(int blok_id, int bloknummer)
+    public IActionResult OnPostDeleteBlok(int blok_id, int bloknummer)
     {
         OrkestgroepRepository OrkestCommand = new OrkestgroepRepository();
         int Orkest_id = OrkestCommand.CheckIfOrkestgroep(blok_id);

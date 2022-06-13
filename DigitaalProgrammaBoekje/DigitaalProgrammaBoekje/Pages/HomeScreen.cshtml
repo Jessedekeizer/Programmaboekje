@@ -28,20 +28,36 @@
         <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
             <ul class="navbar-nav justify-content-between flex-grow-1">
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-page="/Index">
+                    <a class="nav-link text-dark" asp-area="" asp-page="/HomeScreen">
                         <div style="color: white">Festivals</div>
                     </a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Dropdown
+                        
+                            @if (Model.Year == 0)
+                            {
+                                @DateTime.Now.Year;
+                            }
+                            else
+                            {
+                                @Model.Year; 
+                            }
+                        
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         @foreach (var jaar in Model.FestivalYears)
                         {
-                            <li>
-                                <a class="dropdown-item" href="?Jaartal=@jaar.Festival_datum.ToString("yyyy")">@jaar.Festival_datum.ToString("yyyy")</a>
-                            </li>
+                            if (Model.Year == 0 && jaar.Festival_datum.Year == DateTime.Now.Year)
+                            {
+                                
+                            }
+                            else if(jaar.Festival_datum.Year != Model.Year )
+                            {
+                                <li>
+                                    <a class="dropdown-item" href="?Jaartal=@jaar.Festival_datum.ToString("yyyy")">@jaar.Festival_datum.ToString("yyyy")</a>
+                                </li>
+                            }
                         }
 
                     </ul>
@@ -67,37 +83,6 @@
         </div>
     </div>
 </nav>
-<div class="bg-modal">
-    <form method="post" enctype="multipart/form-data" style="height: 100%">
-        <div class="modal-content">
-
-            <div class="close">+</div>
-
-            <div class="row" style="margin-top: 50px">
-                <label id="Label1">Naam festival</label>
-                <input asp-for="Festival.Festival_naam" type="text" id="input1" class="form-control" placeholder="Festival Naam" required style="text-align: center"/>
-                <span class="invalid-feedback" asp-validation-for="Festival.Festival_naam"></span>
-            </div>
-            <div class="row">
-                <label id="Label1">Locatie festival</label>
-                <input asp-for="Festival.Festival_locatie" type="text" id="input1" class="form-control" placeholder="Festival Locatie" required style="text-align: center"/>
-                <span class="invalid-feedback" asp-validation-for="Festival.Festival_locatie"></span>
-            </div>
-            <div class="row">
-                <label id="Label1">datum festival</label>
-                <input asp-for="Festival.Festival_datum" type="date" id="input1" class="form-control" placeholder="Festival Datum" required style="text-align: center"/>
-                <span class="invalid-feedback" asp-validation-for="Festival.Festival_datum"></span>
-            </div>
-            <div class="row">
-                <label id="Label1">Logo festival</label>
-                <span class="kop spacing">Selecteer logo festival:</span>
-                <input for="photoButton" id="input1" type="file" name="frontPosted" class="photoButton" accept="image/jpeg, image/png, image/jpg"/>
-            </div>
-            <input type="submit" id="knop" style="background-color: #7d3ec9; color: white; border: none; border-radius: 3px; margin-top: 10px; height: 25px; width: 170px; margin-left: 212px" asp-page-handler="Upload">Voeg festival toe</input>
-        </div>
-    </form>
-</div>
-
 
 <div class="container" id="FestivalListGeneraetor">
     <div class="row col-12">
@@ -105,19 +90,20 @@
         {
             foreach (var Festivalitem in Model.Festivallist)
             {
-                <div class="col-3" id="cart" style="width: 300px; height: 300px;">
-                    <div class="card" style="width: 300px; height: 300px;">
-                        <img class="card-img-top" id="FImg1" style="object-fit: fill; height: 150px; width: 300px;" src="~/content/@Festivalitem.Festival_logo" alt="Card image cap">
-                        <div class="card-body" style="height: 150px; width: 300px;">
-                            <h5 class="card-title" style="margin: 0px">@Festivalitem.Festival_naam</h5>
-                            <p class="card-text">@(Festivalitem.Festival_datum.ToString("yyyy-MM-dd"))</p>
-                            <p class="card-text">@Festivalitem.Festival_locatie</p>
-                            <form asp-page-handler="Update" method="post">
-                                <input type="hidden" name="Festival_id" value="@Festivalitem.Festival_id"/>
-                            </form>
-                        </div>
-                    </div>
+                
+        <div class="col-3" id="cart" style="width: 300px; height: 300px;" >
+            <div class="card" style="width: 300px; height: 300px;">
+                <img class="card-img-top" id="FImg1" style="object-fit: fill; height: 150px; width: 300px;" src="~/content/@Festivalitem.Festival_logo" alt="Card image cap">
+                <div class="card-body" style="height: 150px; width: 300px;">
+                    <h5 class="card-title" style="margin: 0px">@Festivalitem.Festival_naam</h5>
+                    <p class="card-text">@(Festivalitem.Festival_datum.ToString("yyyy-MM-dd"))</p>
+                    <p class="card-text">@Festivalitem.Festival_locatie</p>
+                            
                 </div>
+                <a href="/programma?Festival_id=@Festivalitem.Festival_id" class="btn btn-primary stretched-link">Bekijk</a>
+            </div>
+        </div>
+        
             }
         }
 
