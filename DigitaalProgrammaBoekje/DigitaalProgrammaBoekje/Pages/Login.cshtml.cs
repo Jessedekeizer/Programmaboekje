@@ -16,6 +16,7 @@ public class Login : PageModel
 
     public void OnGet([FromQuery] int warning)
     {
+        ViewData["Logged_In"] = true;
         switch (warning)
         {
             case 1:
