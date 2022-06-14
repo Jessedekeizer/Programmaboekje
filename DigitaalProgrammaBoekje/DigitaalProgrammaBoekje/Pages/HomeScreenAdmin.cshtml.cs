@@ -50,9 +50,14 @@ public class HomeScreenAdmin : PageModel
             return Page();
         }
 
-        public IActionResult OnPostAddFestival()
+        public IActionResult OnPostUpdate(int festival_id)
         {
-            return Page();
+            var cookieOptions = new CookieOptions
+            {
+                Expires = DateTime.Now.AddDays(30)
+            };
+            Response.Cookies.Append("Festival_id", Convert.ToString(festival_id), cookieOptions);
+            return RedirectToPage("/EditScreen");
         }
 
         public IActionResult OnPostUpload(List<IFormFile> frontPosted)

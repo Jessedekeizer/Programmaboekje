@@ -4,6 +4,7 @@ using DigitaalProgrammaBoekje.Pages.Database.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
+
 namespace DigitaalProgrammaBoekje.Pages;
 
 public class EditScreen : PageModel
@@ -13,6 +14,9 @@ public class EditScreen : PageModel
     public IEnumerable<Blok> Bloks { get; set; }
     public IEnumerable<Jurylid> Jurylist { get; set; }
     public IEnumerable<Jurylid> AllJurieslist { get; set; }
+    public IEnumerable<Bedrijf> Bedrijflist { get; set; }
+    public IEnumerable<Sponsort> Reclamelist { get; set; }
+    
 
 
     [BindProperty] public Blok Blok { get; set; }
@@ -29,16 +33,24 @@ public class EditScreen : PageModel
     public int Divisie { get; set; }
 
     public string Time { get; set; }
+    
+    public int Festival_id { get; set; }
 
     public int Blok_id { get; set; } = 0;
 
     public int Orkest_id { get; set; } = 0;
     public int Jury_id { get; set; } = 0;
+    public int Bedrijf_id { get; set; } = 0;
+    
+    public string Link { get; set; }
 
     public string active_pauze { get; set; }
     public string active_orkest { get; set; }
     public string active_tekstvak { get; set; }
     public string active_jury { get; set; }
+    public string active_reclame { get; set; }
+    
+    public string bedrijf_naam { get; set; }
 
 
     public EditScreen(IWebHostEnvironment _environment)
@@ -46,14 +58,20 @@ public class EditScreen : PageModel
         Environment = _environment;
     }
 
-    public IActionResult OnGet([FromQuery] int blok_id, [FromQuery] int jury_id)
+    public IActionResult OnGet([FromQuery] int blok_id, [FromQuery] int jury_id, [FromQuery] int bedrijf_id)
     {
+        Festival_id = Convert.ToInt16(Request.Cookies["Festival_id"]);
         Blok_id = blok_id;
         Jury_id = jury_id;
-        Bloks = new BlokRepository().GetAll();
+        Bedrijf_id = bedrijf_id;
+        Bloks = new BlokRepository().GetAll(Festival_id);
         JurylidRepository jurylist = new JurylidRepository();
-        Jurylist = jurylist.GetJury(1);
+        Jurylist = jurylist.GetJury(Festival_id);
         AllJurieslist = jurylist.GetAllJury();
+        SponsortRepository Sponsort = new SponsortRepository();
+        Reclamelist = Sponsort.GetSponsors(Festival_id);
+        BedrijfRepository bedrijf = new BedrijfRepository();
+        Bedrijflist = bedrijf.GetAllbedrijf();
         if (Blok_id != null)
         {
             foreach (var blok in Bloks)
@@ -96,7 +114,23 @@ public class EditScreen : PageModel
                 }
             }
         }
+        if (Bedrijf_id != null)
+        {
+            foreach (var bedrijfs in Bedrijflist)
+            {
+                if (bedrijfs.bedrijf_id == Bedrijf_id)
+                {
+                    active_reclame = "show active";
+                    bedrijf_naam = bedrijfs.bedrijf_naam;
+                    Link = bedrijfs.websitelink;
+                }
+            }
+        }
 
+        
+        
+        
+        
         return Page();
     }
 
@@ -114,7 +148,7 @@ public class EditScreen : PageModel
         return RedirectToPage();
     }
 
-    public IActionResult OnPostUpdate(int blok_id)
+    public IActionResult OnPostUpdateBlok(int blok_id)
     {
         BlokRepository BlokCommand = new BlokRepository();
         return RedirectToPage(new {Blok_id = blok_id});
@@ -126,20 +160,20 @@ public class EditScreen : PageModel
         BlokRepository blokCommand = new BlokRepository();
         if (Blok.Blok_type != 'o')
         {
-            blokCommand.AddBlok(Blok.Blok_id, 1, Blok.Begintijd, Blok.Blok_type, note);
+            blokCommand.AddBlok(Blok.Blok_id, Blok.Festival_id, Blok.Begintijd, Blok.Blok_type, note);
         }
         else
         {
             note = Request.Form["Text2"];
             new OrkestgroepRepository().AddOrkestgroep(note, Blok.Orkestgroep.Orkestnaam,
                 Blok.Orkestgroep.divisie, Blok.Orkestgroep.Cijfer, Blok.Orkestgroep.Orkest_id,
-                Blok.Blok_id, 1, Blok.Begintijd, Blok.Blok_type);
+                Blok.Blok_id, Blok.Festival_id, Blok.Begintijd, Blok.Blok_type);
         }
 
         return RedirectToPage();
     }
 
-    public IActionResult OnPostDelete(int blok_id)
+    public IActionResult OnPostDeleteBlok(int blok_id, int bloknummer)
     {
         OrkestgroepRepository OrkestCommand = new OrkestgroepRepository();
         int Orkest_id = OrkestCommand.CheckIfOrkestgroep(blok_id);
@@ -149,7 +183,7 @@ public class EditScreen : PageModel
         }
         else
         {
-            OrkestCommand.DeleteOrkestgroep(Orkest_id, blok_id);
+            OrkestCommand.DeleteOrkestgroep(Orkest_id, blok_id, bloknummer);
         }
 
         return RedirectToPage();
@@ -168,7 +202,7 @@ public class EditScreen : PageModel
         return RedirectToPage();
     }
 
-    public IActionResult OnPostAddjury(List<IFormFile> frontPosted)
+    public IActionResult OnPostAddjury(List<IFormFile> frontPosted,[FromForm] int Festival_id)
     {
         string note = Request.Form["TextJury"];
 
@@ -207,16 +241,65 @@ public class EditScreen : PageModel
         }
 
         JurylidRepository jury = new JurylidRepository();
-        jury.AddJurylid(Jurylid.jury_id, Jurylid.jury_naam, note, Photo, 1);
+        jury.AddJurylid(Jurylid.jury_id, Jurylid.jury_naam, note, Photo, Festival_id);
         return RedirectToPage();
     }
 
-    public IActionResult OnPostAddExistingjury()
+    public IActionResult OnPostAddExistingjury([FromForm]int Festival_id)
     {
         Photo = Jurylid.jury_foto;
 
         JurylidRepository jury = new JurylidRepository();
-        jury.AddExistingjury(Jurylid.jury_id, 1);
+        jury.AddExistingjury(Jurylid.jury_id, Festival_id);
+        return RedirectToPage();
+    }
+
+    public IActionResult OnPostAddReclame(List<IFormFile> frontPosted, [FromForm] int bedrijf_id,[FromForm] string Company_name, [FromForm] string Link, [FromForm] int Festival_id)
+    {
+        string path = Path.Combine(this.Environment.WebRootPath, "content");
+        if (!Directory.Exists(path))
+        {
+            Directory.CreateDirectory(path);
+        }
+
+        foreach (IFormFile postedFile in frontPosted)
+        {
+            string fileName = null;
+            int i = 0;
+            string extension = Path.GetExtension(postedFile.FileName);
+            while (i == 0)
+            {
+                fileName = Path.GetRandomFileName();
+                fileName = Path.ChangeExtension(fileName, extension);
+
+                if (!System.IO.File.Exists(fileName))
+                {
+                    i++;
+                    Photo = fileName;
+                }
+            }
+
+            using (FileStream stream = new FileStream(Path.Combine(path, fileName), FileMode.Create))
+            {
+                postedFile.CopyTo(stream);
+            }
+        }
+        
+        new SponsortRepository().AddSponsor(bedrijf_id, Festival_id, Photo, Company_name, Link);
+        return RedirectToPage();
+    }
+
+    public IActionResult OnPostUpdateCijfer(int Orkest_id, int Number)
+    {
+        new OrkestgroepRepository().UpdateCijfer(Orkest_id, Number);
+        
+        return RedirectToPage();
+    }
+
+    public IActionResult OnPostDeleteReclame([FromForm]int Bedrijf_id, [FromForm] int Festival_id)
+    {
+        new SponsortRepository().RemoveSponsor(Bedrijf_id, Festival_id);
+        
         return RedirectToPage();
     }
 }

@@ -72,11 +72,11 @@ public class BlokRepository
         connection.Query<Blok>(sql, new{Blok_id, Starttime, Type, Text});
     }
     
-    public IEnumerable<Blok> GetAll()
+    public IEnumerable<Blok> GetAll(int Festival_id)
     {
         string sql = @"select * from blok b 
                 inner join festival f on b.festival_id = f.festival_id
-                left join orkestgroep o on b.blok_id = o.blok_id ORDER BY bloknummer";
+                left join orkestgroep o on b.blok_id = o.blok_id WHERE b.festival_id = @Festival_id  ORDER BY bloknummer";
 
         using var connection = GetConnection();
         var products = connection.Query<Blok, Festival, Orkestgroep, Blok>(sql, (Blok, Festival, Orkestgroep) =>
@@ -84,7 +84,7 @@ public class BlokRepository
             Blok.Orkestgroep = Orkestgroep;
             Blok.Festival = Festival;
             return Blok;
-        }, splitOn: "Festival_id, Orkest_id" );
+        }, new{Festival_id} , splitOn: "Festival_id, Orkest_id");
         return products;
     }
 

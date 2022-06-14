@@ -9,4 +9,5 @@ public class Bedrijf
     public string bedrijf_naam { get; set; }
     
     public string websitelink { get; set; }
+    public string Foto_link { get; set; }
 }

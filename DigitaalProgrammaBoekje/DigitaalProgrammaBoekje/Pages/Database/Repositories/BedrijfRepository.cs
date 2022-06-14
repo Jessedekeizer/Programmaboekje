@@ -11,8 +11,16 @@ public class BedrijfRepository
     {
         return new DbUtils().Connect();
     }
-    
-    public IEnumerable<Bedrijf> Get(int Bedrijf_id)
+    public IEnumerable<Bedrijf> GetAllbedrijf()
+    {
+        //Haalt alles op van een bepaald bedrijf
+        string sql = "SELECT * FROM Bedrijf";
+
+        using var connection = GetConnection();
+        var bedrijfen = connection.Query<Bedrijf>(sql);
+        return bedrijfen;
+    }
+    public IEnumerable<Bedrijf> Getbedrijf(int Bedrijf_id)
     {
         //Haalt alles op van een bepaald bedrijf
         string sql = "SELECT * FROM Bedrijf WHERE bedrijf_id = @Bedrijf_id";
@@ -22,15 +30,16 @@ public class BedrijfRepository
         return bedrijfen;
     }
     
-    public void AddBedrijf(string Name, string Link)
+    public int AddBedrijf(string Name, string Link)
     {
         //Voegt een jurylid toe
         string sql = @"
                 INSERT INTO bedrijf (bedrijf_naam, websitelink) 
-                VALUES (@Name, @Link)";
+                VALUES (@Name, @Link); SELECT LAST_INSERT_ID()";
 
         using var connection = GetConnection();
-        connection.Query<Bedrijf>(sql, new {Name, Link});
+       int bedrijf_id = connection.ExecuteScalar<int>(sql, new {Name, Link});
+       return bedrijf_id;
     }
     
     public void DeleteBedrijf(int Bedrijf_id)
