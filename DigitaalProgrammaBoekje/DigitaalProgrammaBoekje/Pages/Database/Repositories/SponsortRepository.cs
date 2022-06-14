@@ -12,7 +12,9 @@ public class SponsortRepository
     }
     public IEnumerable<Sponsort> GetSponsors(int Festival_id)
     {
-        string sql = @"SELECT * FROM Sponsort WHERE festival_id = @Festival_id";
+        string sql = @"SELECT * FROM Sponsort S 
+        INNER JOIN Bedrijf B ON S.bedrijf_id = B.bedrijf_id
+        WHERE festival_id = @Festival_id";
         
         using var connection = GetConnection();
         var sponsorts = connection.Query<Sponsort>(sql, new{Festival_id});
