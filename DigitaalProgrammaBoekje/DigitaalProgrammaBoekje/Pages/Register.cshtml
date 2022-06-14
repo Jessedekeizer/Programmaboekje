@@ -1,4 +1,5 @@
 ﻿@page
+@using System.ComponentModel.DataAnnotations
 @model DigitaalProgrammaBoekje.Pages.Register
 
 @{
@@ -12,7 +13,7 @@
                 <label asp-for="RegisterCredential.Username"></label>
             </div>
             <div class="col-5">
-                <input type="text" asp-for="RegisterCredential.Username" class="form-control"/>
+                <input type="text" asp-for="RegisterCredential.Username" class="form-control" placeholder="Naam"/>
             </div>
             <span class="text-danger" asp-validation-for="RegisterCredential.Username"></span>
         </div>
@@ -21,7 +22,7 @@
                 <label asp-for="RegisterCredential.Email"></label>
             </div>
             <div class="col-5">
-                <input type="text" asp-for="RegisterCredential.Email" class="form-control"/>
+                <input type="text" asp-for="RegisterCredential.Email" class="form-control" placeholder="Email"/>
             </div>
             <span class="text-danger" asp-validation-for="RegisterCredential.Email"></span>
         </div>
@@ -31,7 +32,7 @@
                 <label asp-for="RegisterCredential.Telefoonnummer"></label>
             </div>
             <div class="col-5">
-                <input type="text" asp-for="RegisterCredential.Telefoonnummer" class="form-control"/>
+                <input type="number" asp-for="RegisterCredential.Telefoonnummer" class="form-control" placeholder="06..."/>
             </div>
             <span class="text-danger" asp-validation-for="RegisterCredential.Telefoonnummer"></span>
         </div>
@@ -41,7 +42,7 @@
                 <label asp-for="RegisterCredential.Dirigent"></label>
             </div>
             <div class="col-5">
-                <input type="text" asp-for="RegisterCredential.Dirigent" class="form-control"/>
+                <input type="text" asp-for="RegisterCredential.Dirigent" class="form-control" placeholder="Dirigent naam"/>
             </div>
             <span class="text-danger" asp-validation-for="RegisterCredential.Dirigent"></span>
         </div>
@@ -51,7 +52,7 @@
                 <label asp-for="RegisterCredential.Divisie"></label>
             </div>
             <div class="col-5">
-                <input type="text" asp-for="RegisterCredential.Divisie" class="form-control"/>
+                <input type="number" asp-for="RegisterCredential.Divisie" class="form-control" value="1"/>
             </div>
             <span class="text-danger" asp-validation-for="RegisterCredential.Divisie"></span>
         </div>
@@ -61,7 +62,7 @@
                 <label asp-for="RegisterCredential.LedenAantal"></label>
             </div>
             <div class="col-5">
-                <input type="text" asp-for="RegisterCredential.LedenAantal" class="form-control"/>
+                <input type="number" asp-for="RegisterCredential.LedenAantal" class="form-control" value="1"/>
             </div>
             <span class="text-danger" asp-validation-for="RegisterCredential.LedenAantal"></span>
         </div>
@@ -71,7 +72,7 @@
                 <label asp-for="RegisterCredential.Wachtwoord"></label>
             </div>
             <div class="col-5">
-                <input type="password" asp-for="RegisterCredential.Wachtwoord" class="form-control"/>
+                <input type="password" asp-for="RegisterCredential.Wachtwoord" class="form-control" placeholder="Wachtwoord"/>
             </div>
             <span class="text-danger" asp-validation-for="RegisterCredential.Wachtwoord"></span>
         </div>
