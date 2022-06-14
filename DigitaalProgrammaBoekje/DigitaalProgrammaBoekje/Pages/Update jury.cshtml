@@ -1,0 +1,29 @@
+﻿@page
+@model DigitaalProgrammaBoekje.Pages.Update_jury
+
+@{
+    ViewData["Title"] = "Bedrijven";
+}
+
+<table class="table table-bordered">
+    <div class="col-6" style="background-color: white; border-left: 2px solid #56A28E;">
+        <h2 class="d-flex justify-content-center" style="margin-top: 10px">Jury informatie</h2>
+        @foreach (var jury in Model.Jurylids)
+        {
+            <tr>
+                <th>Username: </th>
+                <td>@jury.jury_naam</td>
+            </tr>
+            <tr>
+                <th>Email: </th>
+                <td>@jury.jury_bio</td>
+            </tr>
+            <tr>
+                <th>Foto: </th>
+                <td>
+                    <img style="object-fit: fill; height: 200px; width: 200px;" src="~/content/@jury.jury_foto" alt="Card image cap">
+                </td>
+            </tr>
+        }
+    </div>
+</table>
