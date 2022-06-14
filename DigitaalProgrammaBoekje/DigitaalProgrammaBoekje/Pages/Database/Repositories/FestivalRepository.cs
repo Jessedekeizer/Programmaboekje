@@ -94,6 +94,16 @@ public class FestivalRepository
         var festival = connection.Query<Festival>(sql, new {Jaar});
         return festival;
     }
+    
+    public IEnumerable<Festival> GetCurrentfestival(int Festival_id)
+    {
+        //Haalt alles op van een bepaald festival
+        string sql = "SELECT * FROM Festival WHERE festival_id = @Festival_id";
+
+        using var connection = GetConnection();
+        var festival = connection.Query<Festival>(sql, new {Festival_id});
+        return festival;
+    }
 
     
     

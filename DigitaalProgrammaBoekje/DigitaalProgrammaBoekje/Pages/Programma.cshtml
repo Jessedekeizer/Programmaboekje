@@ -9,12 +9,25 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <link rel="stylesheet" href="/css/Phone.css"/>
-<div style=" overflow: auto" class="col-1">
+<link rel="stylesheet" href="/css/GlobalStyle.css"/>
+<div class="col-1" id="ProgrammaOverview">
+    @foreach (var festival in Model.CurrentFestival)
+    {
+        <div>
+            <img id="img" src="~/content/@festival.Festival_logo" class="d-block" style="width: 100%"/>
+        </div>
+        <div style="text-align: center">
+            <h2>@festival.Festival_naam</h2>
+        </div>
+    }
+    <div style="text-align: center">
+        <h2>Agenda</h2>
+    </div>
     <table class="table table-borderless ">
         @foreach (var blok in Model.Bloks)
         {
             <tbody>
-            <tr>
+            <tr id="blokitem">
                 @if (blok.Blok_type != 't')
                 {
                     <td>@(blok.Begintijd.ToString(@"hh\:mm"))</td>
@@ -45,6 +58,9 @@
             </tbody>
         }
     </table>
+    <div style="text-align: center">
+        <h2>Sponsoren</h2>
+    </div>
     <div class="row">
         <div id="demo" class="carousel slide" data-bs-ride="carousel">
 
@@ -68,21 +84,21 @@
                 @foreach (var reclame in Model.Sponsorts)
                 {
                     if (reclame == Model.Sponsorts.First())
-                        {
-                            <div class="carousel-item active" style="align-items: center">
-                                <a href="@reclame.Websitelink">
-                                    <img src="~/content/@reclame.Foto_link" class="d-block" style="width: 100%"/>
-                                </a>
-                            </div>
-                        }   
-                        else
-                        {
-                            <div class="carousel-item">
-                                <a href="@reclame.Websitelink">
-                                    <img src="~/content/@reclame.Foto_link" class="d-block" style="width: 100%"/>
-                                </a>
-                            </div>
-                        }
+                    {
+                        <div class="carousel-item active" style="align-items: center">
+                            <a href="@reclame.Websitelink">
+                                <img id="img" src="~/content/@reclame.Foto_link" class="d-block" style="width: 100%"/>
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="carousel-item">
+                            <a href="@reclame.Websitelink">
+                                <img id="img" src="~/content/@reclame.Foto_link" class="d-block" style="width: 100%"/>
+                            </a>
+                        </div>
+                    }
                 }
             </div>
 
@@ -93,6 +109,9 @@
                 <span class="carousel-control-next-icon"></span>
             </button>
         </div>
+    </div>
+    <div style="text-align: center">
+        <h2>Juryleden</h2>
     </div>
     <div class="col container">
         @if (Model.Jurylids != null)

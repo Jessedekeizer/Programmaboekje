@@ -1,0 +1,66 @@
+﻿@page
+@using DigitaalProgrammaBoekje.Pages.Database.Models
+@model DigitaalProgrammaBoekje.Pages.Bedrijven
+
+@{
+    ViewData["Title"] = "Bedrijven";
+}
+
+
+<div class="bg-modal">
+    <form method="post" enctype="multipart/form-data" style="height: 100%">
+        <div class="modal-content">
+
+            <div class="close">+</div>
+
+            <div class="row" style="margin-top: 50px">
+                <label id="Label1">Naam jurylid</label>
+                <input asp-for="Jurylid.jury_naam" type="text" id="input1" class="form-control" placeholder="Festival Naam" required style="text-align: center"/>
+                <span class="invalid-feedback" asp-validation-for="Jurylid.jury_naam"></span>
+            </div>
+            <div class="row">
+                <label id="Label1">Bio jurylid</label>
+                <input maxlength="100" asp-for="Jurylid.jury_bio" type="text" id="input1" class="form-control" placeholder="Festival Locatie" required style="text-align: center"/>
+                <span class="invalid-feedback" asp-validation-for="Jurylid.jury_bio"></span>
+            </div>
+            <div class="row">
+                <label id="Label1">Logo festival</label>
+                <span class="kop spacing">Selecteer logo festival:</span>
+                <input for="photoButton" id="input1" type="file" name="frontPosted" class="photoButton" accept="image/jpeg, image/png, image/jpg"/>
+            </div>
+            <input type="submit" id="knop" style="background-color: #7d3ec9; color: white; border: none; border-radius: 3px; margin-top: 10px; height: 25px; width: 170px; margin-left: 212px" asp-page-handler="Upload">Voeg festival toe</input>
+        </div>
+    </form>
+</div>
+
+<div class="row" style="margin-left: 10px">
+    <h6>Bedrijven:</h6>
+    @foreach (var bedrijf in Model.Bedrijfs)
+    {
+        <div>@bedrijf.bedrijf_naam</div>
+        <div>@bedrijf.websitelink</div>
+    }
+</div>
+
+<div class="row" style="margin-top: 10px; margin-left: 10px">
+    <h6>Juryleden:</h6>
+    @foreach (var jury in Model.Jurylids)
+    {
+        <div class="col-3" id="cart" style="width: 300px; height: 300px; margin: 5px">
+            <div class="card" style="width: 300px; height: 300px;">
+                <img class="card-img-top" id="FImg1" style="object-fit: fill; height: 200px; width: 200px;" src="~/content/@jury.jury_foto" alt="Card image cap">
+                <div class="card-body" style="height: 150px; width: 300px;">
+                    <h5 class="card-title" style="margin: 0px">@jury.jury_naam</h5>
+                    <p class="card-text">@jury.jury_bio</p>
+                    <form asp-page-handler="JuryUpd" method="post">
+                        <input type="hidden" name="jury_id" value="@jury.jury_id"/>
+                        <button id="UpdateJury" style="background-color: mediumpurple; border: none;">
+                            Bewerk
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<script src="/css/Bedrijven.js"></script>

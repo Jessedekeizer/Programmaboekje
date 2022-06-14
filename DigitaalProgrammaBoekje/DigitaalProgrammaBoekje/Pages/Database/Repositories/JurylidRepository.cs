@@ -11,7 +11,7 @@ public class JurylidRepository
     {
         return new DbUtils().Connect();
     }
-    
+
     public IEnumerable<Jurylid> GetAllJury()
     {
         //Haalt alles op van een bepaald jurylid
@@ -83,7 +83,7 @@ public class JurylidRepository
         using var connection = GetConnection();
         connection.Query(sql, new {Jury_id});
     }
-    
+
     public void UpdateJurylid(int Id, string Name, string Bio, string Foto)
     {
         //Hier kan je de velden van een jurylid aanpassen.
@@ -96,5 +96,13 @@ public class JurylidRepository
 
         using var connection = GetConnection();
         connection.Query<Jurylid>(sql, new {Id, Name, Bio, Foto});
+    }
+
+    public IEnumerable<Jurylid> Get1Jury(int Jury_id)
+    {
+        string sql = @"SELECT * FROM jurylid WHERE jury_id = @Jury_id";
+        using var connection = GetConnection();
+        var gebruiker = connection.Query<Jurylid>(sql, new {Jury_id});
+        return gebruiker;
     }
 }

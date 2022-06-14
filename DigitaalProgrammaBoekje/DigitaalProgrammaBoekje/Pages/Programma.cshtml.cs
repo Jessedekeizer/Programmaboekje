@@ -13,9 +13,12 @@ public class Programma : PageModel
     
     public IEnumerable<Jurylid> Jurylids { get; set; }
     public IEnumerable<Bedrijf> Bedrijfs { get; set; }
+    [BindProperty] public IEnumerable<Festival> CurrentFestival { get; set; }
+
 
     public void OnGet([FromQuery] int Festival_id)
     {
+        
         if (Festival_id != 0)
         {
             Sponsorts = new SponsortRepository().GetSponsors(Festival_id);
@@ -25,6 +28,8 @@ public class Programma : PageModel
             Bloks = new BlokRepository().GetAll(Festival_id);
 
             Bedrijfs = new BedrijfRepository().GetAllbedrijf();
+        
+            CurrentFestival = new FestivalRepository().GetCurrentfestival(Festival_id);
         }
     }
 }

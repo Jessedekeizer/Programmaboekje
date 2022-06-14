@@ -20,12 +20,15 @@ public class EditScreen : PageModel
     public IEnumerable<Jurylid> AllJurieslist { get; set; }
     public IEnumerable<Bedrijf> Bedrijflist { get; set; }
     public IEnumerable<Sponsort> Reclamelist { get; set; }
+    [BindProperty] public IEnumerable<Festival> CurrentFestival { get; set; }
+
     
 
 
-    [BindProperty] public Blok Blok { get; set; }
 
+    [BindProperty] public Blok Blok { get; set; }
     [BindProperty] public Jurylid Jurylid { get; set; }
+    
 
     public string Jurynaam { get; set; }
     public string Jurybio { get; set; }
@@ -37,7 +40,7 @@ public class EditScreen : PageModel
     public int Divisie { get; set; }
 
     public string Time { get; set; }
-    
+
     public int Festival_id { get; set; }
 
     public int Blok_id { get; set; } = 0;
@@ -45,7 +48,7 @@ public class EditScreen : PageModel
     public int Orkest_id { get; set; } = 0;
     public int Jury_id { get; set; } = 0;
     public int Bedrijf_id { get; set; } = 0;
-    
+
     public string Link { get; set; }
     public string QRCodeImage { get; set; }
 
@@ -54,7 +57,7 @@ public class EditScreen : PageModel
     public string active_tekstvak { get; set; }
     public string active_jury { get; set; }
     public string active_reclame { get; set; }
-    
+
     public string bedrijf_naam { get; set; }
 
 
@@ -79,6 +82,9 @@ public class EditScreen : PageModel
         Reclamelist = Sponsort.GetSponsors(Festival_id);
         BedrijfRepository bedrijf = new BedrijfRepository();
         Bedrijflist = bedrijf.GetAllbedrijf();
+        FestivalRepository festival = new FestivalRepository();
+        CurrentFestival = festival.GetCurrentfestival(Festival_id);
+
         if (Blok_id != null)
         {
             foreach (var blok in Bloks)
@@ -121,6 +127,7 @@ public class EditScreen : PageModel
                 }
             }
         }
+
         if (Bedrijf_id != null)
         {
             foreach (var bedrijfs in Bedrijflist)
@@ -134,10 +141,7 @@ public class EditScreen : PageModel
             }
         }
 
-        
-        
-        
-        
+
         return Page();
     }
 
@@ -209,7 +213,7 @@ public class EditScreen : PageModel
         return RedirectToPage();
     }
 
-    public IActionResult OnPostAddjury(List<IFormFile> frontPosted,[FromForm] int Festival_id)
+    public IActionResult OnPostAddjury(List<IFormFile> frontPosted, [FromForm] int Festival_id)
     {
         string note = Request.Form["TextJury"];
 
@@ -252,7 +256,7 @@ public class EditScreen : PageModel
         return RedirectToPage();
     }
 
-    public IActionResult OnPostAddExistingjury([FromForm]int Festival_id)
+    public IActionResult OnPostAddExistingjury([FromForm] int Festival_id)
     {
         Photo = Jurylid.jury_foto;
 
@@ -261,7 +265,8 @@ public class EditScreen : PageModel
         return RedirectToPage();
     }
 
-    public IActionResult OnPostAddReclame(List<IFormFile> frontPosted, [FromForm] int bedrijf_id,[FromForm] string Company_name, [FromForm] string Link, [FromForm] int Festival_id)
+    public IActionResult OnPostAddReclame(List<IFormFile> frontPosted, [FromForm] int bedrijf_id,
+        [FromForm] string Company_name, [FromForm] string Link, [FromForm] int Festival_id)
     {
         string path = Path.Combine(this.Environment.WebRootPath, "content");
         if (!Directory.Exists(path))
@@ -291,7 +296,7 @@ public class EditScreen : PageModel
                 postedFile.CopyTo(stream);
             }
         }
-        
+
         new SponsortRepository().AddSponsor(bedrijf_id, Festival_id, Photo, Company_name, Link);
         return RedirectToPage();
     }
@@ -299,14 +304,14 @@ public class EditScreen : PageModel
     public IActionResult OnPostUpdateCijfer(int Orkest_id, int Number)
     {
         new OrkestgroepRepository().UpdateCijfer(Orkest_id, Number);
-        
+
         return RedirectToPage();
     }
 
-    public IActionResult OnPostDeleteReclame([FromForm]int Bedrijf_id, [FromForm] int Festival_id)
+    public IActionResult OnPostDeleteReclame([FromForm] int Bedrijf_id, [FromForm] int Festival_id)
     {
         new SponsortRepository().RemoveSponsor(Bedrijf_id, Festival_id);
-        
+
         return RedirectToPage();
     }
     
