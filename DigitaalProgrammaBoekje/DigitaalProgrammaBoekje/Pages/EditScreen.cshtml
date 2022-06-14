@@ -252,7 +252,9 @@
     }
     else
     {
-        <a href="/EditScreen" class="col-1">Annuleer</a>
+        <div class="col-3">
+            <button href="/EditScreen" >Annuleer</button>
+            </div>
     }
     <div class="col-9">
         <div class="tab-content" id="nav-tabContent">
@@ -260,7 +262,7 @@
                 <form method="post" name="TextNotes" id="TextNotes">
                     <h2>Vul hier uw Tekst in:</h2>
                     <div class="row">
-                        <textarea name="Text1" id="Text1" cols="60" rows="10" form="TextNotes">@Model.Text</textarea>
+                        <textarea name="Text1" id="Text1" cols="60" rows="10" form="TextNotes" placeholder="Tekst">@Model.Text</textarea>
                     </div>
                     <div class="row">
                         <input type="hidden" asp-for="Blok.Festival_id" value="@Model.Festival_id"/>
@@ -291,7 +293,7 @@
                     <input type="Time" asp-for="Blok.Begintijd" value="@Model.Time"/>
                     <span class="invalid-feedback" asp-validation-for="Blok.Begintijd"></span>
                     <h2>Voer hier de naam van het Orkest:</h2>
-                    <input type="Text" asp-for="Blok.Orkestgroep.Orkestnaam" value="@Model.OrkestNaam"/>
+                    <input type="Text" asp-for="Blok.Orkestgroep.Orkestnaam" value="@Model.OrkestNaam" placeholder="Orkest naam"/>
                     <span class="invalid-feedback" asp-validation-for="Blok.Orkestgroep.Orkestnaam"></span>
                     <h2>Voer Hier de divisie in:</h2>
                     <input type="number" asp-for="Blok.Orkestgroep.divisie" value="@Model.Divisie"/>
@@ -299,7 +301,9 @@
                     <input type="hidden" asp-for="Blok.Festival_id" value="@Model.Festival_id"/>
                     <h2>Voer hier de Nummers die ze spelen in: </h2>
                     <div class="row">
-                        <textarea name="Text2" id="Text2" cols="60" rows="10" form="Text2Notes">@Model.Text</textarea>
+                        <textarea name="Text2" id="Text2" cols="60" rows="10" form="Text2Notes" placeholder="Muziekstuk 1
+Muziekstuk 2
+Muziekstuk 3">@Model.Text</textarea>
                     </div>
                     <div class="row">
                         <input type="hidden" asp-for="Blok.Blok_id" value="@Model.Blok_id"/>
@@ -312,11 +316,11 @@
             <div class="tab-pane fade @Model.active_jury" id="list-jury" role="tabpanel" aria-labelledby="list-jury-list">
                 <form method="post" name="TextJuryNotes" id="TextJuryNotes" enctype="multipart/form-data">
                     <h2>Voer hier de naam van de jury in:</h2>
-                    <input type="Text" asp-for="Jurylid.jury_naam" value="@Model.Jurynaam"/>
+                    <input type="Text" asp-for="Jurylid.jury_naam" value="@Model.Jurynaam" placeholder="Naam"/>
                     <span class="invalid-feedback" asp-validation-for="Jurylid.jury_naam"></span>
                     <h2>Voer hier de biografie in:</h2>
                     <div class="row">
-                        <textarea name="TextJury" id="TextJury" cols="60" rows="10" form="TextJuryNotes">@Model.Jurybio</textarea>
+                        <textarea name="TextJury" id="TextJury" cols="60" rows="10" form="TextJuryNotes" placeholder="Jury Biographie">@Model.Jurybio</textarea>
                     </div>
                     <div class="row">
                         <label id="Label1">Jury Foto</label>
@@ -373,10 +377,10 @@
                     <form method="post" asp-page-handler="AddReclame" enctype="multipart/form-data">
                         <input for="photoButton" id="input2" type="file" name="frontPosted" class="photoButton" accept="image/jpeg, image/png, image/jpg, image/jfif"/>
                         <h2>Voer hier de naam van het bedrijf in:</h2>
-                        <input name="Company_name" value="@Model.bedrijf_naam"/>
+                        <input name="Company_name" value="@Model.bedrijf_naam" placeholder="Bedrijf naam"/>
                         <input type="hidden" name="Festival_id" value="@Model.Festival_id"/>
                         <h2>Voer hier de link van het bedrijf in:</h2>
-                        <input name="Link" value="@Model.Link"/>
+                        <input name="Link" value="@Model.Link" placeholder="Website Link"/>
                         <input type="hidden" name="bedrijf_id" value="@Model.Bedrijf_id"/>
                         <button type="submit">VoegToe</button>
                     </form>
