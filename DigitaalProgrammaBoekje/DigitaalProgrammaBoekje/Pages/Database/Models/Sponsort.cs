@@ -9,4 +9,5 @@ public class Sponsort
     public int Festival_id { get; set; }
     [Required]
     public string Foto_link { get; set; }
+    public string Websitelink { get; set; }
 }
