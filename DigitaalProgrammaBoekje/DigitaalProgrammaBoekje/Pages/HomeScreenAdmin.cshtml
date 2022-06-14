@@ -44,7 +44,7 @@
         {
             foreach (var Festivalitem in Model.Festivallist)
             {
-                <div class="col-3" id="cart" style="width: 300px; height: 300px;">
+                <div class="col-3" id="cart" style="width: 300px; height: 300px; margin: 10px; margin-top: 20px;">
                     <div class="card" style="width: 300px; height: 300px;">
                         <img class="card-img-top" id="FImg1" style="object-fit: fill; height: 150px; width: 300px;" src="~/content/@Festivalitem.Festival_logo" alt="Card image cap">
                         <div class="card-body" style="height: 150px; width: 300px;">
@@ -53,7 +53,7 @@
                             <p class="card-text">@Festivalitem.Festival_locatie</p>
                             <form asp-page-handler="Update" method="post">
                                 <input type="hidden" name="festival_id" value="@Festivalitem.Festival_id"/>
-                                <button  style=" background-color: mediumpurple; border: none;" > Bewerk
+                                <button  style=" background-color: mediumpurple; border: none; border-radius: 6px;" > Bewerk
                                 </button>
                             </form>
                         </div>
