@@ -4,6 +4,7 @@ using DigitaalProgrammaBoekje.Pages.Database.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
+
 namespace DigitaalProgrammaBoekje.Pages;
 
 public class EditScreen : PageModel
@@ -32,12 +33,16 @@ public class EditScreen : PageModel
     public int Divisie { get; set; }
 
     public string Time { get; set; }
+    
+    public int Festival_id { get; set; }
 
     public int Blok_id { get; set; } = 0;
 
     public int Orkest_id { get; set; } = 0;
     public int Jury_id { get; set; } = 0;
     public int Bedrijf_id { get; set; } = 0;
+    
+    public string Link { get; set; }
 
     public string active_pauze { get; set; }
     public string active_orkest { get; set; }
@@ -55,15 +60,16 @@ public class EditScreen : PageModel
 
     public IActionResult OnGet([FromQuery] int blok_id, [FromQuery] int jury_id, [FromQuery] int bedrijf_id)
     {
+        Festival_id = Convert.ToInt16(Request.Cookies["Festival_id"]);
         Blok_id = blok_id;
         Jury_id = jury_id;
         Bedrijf_id = bedrijf_id;
-        Bloks = new BlokRepository().GetAll();
+        Bloks = new BlokRepository().GetAll(Festival_id);
         JurylidRepository jurylist = new JurylidRepository();
-        Jurylist = jurylist.GetJury(1);
+        Jurylist = jurylist.GetJury(Festival_id);
         AllJurieslist = jurylist.GetAllJury();
         SponsortRepository Sponsort = new SponsortRepository();
-        Reclamelist = Sponsort.GetSponsors();
+        Reclamelist = Sponsort.GetSponsors(Festival_id);
         BedrijfRepository bedrijf = new BedrijfRepository();
         Bedrijflist = bedrijf.GetAllbedrijf();
         if (Blok_id != null)
@@ -116,10 +122,15 @@ public class EditScreen : PageModel
                 {
                     active_reclame = "show active";
                     bedrijf_naam = bedrijfs.bedrijf_naam;
+                    Link = bedrijfs.websitelink;
                 }
             }
         }
 
+        
+        
+        
+        
         return Page();
     }
 
@@ -137,7 +148,7 @@ public class EditScreen : PageModel
         return RedirectToPage();
     }
 
-    public IActionResult OnPostUpdate(int blok_id)
+    public IActionResult OnPostUpdateBlok(int blok_id)
     {
         BlokRepository BlokCommand = new BlokRepository();
         return RedirectToPage(new {Blok_id = blok_id});
@@ -149,20 +160,20 @@ public class EditScreen : PageModel
         BlokRepository blokCommand = new BlokRepository();
         if (Blok.Blok_type != 'o')
         {
-            blokCommand.AddBlok(Blok.Blok_id, 1, Blok.Begintijd, Blok.Blok_type, note);
+            blokCommand.AddBlok(Blok.Blok_id, Blok.Festival_id, Blok.Begintijd, Blok.Blok_type, note);
         }
         else
         {
             note = Request.Form["Text2"];
             new OrkestgroepRepository().AddOrkestgroep(note, Blok.Orkestgroep.Orkestnaam,
                 Blok.Orkestgroep.divisie, Blok.Orkestgroep.Cijfer, Blok.Orkestgroep.Orkest_id,
-                Blok.Blok_id, 1, Blok.Begintijd, Blok.Blok_type);
+                Blok.Blok_id, Blok.Festival_id, Blok.Begintijd, Blok.Blok_type);
         }
 
         return RedirectToPage();
     }
 
-    public IActionResult OnPostDelete(int blok_id, int bloknummer)
+    public IActionResult OnPostDeleteBlok(int blok_id, int bloknummer)
     {
         OrkestgroepRepository OrkestCommand = new OrkestgroepRepository();
         int Orkest_id = OrkestCommand.CheckIfOrkestgroep(blok_id);
@@ -191,7 +202,7 @@ public class EditScreen : PageModel
         return RedirectToPage();
     }
 
-    public IActionResult OnPostAddjury(List<IFormFile> frontPosted)
+    public IActionResult OnPostAddjury(List<IFormFile> frontPosted,[FromForm] int Festival_id)
     {
         string note = Request.Form["TextJury"];
 
@@ -230,20 +241,20 @@ public class EditScreen : PageModel
         }
 
         JurylidRepository jury = new JurylidRepository();
-        jury.AddJurylid(Jurylid.jury_id, Jurylid.jury_naam, note, Photo, 1);
+        jury.AddJurylid(Jurylid.jury_id, Jurylid.jury_naam, note, Photo, Festival_id);
         return RedirectToPage();
     }
 
-    public IActionResult OnPostAddExistingjury()
+    public IActionResult OnPostAddExistingjury([FromForm]int Festival_id)
     {
         Photo = Jurylid.jury_foto;
 
         JurylidRepository jury = new JurylidRepository();
-        jury.AddExistingjury(Jurylid.jury_id, 1);
+        jury.AddExistingjury(Jurylid.jury_id, Festival_id);
         return RedirectToPage();
     }
 
-    public IActionResult OnPostAddReclame(List<IFormFile> frontPosted, [FromForm] int bedrijf_id,[FromForm] string bedrijf_naam)
+    public IActionResult OnPostAddReclame(List<IFormFile> frontPosted, [FromForm] int bedrijf_id,[FromForm] string Company_name, [FromForm] string Link, [FromForm] int Festival_id)
     {
         string path = Path.Combine(this.Environment.WebRootPath, "content");
         if (!Directory.Exists(path))
@@ -274,13 +285,20 @@ public class EditScreen : PageModel
             }
         }
         
-        new SponsortRepository().AddSponsor(bedrijf_id, 1, Photo);
+        new SponsortRepository().AddSponsor(bedrijf_id, Festival_id, Photo, Company_name, Link);
         return RedirectToPage();
     }
 
     public IActionResult OnPostUpdateCijfer(int Orkest_id, int Number)
     {
         new OrkestgroepRepository().UpdateCijfer(Orkest_id, Number);
+        
+        return RedirectToPage();
+    }
+
+    public IActionResult OnPostDeleteReclame([FromForm]int Bedrijf_id, [FromForm] int Festival_id)
+    {
+        new SponsortRepository().RemoveSponsor(Bedrijf_id, Festival_id);
         
         return RedirectToPage();
     }

@@ -1,0 +1,13 @@
+﻿[class*="col-"] {
+    float: left;
+    padding: 15px;
+}
+
+.col-1 {width: 500px}
+
+@media only screen and (max-width: 600px) {
+    body 
+    [class*="col-"] {
+        width: 100%;
+    }
+}

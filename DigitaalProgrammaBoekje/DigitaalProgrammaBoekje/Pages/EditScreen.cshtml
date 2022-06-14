@@ -14,7 +14,7 @@
     <table class="table table-bordered align-right">
         <thead>
         <tr>
-        <th class="col-3">Orkestnaam</th>
+        <th class="col-2">Orkestnaam</th>
         <th class="col-1">Punten</th>
         <tr>
         </thead>
@@ -28,8 +28,8 @@
                     @blok.Orkestgroep.Orkestnaam
                 </td>
                 <form method="post" asp-page-handler="UpdateCijfer">
-                    <td>
-                        <input type="number" name="Number" value="@blok.Orkestgroep.Cijfer"/>
+                    <td class="d-flex flex-row">
+                        <input type="number" style="width: 70px" name="Number" value="@blok.Orkestgroep.Cijfer"/>
                         <input type="hidden" name="Orkest_id" value="@blok.Orkestgroep.Orkest_id"/>
                         <button type="submit">
                             <i class="fa fa-floppy-o"></i>
@@ -43,7 +43,7 @@
     </table>
 </div>
 
-<div class="col-2" style="width: 320px; overflow: auto">
+<div class="col-2" style="width: 320px; overflow: auto; margin: 10px">
     <table class="table">
         @foreach (var blok in Model.Bloks)
         {
@@ -88,7 +88,9 @@
                         </td>
                         <td>
                             Cijfer:<br/>
-                            @blok.Orkestgroep.Cijfer
+                            @blok.Orkestgroep.Cijfer<br/>
+                            Divisie:<br/>
+                            @blok.Orkestgroep.divisie
                         </td>
                     }
                     else
@@ -102,13 +104,13 @@
                 }
                 <td>
                     <div class="d-flex; flex-column">
-                        <form method="post" asp-page-handler="Update">
+                        <form method="post" asp-page-handler="UpdateBlok">
                             <input type="hidden" value="@blok.Blok_id" name="blok_id"/>
                             <button type="submit">
                                 <i class="fa fa-pencil"></i>
                             </button>
                         </form>
-                        <form method="post" asp-page-handler="Delete">
+                        <form method="post" asp-page-handler="DeleteBlok">
                             <input type="hidden" value="@blok.Blok_id" name="blok_id"/>
                             <button type="submit">
                                 <i class="fa fa-trash"></i>
@@ -144,17 +146,39 @@
                 {
                     if (reclame == Model.Reclamelist.First())
                     {
-                        <div class="carousel-item active">
+                        <div class="carousel-item active col">
+                            <div style="display: flex; justify-content: center; margin: 5px">
+                                <form method="post" asp-page-handler="DeleteReclame">
+                                    <input type="hidden" name="Bedrijf_id" value="@reclame.Bedrijf_id"/>
+                                    <input type="hidden" name="Festival_id" value="@reclame.Festival_id"/>
+                                    <button type="submit">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+
+                                </form>
+                            </div>
                             <a href="iets">
                                 <img src="~/content/@reclame.Foto_link" class="d-block" style="width: 100%"/>
                             </a>
+
                         </div>
                     }
                     else
                     {
-                        <div class="carousel-item">
+                        <div class="carousel-item col">
+                            <div style="display: flex; justify-content: center; margin: 5px">
+                                <form method="post" asp-page-handler="DeleteReclame">
+                                    <input type="hidden" name="Bedrijf_id" value="@reclame.Bedrijf_id"/>
+                                    <input type="hidden" name="Festival_id" value="@reclame.Festival_id"/>
+                                    <button type="submit">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+
+                                </form>
+                            </div>
                             <a href="iets">
                                 <img src="~/content/@reclame.Foto_link" class="d-block" style="width: 100%"/>
+
                             </a>
                         </div>
                     }
@@ -202,45 +226,48 @@
         }
     </div>
 </div>
-<div class="row col-8">
-    @if (Model.Blok_id == 0)
+<div class="row col-5" style="margin: 10px">
+    @if (Model.Blok_id == 0 && Model.Jury_id == 0)
     {
-        <div class="col-4">
+        
+        <div class="col-3">
             <div class="list-group" id="list-tab" role="tablist">
                 <a class="list-group-item list-group-item-action" id="list-Text-list" data-bs-toggle="list" href="#list-Text" role="tab" aria-controls="list-Text">Tekstvak</a>
                 <a class="list-group-item list-group-item-action" id="list-pauze-list" data-bs-toggle="list" href="#list-pauze" role="tab" aria-controls="list-pauze">Pauze</a>
                 <a class="list-group-item list-group-item-action" id="list-orkest-list" data-bs-toggle="list" href="#list-orkest" role="tab" aria-controls="list-orkest">Orkest</a>
                 <a class="list-group-item list-group-item-action" id="list-jury-list" data-bs-toggle="list" href="#list-jury" role="tab" aria-controls="list-jury">Jury</a>
                 <a class="list-group-item list-group-item-action" id="list-reclame-list" data-bs-toggle="list" href="#list-reclame" role="tab" aria-controls="list-reclame">Reclame</a>
-                <a class="list-group-item list-group-item-action" id="list-settings-list" data-bs-toggle="list" href="#list-settings" role="tab" aria-controls="list-settings">Settings</a>
             </div>
         </div>
     }
     else
     {
-        <a href="/EditScreen">Nieuwe</a>
+        <a href="/EditScreen" class="col-1">Annuleer</a>
     }
-    <div class="col-8">
+    <div class="col-9">
         <div class="tab-content" id="nav-tabContent">
             <div class="tab-pane fade @Model.active_tekstvak" id="list-Text" role="tabpanel" aria-labelledby="list-Text-list">
                 <form method="post" name="TextNotes" id="TextNotes">
+                    <h1>Vul hier uw Tekst in:</h1>
                     <div class="row">
                         <textarea name="Text1" id="Text1" cols="60" rows="10" form="TextNotes">@Model.Text</textarea>
                     </div>
                     <div class="row">
+                        <input type="hidden" asp-for="Blok.Festival_id" value="@Model.Festival_id"/>
                         <input type="hidden" asp-for="Blok.Blok_id" value="@Model.Blok_id"/>
                         <input type="hidden" asp-for="Blok.Blok_type" value="t"/>
                         <input type="hidden" asp-for="Blok.Begintijd" value="@TimeSpan.Zero"/>
                         <button asp-page-handler="save">opslaan</button>
-                        <button asp-page-handler="remove">verwijder</button>
                     </div>
                 </form>
             </div>
             <div class="tab-pane fade @Model.active_pauze" id="list-pauze" role="tabpanel" aria-labelledby="list-pauze-list">
                 <form method="post" name="TextNotes" id="TextNotes">
+                    <h1>Voer hier de tijd van de pauze in:</h1>
                     <input type="Time" asp-for="Blok.Begintijd" value="@Model.Time"/>
                     <input type="hidden" asp-for="Blok.Blok_id" value="@Model.Blok_id"/>
                     <input type="hidden" asp-for="Blok.Blok_type" value="p"/>
+                    <input type="hidden" asp-for="Blok.Festival_id" value="@Model.Festival_id"/>
                     <div class="row">
                         <button asp-page-handler="save">opslaan</button>
                         <button asp-page-handler="remove">verwijder</button>
@@ -249,24 +276,30 @@
             </div>
             <div class="tab-pane fade @Model.active_orkest" id="list-orkest" role="tabpanel" aria-labelledby="list-orkest-list">
                 <form method="post" name="Text2Notes" id="Text2Notes">
+                    <h1>Voer hier de tijd in:</h1>
                     <input type="Time" asp-for="Blok.Begintijd" value="@Model.Time"/>
+                    <h1>Voer hier de naam van het Orkest:</h1>
                     <input type="Text" asp-for="Blok.Orkestgroep.Orkestnaam" value="@Model.OrkestNaam"/>
+                    <h1>Voer Hier de divisie in:</h1>
                     <input type="number" asp-for="Blok.Orkestgroep.divisie" value="@Model.Divisie"/>
+                    <input type="hidden" asp-for="Blok.Festival_id" value="@Model.Festival_id"/>
+                    <h1>Voer hier de Nummers die ze spelen in: </h1>
                     <div class="row">
                         <textarea name="Text2" id="Text2" cols="60" rows="10" form="Text2Notes">@Model.Text</textarea>
                     </div>
                     <div class="row">
+                        <input type="hidden" asp-for="Blok.Blok_id" value="@Model.Blok_id"/>
                         <input type="hidden" asp-for="Blok.Blok_type" value="o"/>
                         <input type="hidden" asp-for="Blok.Orkestgroep.Orkest_id" value="@Model.Orkest_id"/>
-
                         <button asp-page-handler="save">opslaan</button>
-                        <button asp-page-handler="remove">verwijder</button>
                     </div>
                 </form>
             </div>
             <div class="tab-pane fade @Model.active_jury" id="list-jury" role="tabpanel" aria-labelledby="list-jury-list">
                 <form method="post" name="TextJuryNotes" id="TextJuryNotes" enctype="multipart/form-data">
+                    <h1>Voer hier de naam van de jury in:</h1>
                     <input type="Text" asp-for="Jurylid.jury_naam" value="@Model.Jurynaam"/>
+                    <h1>Voer hier de biografie in:</h1>
                     <div class="row">
                         <textarea name="TextJury" id="TextJury" cols="60" rows="10" form="TextJuryNotes">@Model.Jurybio</textarea>
                     </div>
@@ -278,7 +311,7 @@
                     <div class="row">
                         <input type="hidden" asp-for="Jurylid.jury_id" value="@Model.Jury_id"/>
                         <input type="hidden" asp-for="Jurylid.jury_foto" value="@Model.Juryfoto"/>
-
+                        <input type="hidden" name="Festival_id" value="@Model.Festival_id"/>
                         <input type="submit" id="knop" value="Voeg Toe" style="background-color: #7d3ec9; color: white; border: none; border-radius: 3px; margin-top: 10px; height: 25px; width: 170px; margin-left: 212px" asp-page-handler="Addjury"/>
                     </div>
                 </form>
@@ -296,6 +329,7 @@
                             </div>
                             <div class="row">
                                 <input type="hidden" asp-for="@Jurylid.jury_id" value="@Jurylid.jury_id"/>
+                                <input type="hidden" name="Festival_id" value="@Model.Festival_id"/>
                                 <input type="submit" id="knop" content="Voeg Toe" style="background-color: #7d3ec9; color: white; border: none; border-radius: 3px; margin-top: 10px; height: 25px; width: 170px; margin-left: 212px"
                                        asp-page-handler="AddExistingjury"/>
                             </div>
@@ -309,7 +343,7 @@
                         <div class="list-group" id="list-tab" role="tablist">
                             <div class="dropdown">
                                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Dropdown button
+                                    selecteer Bedrijf
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                     @foreach (var bedrijf in Model.Bedrijflist)
@@ -325,25 +359,19 @@
                             </div>
                             <form method="post" asp-page-handler="AddReclame" enctype="multipart/form-data">
                                 <input for="photoButton" id="input2" type="file" name="frontPosted" class="photoButton" accept="image/jpeg, image/png, image/jpg, image/jfif"/>
-                                <input name="bedrijf_naam" value="@Model.bedrijf_naam"/>
+                                <h1>Voer hier de naam van het bedrijf in:</h1>
+                                <input name="Company_name" value="@Model.bedrijf_naam"/>
+                                <input type="hidden" name="Festival_id" value="@Model.Festival_id"/>
+                                <h1>Voer hier de link van het bedrijf in:</h1>
+                                <input  name="Link" value="@Model.Link"/>
                                 <input type="hidden" name="bedrijf_id" value="@Model.Bedrijf_id"/>
                                 <button type="submit">VoegToe</button>
                             </form>
                         </div>
                     </div>
-
-                    <div class="col-3">
-                        <div class="tab-content" id="nav-tabContent">
-
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">...</div>
                 </div>
             </div>
         </div>
     </div>
-    <!--
-
-    -->
-</div>
+    </div>
 </div>

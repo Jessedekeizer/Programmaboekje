@@ -39,7 +39,7 @@ public class Register : PageModel
         {
             var hashedPassword = new PasswordHasher<object?>().HashPassword(null, RegisterCredential.Wachtwoord);
             new GebruikerRepository().AddUser(RegisterCredential.Username, RegisterCredential.Email, hashedPassword, 'u', RegisterCredential.Telefoonnummer, RegisterCredential.Dirigent);
-            return RedirectToPage();
+            return RedirectToPage("/Login");
         }
         if (chkUser)
             return RedirectToPage(new {warning = 1});

@@ -21,23 +21,38 @@ public class HomeScreen : PageModel
    
           [ViewData]
           public string Logged_In { get; set; }
+          
+          public int Year { get; set; }
    
            
-           public void OnGet([FromQuery]string Jaartal)
+           public IActionResult OnGet([FromQuery]string Jaartal)
            {
-               Logged_In = Convert.ToString(new Rolechecker(HttpContext.Session).Loged_in());
                
-               //string Jaartal = Request.Cookies["jaar"];
+               
+               Logged_In = Convert.ToString(new Rolechecker(HttpContext.Session).Loged_in());
+               if (Convert.ToBoolean(Logged_In))
+               {
+                   if (!new Rolechecker(HttpContext.Session).checkUser())
+                   {
+                       return RedirectToPage("/HomeScreenAdmin");
+                   }
+               }
+               Year = Convert.ToInt16(Jaartal);
+               
                FestivalRepository festivallist = new FestivalRepository();
+              
 
-               //Als settingsStr == null, dat betekend dat er geen cookie bestaat, dus maakt hij een nieuwe cookie aan voor settings.
+               
                if (Jaartal != null)
                {
-                   Jaartal = Jaartal + "-05-08 14:40:52";
-                   Festivallist = festivallist.Getfestival(DateTime.Parse(Jaartal));
+                   Festivallist = festivallist.Getfestival(DateTime.ParseExact(Jaartal, "yyyy", null));
+               }
+               else
+               {
+                   Festivallist = festivallist.Getfestival(DateTime.Now);
                }
                FestivalYears = festivallist.FestivalsGetYears();
-               
+               return Page();
            }
    
            public IActionResult OnPostAddFestival()
