@@ -3,6 +3,10 @@ using DigitaalProgrammaBoekje.Pages.Database.Models;
 using DigitaalProgrammaBoekje.Pages.Database.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using QRCoder;
+using System.IO;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 
 namespace DigitaalProgrammaBoekje.Pages;
@@ -16,12 +20,15 @@ public class EditScreen : PageModel
     public IEnumerable<Jurylid> AllJurieslist { get; set; }
     public IEnumerable<Bedrijf> Bedrijflist { get; set; }
     public IEnumerable<Sponsort> Reclamelist { get; set; }
+    [BindProperty] public IEnumerable<Festival> CurrentFestival { get; set; }
+
     
 
 
-    [BindProperty] public Blok Blok { get; set; }
 
+    [BindProperty] public Blok Blok { get; set; }
     [BindProperty] public Jurylid Jurylid { get; set; }
+    
 
     public string Jurynaam { get; set; }
     public string Jurybio { get; set; }
@@ -33,7 +40,7 @@ public class EditScreen : PageModel
     public int Divisie { get; set; }
 
     public string Time { get; set; }
-    
+
     public int Festival_id { get; set; }
 
     public int Blok_id { get; set; } = 0;
@@ -41,15 +48,16 @@ public class EditScreen : PageModel
     public int Orkest_id { get; set; } = 0;
     public int Jury_id { get; set; } = 0;
     public int Bedrijf_id { get; set; } = 0;
-    
+
     public string Link { get; set; }
+    public string QRCodeImage { get; set; }
 
     public string active_pauze { get; set; }
     public string active_orkest { get; set; }
     public string active_tekstvak { get; set; }
     public string active_jury { get; set; }
     public string active_reclame { get; set; }
-    
+
     public string bedrijf_naam { get; set; }
 
 
@@ -61,7 +69,9 @@ public class EditScreen : PageModel
     public IActionResult OnGet([FromQuery] int blok_id, [FromQuery] int jury_id, [FromQuery] int bedrijf_id)
     {
         Festival_id = Convert.ToInt16(Request.Cookies["Festival_id"]);
-        Blok_id = blok_id;
+        QRgenerator("https://localhost:7224/programma?Festival_id=" + Festival_id);
+
+    Blok_id = blok_id;
         Jury_id = jury_id;
         Bedrijf_id = bedrijf_id;
         Bloks = new BlokRepository().GetAll(Festival_id);
@@ -72,6 +82,9 @@ public class EditScreen : PageModel
         Reclamelist = Sponsort.GetSponsors(Festival_id);
         BedrijfRepository bedrijf = new BedrijfRepository();
         Bedrijflist = bedrijf.GetAllbedrijf();
+        FestivalRepository festival = new FestivalRepository();
+        CurrentFestival = festival.GetCurrentfestival(Festival_id);
+
         if (Blok_id != null)
         {
             foreach (var blok in Bloks)
@@ -114,6 +127,7 @@ public class EditScreen : PageModel
                 }
             }
         }
+
         if (Bedrijf_id != null)
         {
             foreach (var bedrijfs in Bedrijflist)
@@ -127,10 +141,7 @@ public class EditScreen : PageModel
             }
         }
 
-        
-        
-        
-        
+
         return Page();
     }
 
@@ -202,7 +213,7 @@ public class EditScreen : PageModel
         return RedirectToPage();
     }
 
-    public IActionResult OnPostAddjury(List<IFormFile> frontPosted,[FromForm] int Festival_id)
+    public IActionResult OnPostAddjury(List<IFormFile> frontPosted, [FromForm] int Festival_id)
     {
         string note = Request.Form["TextJury"];
 
@@ -245,7 +256,7 @@ public class EditScreen : PageModel
         return RedirectToPage();
     }
 
-    public IActionResult OnPostAddExistingjury([FromForm]int Festival_id)
+    public IActionResult OnPostAddExistingjury([FromForm] int Festival_id)
     {
         Photo = Jurylid.jury_foto;
 
@@ -254,7 +265,8 @@ public class EditScreen : PageModel
         return RedirectToPage();
     }
 
-    public IActionResult OnPostAddReclame(List<IFormFile> frontPosted, [FromForm] int bedrijf_id,[FromForm] string Company_name, [FromForm] string Link, [FromForm] int Festival_id)
+    public IActionResult OnPostAddReclame(List<IFormFile> frontPosted, [FromForm] int bedrijf_id,
+        [FromForm] string Company_name, [FromForm] string Link, [FromForm] int Festival_id)
     {
         string path = Path.Combine(this.Environment.WebRootPath, "content");
         if (!Directory.Exists(path))
@@ -284,7 +296,7 @@ public class EditScreen : PageModel
                 postedFile.CopyTo(stream);
             }
         }
-        
+
         new SponsortRepository().AddSponsor(bedrijf_id, Festival_id, Photo, Company_name, Link);
         return RedirectToPage();
     }
@@ -292,14 +304,33 @@ public class EditScreen : PageModel
     public IActionResult OnPostUpdateCijfer(int Orkest_id, int Number)
     {
         new OrkestgroepRepository().UpdateCijfer(Orkest_id, Number);
-        
+
         return RedirectToPage();
     }
 
-    public IActionResult OnPostDeleteReclame([FromForm]int Bedrijf_id, [FromForm] int Festival_id)
+    public IActionResult OnPostDeleteReclame([FromForm] int Bedrijf_id, [FromForm] int Festival_id)
     {
         new SponsortRepository().RemoveSponsor(Bedrijf_id, Festival_id);
-        
+
         return RedirectToPage();
+    }
+    
+    private void QRgenerator(string Link)
+    {
+        using (MemoryStream ms = new MemoryStream())
+        {
+            PayloadGenerator.Url generator = new PayloadGenerator.Url(Link);
+            string payload = generator.ToString();
+
+            QRCodeGenerator qrGenerator = new QRCodeGenerator();
+            QRCodeData qrCodeData = qrGenerator.CreateQrCode(payload, QRCodeGenerator.ECCLevel.Q);
+            QRCode qrCode = new QRCode(qrCodeData);
+            var qrCodeAsBitmap = qrCode.GetGraphic(20);
+            using (Bitmap bitMap = qrCode.GetGraphic(20))
+            {
+                bitMap.Save(ms, ImageFormat.Png);
+                QRCodeImage = "data:image/png;base64," + Convert.ToBase64String(ms.ToArray());
+            }
+        }
     }
 }

@@ -1,0 +1,21 @@
+#ProgrammaOverview {
+    background-color: lightgray;
+}
+
+.carousel-item{
+    border-radius: 10px;
+}
+
+#img{
+    border-radius: 10px;
+}
+
+.card {
+    border-radius: 10px;
+}
+
+
+#blokitem{
+    border-radius: 10px;
+    border: 4px solid white;
+}
