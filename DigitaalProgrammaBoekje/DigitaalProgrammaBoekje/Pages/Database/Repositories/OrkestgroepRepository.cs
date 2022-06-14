@@ -96,4 +96,13 @@ DELETE FROM Orkestgroep WHERE orkest_id = @Orkest_id;
         using var connection = GetConnection();
         connection.Query(sql, new {Orkest_id, Number });
     }
+    
+    public string UpdateAantalLeden(int Gebruiker_id, string LedenUpd)
+    {
+        string sql = @"UPDATE gebruikers SET leden_aantal = @LedenUpd WHERE gebruiker_id = @Gebruiker_id";
+        using var connection = GetConnection();
+        connection.Execute(sql, new {Gebruiker_id, LedenUpd});
+        return "Succes";
+        
+    }
 }

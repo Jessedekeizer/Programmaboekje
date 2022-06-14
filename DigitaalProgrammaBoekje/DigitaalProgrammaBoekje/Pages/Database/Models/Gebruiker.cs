@@ -18,4 +18,6 @@ public class Gebruiker
     public int telefoonnummer { get; set; }
     [Required]
     public string dirigent { get; set; }
+
+    public int Leden_aantal { get; set; }
 }
