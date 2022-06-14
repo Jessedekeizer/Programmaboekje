@@ -41,9 +41,11 @@
         }
 
     </table>
+    <h3>QR-code:</h3>
+    <img src="@Model.QRCodeImage" alt="" style="height:150px;width:150px"/>
 </div>
 
-<div class="col-2" style="width: 320px; overflow: auto; margin: 10px">
+<div class="col-2" style="width: 320px; margin: 10px">
     <table class="table">
         @foreach (var blok in Model.Bloks)
         {
@@ -229,7 +231,6 @@
 <div class="row col-5" style="margin: 10px">
     @if (Model.Blok_id == 0 && Model.Jury_id == 0)
     {
-        
         <div class="col-3">
             <div class="list-group" id="list-tab" role="tablist">
                 <a class="list-group-item list-group-item-action" id="list-Text-list" data-bs-toggle="list" href="#list-Text" role="tab" aria-controls="list-Text">Tekstvak</a>
@@ -248,7 +249,7 @@
         <div class="tab-content" id="nav-tabContent">
             <div class="tab-pane fade @Model.active_tekstvak" id="list-Text" role="tabpanel" aria-labelledby="list-Text-list">
                 <form method="post" name="TextNotes" id="TextNotes">
-                    <h1>Vul hier uw Tekst in:</h1>
+                    <h2>Vul hier uw Tekst in:</h2>
                     <div class="row">
                         <textarea name="Text1" id="Text1" cols="60" rows="10" form="TextNotes">@Model.Text</textarea>
                     </div>
@@ -263,7 +264,7 @@
             </div>
             <div class="tab-pane fade @Model.active_pauze" id="list-pauze" role="tabpanel" aria-labelledby="list-pauze-list">
                 <form method="post" name="TextNotes" id="TextNotes">
-                    <h1>Voer hier de tijd van de pauze in:</h1>
+                    <h2>Voer hier de tijd van de pauze in:</h2>
                     <input type="Time" asp-for="Blok.Begintijd" value="@Model.Time"/>
                     <input type="hidden" asp-for="Blok.Blok_id" value="@Model.Blok_id"/>
                     <input type="hidden" asp-for="Blok.Blok_type" value="p"/>
@@ -276,14 +277,14 @@
             </div>
             <div class="tab-pane fade @Model.active_orkest" id="list-orkest" role="tabpanel" aria-labelledby="list-orkest-list">
                 <form method="post" name="Text2Notes" id="Text2Notes">
-                    <h1>Voer hier de tijd in:</h1>
+                    <h2>Voer hier de tijd in:</h2>
                     <input type="Time" asp-for="Blok.Begintijd" value="@Model.Time"/>
-                    <h1>Voer hier de naam van het Orkest:</h1>
+                    <h2>Voer hier de naam van het Orkest:</h2>
                     <input type="Text" asp-for="Blok.Orkestgroep.Orkestnaam" value="@Model.OrkestNaam"/>
-                    <h1>Voer Hier de divisie in:</h1>
+                    <h2>Voer Hier de divisie in:</h2>
                     <input type="number" asp-for="Blok.Orkestgroep.divisie" value="@Model.Divisie"/>
                     <input type="hidden" asp-for="Blok.Festival_id" value="@Model.Festival_id"/>
-                    <h1>Voer hier de Nummers die ze spelen in: </h1>
+                    <h2>Voer hier de Nummers die ze spelen in: </h2>
                     <div class="row">
                         <textarea name="Text2" id="Text2" cols="60" rows="10" form="Text2Notes">@Model.Text</textarea>
                     </div>
@@ -297,9 +298,9 @@
             </div>
             <div class="tab-pane fade @Model.active_jury" id="list-jury" role="tabpanel" aria-labelledby="list-jury-list">
                 <form method="post" name="TextJuryNotes" id="TextJuryNotes" enctype="multipart/form-data">
-                    <h1>Voer hier de naam van de jury in:</h1>
+                    <h2>Voer hier de naam van de jury in:</h2>
                     <input type="Text" asp-for="Jurylid.jury_naam" value="@Model.Jurynaam"/>
-                    <h1>Voer hier de biografie in:</h1>
+                    <h2>Voer hier de biografie in:</h2>
                     <div class="row">
                         <textarea name="TextJury" id="TextJury" cols="60" rows="10" form="TextJuryNotes">@Model.Jurybio</textarea>
                     </div>
@@ -339,39 +340,36 @@
             </div>
             <div class="tab-pane fade @Model.active_reclame" id="list-reclame" role="tabpanel" aria-labelledby="list-reclame-list">
                 <div class="row">
-                    <div class="col-3">
-                        <div class="list-group" id="list-tab" role="tablist">
-                            <div class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                    selecteer Bedrijf
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    @foreach (var bedrijf in Model.Bedrijflist)
-                                    {
-                                        <li>
-                                            <a class="dropdown-item" href="?bedrijf_id=@bedrijf.bedrijf_id">@bedrijf.bedrijf_naam</a>
-                                        </li>
-                                    }
-                                    <li>
-                                        <a class="dropdown-item" href="#">voeg nieuw bedrijf toe</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <form method="post" asp-page-handler="AddReclame" enctype="multipart/form-data">
-                                <input for="photoButton" id="input2" type="file" name="frontPosted" class="photoButton" accept="image/jpeg, image/png, image/jpg, image/jfif"/>
-                                <h1>Voer hier de naam van het bedrijf in:</h1>
-                                <input name="Company_name" value="@Model.bedrijf_naam"/>
-                                <input type="hidden" name="Festival_id" value="@Model.Festival_id"/>
-                                <h1>Voer hier de link van het bedrijf in:</h1>
-                                <input  name="Link" value="@Model.Link"/>
-                                <input type="hidden" name="bedrijf_id" value="@Model.Bedrijf_id"/>
-                                <button type="submit">VoegToe</button>
-                            </form>
-                        </div>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            selecteer Bedrijf
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            @foreach (var bedrijf in Model.Bedrijflist)
+                            {
+                                <li>
+                                    <a class="dropdown-item" href="?bedrijf_id=@bedrijf.bedrijf_id">@bedrijf.bedrijf_naam</a>
+                                </li>
+                            }
+                            <li>
+                                <a class="dropdown-item" href="#">voeg nieuw bedrijf toe</a>
+                            </li>
+                        </ul>
                     </div>
+                    <form method="post" asp-page-handler="AddReclame" enctype="multipart/form-data">
+                        <input for="photoButton" id="input2" type="file" name="frontPosted" class="photoButton" accept="image/jpeg, image/png, image/jpg, image/jfif"/>
+                        <h2>Voer hier de naam van het bedrijf in:</h2>
+                        <input name="Company_name" value="@Model.bedrijf_naam"/>
+                        <input type="hidden" name="Festival_id" value="@Model.Festival_id"/>
+                        <h2>Voer hier de link van het bedrijf in:</h2>
+                        <input name="Link" value="@Model.Link"/>
+                        <input type="hidden" name="bedrijf_id" value="@Model.Bedrijf_id"/>
+                        <button type="submit">VoegToe</button>
+                    </form>
                 </div>
+
             </div>
         </div>
     </div>
-    </div>
+</div>
 </div>
