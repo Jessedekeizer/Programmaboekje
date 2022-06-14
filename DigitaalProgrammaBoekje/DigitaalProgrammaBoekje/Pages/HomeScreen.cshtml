@@ -34,25 +34,26 @@
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        
-                            @if (Model.Year == 0)
-                            {
-                                @DateTime.Now.Year;
-                            }
-                            else
-                            {
-                                @Model.Year; 
-                            }
-                        
+
+                        @if (Model.Year == 0)
+                        {
+                            @DateTime.Now.Year
+                            ;
+                        }
+                        else
+                        {
+                            @Model.Year
+                            ;
+                        }
+
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         @foreach (var jaar in Model.FestivalYears)
                         {
                             if (Model.Year == 0 && jaar.Festival_datum.Year == DateTime.Now.Year)
                             {
-                                
                             }
-                            else if(jaar.Festival_datum.Year != Model.Year )
+                            else if (jaar.Festival_datum.Year != Model.Year)
                             {
                                 <li>
                                     <a class="dropdown-item" href="?Jaartal=@jaar.Festival_datum.ToString("yyyy")">@jaar.Festival_datum.ToString("yyyy")</a>
@@ -71,7 +72,7 @@
                         </a>
                     </li>
                 }
-                @if(Convert.ToBoolean(ViewData["Logged_In"]) == true)
+                @if (Convert.ToBoolean(ViewData["Logged_In"]) == true)
                 {
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-page="/AccountScreen">
@@ -90,20 +91,24 @@
         {
             foreach (var Festivalitem in Model.Festivallist)
             {
-                
-        <div class="col-3" id="cart" style="width: 300px; height: 300px; margin: 10px; margin-top: 20px;" >
-            <div class="card" style="width: 300px; height: 300px;">
-                <img class="card-img-top" id="FImg1" style="object-fit: fill; height: 150px; width: 300px;" src="~/content/@Festivalitem.Festival_logo" alt="Card image cap">
-                <div class="card-body" style="height: 150px; width: 300px;">
-                    <h5 class="card-title" style="margin: 0px">@Festivalitem.Festival_naam</h5>
-                    <p class="card-text">@(Festivalitem.Festival_datum.ToString("yyyy-MM-dd"))</p>
-                    <p class="card-text">@Festivalitem.Festival_locatie</p>
-                            
+                <div class="col-3" id="cart" style="width: 300px; height: 300px; margin: 10px; margin-top: 20px;">
+                    <div class="card" style="width: 300px; height: 300px;">
+                        <img class="card-img-top" id="FImg1" style="object-fit: fill; height: 150px; width: 300px;" src="~/content/@Festivalitem.Festival_logo" alt="Card image cap">
+                        <div class="card-body" style="height: 150px; width: 300px;">
+                            <div class="column" style="text-align: center">
+                                <h4 class="card-title" style="margin: 0px">@Festivalitem.Festival_naam</h4>
+                            </div>
+                            <div class="column" style="text-align: center; margin-top: 20px">
+                                <p class="card-text">@(Festivalitem.Festival_datum.ToString("yyyy-MM-dd"))</p>
+                            </div>
+                            <div class="column" style="text-align: center">
+                                <p class="card-text">@Festivalitem.Festival_locatie</p>
+                            </div>
+
+                        </div>
+                        <a href="/programma?Festival_id=@Festivalitem.Festival_id" class="btn btn-primary stretched-link">Bekijk</a>
+                    </div>
                 </div>
-                <a href="/programma?Festival_id=@Festivalitem.Festival_id" class="btn btn-primary stretched-link">Bekijk</a>
-            </div>
-        </div>
-        
             }
         }
 
