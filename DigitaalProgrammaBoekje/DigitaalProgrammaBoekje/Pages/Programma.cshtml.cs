@@ -12,6 +12,7 @@ public class Programma : PageModel
     public IEnumerable<Sponsort> Sponsorts { get; set; }
     
     public IEnumerable<Jurylid> Jurylids { get; set; }
+    public IEnumerable<Bedrijf> Bedrijfs { get; set; }
 
     public void OnGet([FromQuery] int Festival_id)
     {
@@ -22,6 +23,8 @@ public class Programma : PageModel
             Jurylids = new JurylidRepository().GetJury(Festival_id);
 
             Bloks = new BlokRepository().GetAll(Festival_id);
+
+            Bedrijfs = new BedrijfRepository().GetAllbedrijf();
         }
     }
 }
