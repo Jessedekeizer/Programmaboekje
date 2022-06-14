@@ -3,6 +3,10 @@ using DigitaalProgrammaBoekje.Pages.Database.Models;
 using DigitaalProgrammaBoekje.Pages.Database.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using QRCoder;
+using System.IO;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 
 namespace DigitaalProgrammaBoekje.Pages;
@@ -46,6 +50,7 @@ public class EditScreen : PageModel
     public int Bedrijf_id { get; set; } = 0;
 
     public string Link { get; set; }
+    public string QRCodeImage { get; set; }
 
     public string active_pauze { get; set; }
     public string active_orkest { get; set; }
@@ -64,7 +69,9 @@ public class EditScreen : PageModel
     public IActionResult OnGet([FromQuery] int blok_id, [FromQuery] int jury_id, [FromQuery] int bedrijf_id)
     {
         Festival_id = Convert.ToInt16(Request.Cookies["Festival_id"]);
-        Blok_id = blok_id;
+        QRgenerator("https://localhost:7224/programma?Festival_id=" + Festival_id);
+
+    Blok_id = blok_id;
         Jury_id = jury_id;
         Bedrijf_id = bedrijf_id;
         Bloks = new BlokRepository().GetAll(Festival_id);
@@ -306,5 +313,24 @@ public class EditScreen : PageModel
         new SponsortRepository().RemoveSponsor(Bedrijf_id, Festival_id);
 
         return RedirectToPage();
+    }
+    
+    private void QRgenerator(string Link)
+    {
+        using (MemoryStream ms = new MemoryStream())
+        {
+            PayloadGenerator.Url generator = new PayloadGenerator.Url(Link);
+            string payload = generator.ToString();
+
+            QRCodeGenerator qrGenerator = new QRCodeGenerator();
+            QRCodeData qrCodeData = qrGenerator.CreateQrCode(payload, QRCodeGenerator.ECCLevel.Q);
+            QRCode qrCode = new QRCode(qrCodeData);
+            var qrCodeAsBitmap = qrCode.GetGraphic(20);
+            using (Bitmap bitMap = qrCode.GetGraphic(20))
+            {
+                bitMap.Save(ms, ImageFormat.Png);
+                QRCodeImage = "data:image/png;base64," + Convert.ToBase64String(ms.ToArray());
+            }
+        }
     }
 }
