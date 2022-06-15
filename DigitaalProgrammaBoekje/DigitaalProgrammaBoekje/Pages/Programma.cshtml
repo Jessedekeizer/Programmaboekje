@@ -23,18 +23,18 @@
     <div style="text-align: center">
         <h2>Agenda</h2>
     </div>
-    <table class="table table-borderless ">
+    <div id="blokitem">
+    <table class="table table-borderless">
         @foreach (var blok in Model.Bloks)
         {
-            <tbody>
-            <tr id="blokitem">
+            <tr>
                 @if (blok.Blok_type != 't')
                 {
                     <td>@(blok.Begintijd.ToString(@"hh\:mm"))</td>
                     @if (blok.Blok_type == 'o')
                     {
                         <td >
-                            @blok.Orkestgroep.Orkestnaam
+                            Orkestnaam: @blok.Orkestgroep.Orkestnaam
                             <br/>
                             <p style="white-space: pre-wrap;">@blok.Orkestgroep.Muziekstukken</p>
                         </td>
@@ -55,9 +55,9 @@
                     <td colspan="3" style="white-space: pre-wrap; text-align: center">@blok.Tekstvak</td>
                 }
             </tr>
-            </tbody>
         }
     </table>
+    </div>
     <div style="text-align: center">
         <h2>Sponsoren</h2>
     </div>
@@ -79,23 +79,23 @@
                 }
             </div>
 
-            <div class="carousel-inner">
+            <div class="carousel-inner" style="height: 300px; width: 100%;">
 
                 @foreach (var reclame in Model.Sponsorts)
                 {
                     if (reclame == Model.Sponsorts.First())
                     {
-                        <div class="carousel-item active" style="align-items: center">
+                        <div class="carousel-item active" style="align-items: center;">
                             <a href="@reclame.Websitelink">
-                                <img id="img" src="~/content/@reclame.Foto_link" class="d-block" style="width: 100%"/>
+                                <img id="img" src="~/content/@reclame.Foto_link" class="d-block" style="height: 300px; width: 100%"/>
                             </a>
                         </div>
                     }
                     else
                     {
-                        <div class="carousel-item">
+                        <div class="carousel-item" style="align-items: center;">
                             <a href="@reclame.Websitelink">
-                                <img id="img" src="~/content/@reclame.Foto_link" class="d-block" style="width: 100%"/>
+                                <img id="img" src="~/content/@reclame.Foto_link" class="d-block" style="height: 300px; width: 100%"/>
                             </a>
                         </div>
                     }
@@ -118,8 +118,8 @@
         {
             foreach (var Jurylid in Model.Jurylids)
             {
-                <div class="" id="cart">
-                    <div class="card justify-content-center" style="display: flex; align-items: center">
+                <div class="col" id="cart">
+                    <div class="card justify-content-center" style="display: flex; align-items: center; margin-bottom:  5px; background-color: transparent; border: 4px solid white;">
                         <img class="card-img-top justify-content-center" id="FImg1" style="object-fit: fill; height: 150px; width: 300px;" src="~/content/@Jurylid.jury_foto" alt="Card image cap">
                         <div class="card-body" style="">
                             <h5 class="card-title" style="margin: 0px">@Jurylid.jury_naam</h5>
