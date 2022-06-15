@@ -32,11 +32,12 @@
             </tr>
             <tr>
                 <th>Foto: </th>
-                <form method="post" asp-page-handler="UpdateFoto">
+                <form method="post" enctype="multipart/form-data" asp-page-handler="Update">
                     <input type="hidden" value="@jury.jury_id" name="jury_id"/>
                     <td>
                         <img style="object-fit: fill; height: 200px; width: 200px;" src="~/content/@jury.jury_foto" alt="Card image cap">
-                        <button type="submit" style="background-color: blue; color: white; border-radius: 8px; border: none; margin-left: 10px; width: 175px; height: 30px; margin-top: 10px" name="Username">Verander bio</button>
+                        <input for="photoButton" id="input1" type="file" name="frontPosted" class="photoButton" accept="image/jpeg, image/png, image/jpg"/>
+                        <button type="submit" style="background-color: blue; color: white; border-radius: 8px; border: none; margin-left: 10px; width: 175px; height: 30px; margin-top: 10px" name="Username">Verander Foto</button>
                     </td>
                 </form>
             </tr>

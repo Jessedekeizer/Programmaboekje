@@ -131,4 +131,17 @@ public class JurylidRepository
         var Bio = connection.Query<Jurylid>(sql, new {jury_id, BioUpd});
         return Bio;
     }
+    
+    public IEnumerable<Jurylid> UpdateFotoJury(int jury_id, string FotoUpd)
+    {
+        //Hier kan je de velden van een jurylid aanpassen.
+        string sql = @"
+                UPDATE Jurylid SET 
+                   jury_foto = @FotoUpd
+                WHERE jury_id = @Jury_id;";
+
+        using var connection = GetConnection();
+        var Foto = connection.Query<Jurylid>(sql, new {jury_id, FotoUpd});
+        return Foto;
+    }
 }
