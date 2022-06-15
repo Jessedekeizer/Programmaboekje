@@ -105,4 +105,30 @@ public class JurylidRepository
         var gebruiker = connection.Query<Jurylid>(sql, new {Jury_id});
         return gebruiker;
     }
+    
+    public IEnumerable<Jurylid> UpdateNaamJury(int jury_id, string NaamUpd)
+    {
+        //Hier kan je de velden van een jurylid aanpassen.
+        string sql = @"
+                UPDATE Jurylid SET 
+                   jury_naam = @NaamUpd
+                WHERE jury_id = @Jury_id;";
+
+        using var connection = GetConnection();
+        var Naam = connection.Query<Jurylid>(sql, new {jury_id, NaamUpd});
+        return Naam;
+    }
+    
+    public IEnumerable<Jurylid> UpdatebioJury(int jury_id, string BioUpd)
+    {
+        //Hier kan je de velden van een jurylid aanpassen.
+        string sql = @"
+                UPDATE Jurylid SET 
+                   jury_bio = @BioUpd
+                WHERE jury_id = @Jury_id;";
+
+        using var connection = GetConnection();
+        var Bio = connection.Query<Jurylid>(sql, new {jury_id, BioUpd});
+        return Bio;
+    }
 }

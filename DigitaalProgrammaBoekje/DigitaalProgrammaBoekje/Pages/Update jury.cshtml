@@ -12,17 +12,33 @@
         {
             <tr>
                 <th>Username: </th>
-                <td>@jury.jury_naam</td>
+                <form method="post" asp-page-handler="UpdateNaam">
+                    <input type="hidden" value="@jury.jury_id" name="jury_id"/>
+                    <td>
+                        <input value="@jury.jury_naam" name="NaamUpd"/>
+                        <button type="submit" style="background-color: blue; color: white; border-radius: 8px; border: none; margin-left: 10px; width: 175px; height: 30px; margin-top: 10px" name="Username">Verander Naam</button>
+                    </td>
+                </form>
             </tr>
             <tr>
-                <th>Email: </th>
-                <td>@jury.jury_bio</td>
+                <th>bio: </th>
+                <form method="post" asp-page-handler="UpdateBio">
+                    <input type="hidden" value="@jury.jury_id" name="jury_id"/>
+                    <td>
+                        <input value="@jury.jury_bio" name="BioUpd"/>
+                        <button type="submit" style="background-color: blue; color: white; border-radius: 8px; border: none; margin-left: 10px; width: 175px; height: 30px; margin-top: 10px" name="Username">Verander bio</button>
+                    </td>
+                </form>
             </tr>
             <tr>
                 <th>Foto: </th>
-                <td>
-                    <img style="object-fit: fill; height: 200px; width: 200px;" src="~/content/@jury.jury_foto" alt="Card image cap">
-                </td>
+                <form method="post" asp-page-handler="UpdateFoto">
+                    <input type="hidden" value="@jury.jury_id" name="jury_id"/>
+                    <td>
+                        <img style="object-fit: fill; height: 200px; width: 200px;" src="~/content/@jury.jury_foto" alt="Card image cap">
+                        <button type="submit" style="background-color: blue; color: white; border-radius: 8px; border: none; margin-left: 10px; width: 175px; height: 30px; margin-top: 10px" name="Username">Verander bio</button>
+                    </td>
+                </form>
             </tr>
         }
     </div>

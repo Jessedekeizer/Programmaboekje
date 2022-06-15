@@ -13,4 +13,18 @@ public class Update_jury : PageModel
     {
         Jurylids = new JurylidRepository().Get1Jury(jury_id);
     }
+
+    public IActionResult OnPostUpdateNaam([FromForm] string NaamUpd, [FromForm] int jury_id)
+    {
+        Jurylids = new JurylidRepository().UpdateNaamJury(jury_id, NaamUpd);
+        
+        return RedirectToPage(new{Jury_id = jury_id});
+    }
+
+    public IActionResult OnPostUpdateBio([FromForm] string BioUpd, [FromForm] int jury_id)
+    {
+        Jurylids = new JurylidRepository().UpdatebioJury(jury_id, BioUpd);
+        
+        return RedirectToPage(new{Jury_id = jury_id});
+    }
 }
