@@ -19,13 +19,25 @@ public class Meld_aanRepository
         return result;
     }
     
+    
+    public bool Check(int Festival_id, int Gebruiker_id)
+    {
+        string sql = @"Select COUNT(*) From meld_aan WHERE festival_id = @Festival_id AND gebruiker_id = @Gebruiker_id";
+        using var connection = GetConnection();
+        bool result = connection.ExecuteScalar<bool>(sql, new{Festival_id, Gebruiker_id});
+        return result;
+    }
     public void AddToFestival(int Festival_id, int Gebruiker_id)
     {
-        string sql = @"INSERT INTO Meld_aan(festival_id, gebruiker_id)
+        if(!Check(Festival_id, Gebruiker_id))
+        {
+            string sql = @"INSERT INTO Meld_aan(festival_id, gebruiker_id)
             VALUES (@Festival_id, @Gebruiker_id)";
 
             using var connection = GetConnection();
             connection.Query(sql, new {Festival_id, Gebruiker_id});
+        }
+       
     }
     public void RemoveFromFestival(int Festival_id, int Gebruiker_id)
     {
