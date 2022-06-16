@@ -9,156 +9,137 @@
 }
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/css/HomeScreen.css"/>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
     <link rel="stylesheet" href="_Layout.cshtml.css"/>
     <link rel="stylesheet" href="~/DigitaalProgrammaBoekje.styles.css" asp-append-version="true"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="~/css/Phone.css"/>
     <title></title>
 </head>
 
 <body>
-<header>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-red border-bottom" style="background-color: #f5958c">
-        <div class="container">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav justify-content-between flex-grow-1">
+<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-red border-bottom" style="background-color: #f5958c">
+    <div class="container">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+            <ul class="navbar-nav justify-content-between flex-grow-1">
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-page="/HomeScreen">
+                        <div style="color: white">Festivals</div>
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+
+                        @if (Model.Year == 0)
+                        {
+                            @DateTime.Now.Year
+                            ;
+                        }
+                        else
+                        {
+                            @Model.Year
+                            ;
+                        }
+
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        @foreach (var jaar in Model.FestivalYears)
+                        {
+                            if (Model.Year == 0 && jaar.Festival_datum.Year == DateTime.Now.Year)
+                            {
+                            }
+                            else if (jaar.Festival_datum.Year != Model.Year)
+                            {
+                                <li>
+                                    <a class="dropdown-item" href="?Jaartal=@jaar.Festival_datum.ToString("yyyy")">@jaar.Festival_datum.ToString("yyyy")</a>
+                                </li>
+                            }
+                        }
+
+                    </ul>
+                </li>
+
+                @if (Convert.ToBoolean(ViewData["Logged_In"]) == false)
+                {
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/HomeScreen">
-                            <div style="color: white">Festivals</div>
+                        <a class="nav-link text-dark" asp-area="" asp-page="/Login">
+                            <div style="color: white">Login</div>
                         </a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-
-                            @if (Model.Year == 0)
-                            {
-                                @DateTime.Now.Year
-                                ;
-                            }
-                            else
-                            {
-                                @Model.Year
-                                ;
-                            }
-
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            @foreach (var jaar in Model.FestivalYears)
-                            {
-                                if (Model.Year == 0 && jaar.Festival_datum.Year == DateTime.Now.Year)
-                                {
-                                }
-                                else if (jaar.Festival_datum.Year != Model.Year)
-                                {
-                                    <li>
-                                        <a class="dropdown-item" href="?Jaartal=@jaar.Festival_datum.ToString("yyyy")">@jaar.Festival_datum.ToString("yyyy")</a>
-                                    </li>
-                                }
-                            }
-
-                        </ul>
-                    </li>
-
-                    @if (Convert.ToBoolean(ViewData["Logged_In"]) == false)
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Login">
-                                <div style="color: white">Login</div>
-                            </a>
-                        </li>
-                    }
-                    @if (Convert.ToBoolean(ViewData["Logged_In"]) == true)
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/AccountScreen">
-                                <div style="color: white">Account</div>
-                            </a>
-                        </li>
-                    }
-                </ul>
-            </div>
-        </div>
-    </nav>
-</header>
-
-<div class="container" id="FestivalListGenerator">
-    
-    <div class="row col-12 justify-content-center">
-        <div>
-                <h1>Aankomende Festivallen</h1>
-            </div>
-        @if (Model.Festivallist != null)
-        {
-            foreach (var Festivalitem in Model.Festivallist)
-            {
-                if (@Festivalitem.Festival_datum >= DateTime.Now)
-                {
-                    <div class="col-3" id="cart" style="width: 300px; height: 300px; margin: 10px; margin-top: 20px;">
-                        <div class="card" style="width: 300px; height: 300px;">
-                            <img class="card-img-top" id="FImg1" style="object-fit: fill; height: 150px; width: 300px;" src="~/content/@Festivalitem.Festival_logo" alt="Card image cap">
-                            <div class="card-body" style="height: 150px; width: 300px;">
-                                <div class="column" style="text-align: center">
-                                    <h4 class="card-title" style="margin: 0px">@Festivalitem.Festival_naam</h4>
-                                </div>
-                                <div class="column" style="text-align: center; margin-top: 20px">
-                                    <p class="card-text">@(Festivalitem.Festival_datum.ToString("yyyy-MM-dd"))</p>
-                                </div>
-                                <div class="column" style="text-align: center">
-                                    <p class="card-text">@Festivalitem.Festival_locatie</p>
-                                </div>
-
-                            </div>
-                            <a href="/programma?Festival_id=@Festivalitem.Festival_id" class="btn btn-primary stretched-link">Bekijk</a>
-                        </div>
-                    </div>
                 }
-            }
-        }
+                @if (Convert.ToBoolean(ViewData["Logged_In"]))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-page="/AccountScreen">
+                            <div style="color: white">Account</div>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
     </div>
-    
-    <div class="row col-12 justify-content-center">
-    <div>
-            <h1>Verleden Festivallen</h1>
-        </div>
+</nav>
+
+<div class="container" id="FestivalListGeneraetor">
+    <div class="row col-12">
         @if (Model.Festivallist != null)
         {
             foreach (var Festivalitem in Model.Festivallist)
             {
-                if (@Festivalitem.Festival_datum < DateTime.Now)
-                {
-                    <div class="col-3" id="cart" style="width: 300px; height: 300px; margin: 10px; margin-top: 20px;">
-                        <div class="card" style="width: 300px; height: 300px;">
-                            <img class="card-img-top" id="FImg1" style="object-fit: fill; height: 150px; width: 300px;" src="~/content/@Festivalitem.Festival_logo" alt="Card image cap">
-                            <div class="card-body" style="height: 150px; width: 300px;">
-                                <div class="column" style="text-align: center">
-                                    <h4 class="card-title" style="margin: 0px">@Festivalitem.Festival_naam</h4>
-                                </div>
-                                <div class="column" style="text-align: center; margin-top: 20px">
-                                    <p class="card-text">@(Festivalitem.Festival_datum.ToString("yyyy-MM-dd"))</p>
-                                </div>
-                                <div class="column" style="text-align: center">
-                                    <p class="card-text">@Festivalitem.Festival_locatie</p>
-                                </div>
-
+                <div class=" col-3" id="cart" style="width: 300px; height: 400px; margin: 10px; margin-top: 20px;">
+                    <div class="card" style="width: 300px; height: 300px;">
+                        <img class="card-img-top" id="FImg1" style="object-fit: fill; height: 150px; width: 300px;" src="~/content/@Festivalitem.Festival_logo" alt="Card image cap">
+                        <div class="card-body" style="height: 100px; width: 300px;">
+                            <div class="column" style="text-align: center">
+                                <h4 class="card-title" style="margin: 0px">@Festivalitem.Festival_naam</h4>
                             </div>
-                            <a href="/programma?Festival_id=@Festivalitem.Festival_id" class="btn btn-primary stretched-link">Bekijk</a>
+                            <div class="column" style="text-align: center;">
+                                <p class="card-text">@(Festivalitem.Festival_datum.ToString("yyyy-MM-dd"))</p>
+                            </div>
+                            <div class="column" style="text-align: center">
+                                <p class="card-text">@Festivalitem.Festival_locatie</p>
+                            </div>
+
                         </div>
+
+                        <a href="/programma?Festival_id=@Festivalitem.Festival_id" class="btn btn-primary stretched-link" style="height: 50px; color: white; background-color: red; border: none">Bekijk</a>
+
                     </div>
-                }
+                    @if (Convert.ToBoolean(ViewData["Logged_In"]))
+                    {
+                        if (Model.MeldAans.Count() > 0)
+                        {
+                            foreach (var meldAan in Model.MeldAans)
+                            {
+                                <form method="post">
+                                    <input type="hidden" name="festival_id" value="@Festivalitem.Festival_id"/>
+                                    <input type="hidden" name="gebruiker_id" value="@Model.Gebruiker_id"/>
+                                    @if (meldAan.Festival_id == Festivalitem.Festival_id)
+                                        {
+                                            @if (meldAan.Gebruiker_id == Model.Gebruiker_id)
+                                            {
+                                                <button id="knop" asp-page-handler="Signout">Meld Af</button>
+                                            }
+                                        }
+                                </form>
+                            }
+                        }
+                        <form method="post" asp-page-handler="Signup">
+                                <input type="hidden" name="festival_id" value="@Festivalitem.Festival_id"/>
+                                <input type="hidden" name="gebruiker_id" value="@Model.Gebruiker_id"/>
+                                <button id="knop">Meld Aan</button>
+                            </form>
+                    }
+                </div>
             }
         }
-
     </div>
 </div>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

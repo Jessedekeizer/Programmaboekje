@@ -16,12 +16,12 @@ public class UpdateBedrijf : PageModel
         {
             if (new Rolechecker(HttpContext.Session).checkUser())
             {
-                RedirectToPage("/HomeScreen");
+               return RedirectToPage("/HomeScreen");
             }
         }
         else
         {
-            RedirectToPage("/Login");
+          return  RedirectToPage("/Login");
         }
         
         Bedrijfs = new BedrijfRepository().Get1Bedrijf(bedrijf_id);

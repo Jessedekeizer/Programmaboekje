@@ -72,12 +72,12 @@ public class EditScreen : PageModel
         {
             if (new Rolechecker(HttpContext.Session).checkUser())
             {
-                RedirectToPage("/HomeScreen");
+               return RedirectToPage("/HomeScreen");
             }
         }
         else
         {
-            RedirectToPage("/Login");
+          return  RedirectToPage("/Login");
         }
         
         
