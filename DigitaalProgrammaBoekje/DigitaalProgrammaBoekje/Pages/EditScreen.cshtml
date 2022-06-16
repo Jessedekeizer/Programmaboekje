@@ -9,9 +9,9 @@
     ViewData["Title"] = "Edit Page";
 }
 @{ int number1 = 1; }
-<div class="d-flex flex-row">
-<div class="col-3" style="margin: 10px">
-    <table class="table table-bordered align-right">
+<div class="d-flex flex-row" id="EditDiv">
+<div class="col-3">
+    <table class="table border-white align-right">
         <thead>
         <tr>
         <th class="col-2">Orkestnaam</th>
@@ -42,10 +42,10 @@
 
     </table>
     <h3>QR-code:</h3>
-    <img src="@Model.QRCodeImage" alt="" style="height:150px;width:150px"/>
+    <img src="@Model.QRCodeImage" alt="" style="height:150px;width:150px; margin: 5px"/>
 </div>
 
-<div class="col-2" style="width: 320px; margin: 10px">
+<div class="col-3" id="EditSchedule">
     @foreach (var festival in Model.CurrentFestival)
     {
         <div>
@@ -269,7 +269,7 @@
                         <input type="hidden" asp-for="Blok.Blok_id" value="@Model.Blok_id"/>
                         <input type="hidden" asp-for="Blok.Blok_type" value="t"/>
                         <input type="hidden" asp-for="Blok.Begintijd" value="@TimeSpan.Zero"/>
-                        <button asp-page-handler="save">opslaan</button>
+                        <button asp-page-handler="save" id="knop">opslaan</button>
                     </div>
                 </form>
             </div>
@@ -282,8 +282,7 @@
                     <input type="hidden" asp-for="Blok.Blok_type" value="p"/>
                     <input type="hidden" asp-for="Blok.Festival_id" value="@Model.Festival_id"/>
                     <div class="row">
-                        <button asp-page-handler="save">opslaan</button>
-                        <button asp-page-handler="remove">verwijder</button>
+                        <button asp-page-handler="save" id="knop">opslaan</button>
                     </div>
                 </form>
             </div>
@@ -309,7 +308,7 @@ Muziekstuk 3">@Model.Text</textarea>
                         <input type="hidden" asp-for="Blok.Blok_id" value="@Model.Blok_id"/>
                         <input type="hidden" asp-for="Blok.Blok_type" value="o"/>
                         <input type="hidden" asp-for="Blok.Orkestgroep.Orkest_id" value="@Model.Orkest_id"/>
-                        <button asp-page-handler="save">opslaan</button>
+                        <button asp-page-handler="save" id="knop">opslaan</button>
                     </div>
                 </form>
             </div>
@@ -331,7 +330,7 @@ Muziekstuk 3">@Model.Text</textarea>
                         <input type="hidden" asp-for="Jurylid.jury_id" value="@Model.Jury_id"/>
                         <input type="hidden" asp-for="Jurylid.jury_foto" value="@Model.Juryfoto"/>
                         <input type="hidden" name="Festival_id" value="@Model.Festival_id"/>
-                        <input type="submit" id="knop" value="Voeg Toe" style="background-color: #7d3ec9; color: white; border: none; border-radius: 3px; margin-top: 10px; height: 25px; width: 170px; margin-left: 212px" asp-page-handler="Addjury"/>
+                        <input type="submit" id="knop" value="Voeg Toe" asp-page-handler="Addjury"/>
                     </div>
                 </form>
                 <div>
@@ -349,7 +348,7 @@ Muziekstuk 3">@Model.Text</textarea>
                             <div class="row">
                                 <input type="hidden" asp-for="@Jurylid.jury_id" value="@Jurylid.jury_id"/>
                                 <input type="hidden" name="Festival_id" value="@Model.Festival_id"/>
-                                <input type="submit" id="knop" content="Voeg Toe" style="background-color: #7d3ec9; color: white; border: none; border-radius: 3px; margin-top: 10px; height: 25px; width: 170px; margin-left: 212px"
+                                <input type="submit" id="knop" content="Voeg Toe" value="Voeg Toe"
                                        asp-page-handler="AddExistingjury"/>
                             </div>
                         </form>
@@ -359,7 +358,7 @@ Muziekstuk 3">@Model.Text</textarea>
             <div class="tab-pane fade @Model.active_reclame" id="list-reclame" role="tabpanel" aria-labelledby="list-reclame-list">
                 <div class="row">
                     <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="margin: 5px;">
                             selecteer Bedrijf
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -375,6 +374,7 @@ Muziekstuk 3">@Model.Text</textarea>
                         </ul>
                     </div>
                     <form method="post" asp-page-handler="AddReclame" enctype="multipart/form-data">
+                        <h2>Geef hier het plaatje op:</h2>
                         <input for="photoButton" id="input2" type="file" name="frontPosted" class="photoButton" accept="image/jpeg, image/png, image/jpg, image/jfif"/>
                         <h2>Voer hier de naam van het bedrijf in:</h2>
                         <input name="Company_name" value="@Model.bedrijf_naam" placeholder="Bedrijf naam"/>
@@ -382,7 +382,7 @@ Muziekstuk 3">@Model.Text</textarea>
                         <h2>Voer hier de link van het bedrijf in:</h2>
                         <input name="Link" value="@Model.Link" placeholder="Website Link"/>
                         <input type="hidden" name="bedrijf_id" value="@Model.Bedrijf_id"/>
-                        <button type="submit">VoegToe</button>
+                        <button type="submit" id="knop">VoegToe</button>
                     </form>
                 </div>
 
