@@ -20,12 +20,13 @@ public class AccountScreenAdmin : PageModel
     public IEnumerable<Gebruiker> Gebruikers { get; set; }
     public IEnumerable<Gebruiker> Organisators { get; set; }
     
-    public IActionResult OnGet(int warning)
+    public IActionResult OnGet(int warning, string warning2)
     {
         string Logged_in = HttpContext.Session.GetString(SessionConstant.Gebruiker_ID);
         if (Logged_in == null)
             return RedirectToPage("/Login");
         Warning = warning;
+        Warning2 = warning2;
         Gebruikers = new GebruikerRepository().GetUser(Int32.Parse(HttpContext.Session.GetString(SessionConstant.Gebruiker_ID)));
         Organisators = new GebruikerRepository().GetOrganisators();
         return Page();
@@ -75,24 +76,11 @@ public class AccountScreenAdmin : PageModel
         
         return RedirectToPage(new{warning = Warning});
     }
-
-    public IActionResult OnPostUpdateDirigent([FromForm] string Dirigentupd)
-    {
-        new GebruikerRepository().UpdateDirigent(Int32.Parse(HttpContext.Session.GetString(SessionConstant.Gebruiker_ID)), Dirigentupd);
-
-        return RedirectToPage();
-    }
+    
     
     public IActionResult OnPostUpdateNummer([FromForm] string NummerUpd)
     {
         new GebruikerRepository().UpdateNummer(Int32.Parse(HttpContext.Session.GetString(SessionConstant.Gebruiker_ID)), NummerUpd);
-
-        return RedirectToPage();
-    }
-
-    public IActionResult OnPostUpdateLeden([FromForm] string LedenUpd)
-    {
-        new OrkestgroepRepository().UpdateAantalLeden(Int32.Parse(HttpContext.Session.GetString(SessionConstant.Gebruiker_ID)), LedenUpd);
 
         return RedirectToPage();
     }
@@ -107,7 +95,7 @@ public class AccountScreenAdmin : PageModel
             return RedirectToPage();
         }
         if (chkUser)
-            return RedirectToPage(new {warning = 1});
+            return RedirectToPage(new {warning2 = "Gebruikersnaam Bestaat al"});
         return RedirectToPage();
     }
 
