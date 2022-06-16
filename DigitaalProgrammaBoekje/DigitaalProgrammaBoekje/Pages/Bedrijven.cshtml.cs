@@ -20,7 +20,7 @@ public class Bedrijven : PageModel
         {
             if (new Rolechecker(HttpContext.Session).checkUser())
             {
-                RedirectToPage("/HomeScreen");
+                return RedirectToPage("/HomeScreen");
             }
             Jurylids = new JurylidRepository().GetAllJury();
 
@@ -28,7 +28,7 @@ public class Bedrijven : PageModel
         }
         else
         {
-            RedirectToPage("/Login");
+            return RedirectToPage("/Login");
         }
 
         return Page();
