@@ -14,7 +14,7 @@ public class JurylidRepository
 
     public IEnumerable<Jurylid> GetAllJury()
     {
-        //Haalt alles op van een bepaald jurylid
+        //Haalt alles op van juryleden
         string sql = @"SELECT * FROM Jurylid";
 
         using var connection = GetConnection();
@@ -24,7 +24,7 @@ public class JurylidRepository
 
     public IEnumerable<Jurylid> GetJury(int festival_id)
     {
-        //Haalt alles op van een bepaald jurylid
+        //Haalt alles op van juryleden van een bepaald festival
         string sql = @"SELECT * FROM Jurylid j
         left join neemt_deel nd on j.jury_id = nd.jury_id 
         WHERE festival_id = @Festival_id
@@ -37,10 +37,12 @@ public class JurylidRepository
 
     public void AddJurylid(int Jury_id, string Name, string Bio, string Foto, int Festival_id)
     {
+        //als die bepaalde jury al bestaat update hij de jury
         if (Jury_id != 0)
         {
             UpdateJurylid(Jury_id, Name, Bio, Foto);
         }
+        //Anders voeg je een nieuwe jury toe
         else
         {
             string sql = @"
@@ -59,6 +61,7 @@ public class JurylidRepository
 
     public void AddExistingjury(int Jury_id, int Festival_id)
     {
+        //Voegt jury toe aan festival
         string sql = @"
                 INSERT INTO neemt_deel (jury_id, festival_id) 
                 VALUES (@Jury_id, @Festival_id)";
@@ -100,6 +103,7 @@ public class JurylidRepository
 
     public IEnumerable<Jurylid> Get1Jury(int Jury_id)
     {
+        //Haalt 1 bepaalde jury op
         string sql = @"SELECT * FROM jurylid WHERE jury_id = @Jury_id";
         using var connection = GetConnection();
         var gebruiker = connection.Query<Jurylid>(sql, new {Jury_id});
@@ -108,7 +112,7 @@ public class JurylidRepository
     
     public IEnumerable<Jurylid> UpdateNaamJury(int jury_id, string NaamUpd)
     {
-        //Hier kan je de velden van een jurylid aanpassen.
+        //Hier kan je naam van een jury aanpassen.
         string sql = @"
                 UPDATE Jurylid SET 
                    jury_naam = @NaamUpd
@@ -121,7 +125,7 @@ public class JurylidRepository
     
     public IEnumerable<Jurylid> UpdatebioJury(int jury_id, string BioUpd)
     {
-        //Hier kan je de velden van een jurylid aanpassen.
+        //Hier kan je de bio van een jurylid aanpassen.
         string sql = @"
                 UPDATE Jurylid SET 
                    jury_bio = @BioUpd
@@ -134,7 +138,7 @@ public class JurylidRepository
     
     public IEnumerable<Jurylid> UpdateFotoJury(int jury_id, string FotoUpd)
     {
-        //Hier kan je de velden van een jurylid aanpassen.
+        //Hier kan je de foto van een jurylid aanpassen.
         string sql = @"
                 UPDATE Jurylid SET 
                    jury_foto = @FotoUpd

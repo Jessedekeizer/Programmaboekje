@@ -42,7 +42,7 @@
             <div>@bedrijf.websitelink</div>
             <form asp-page-handler="BedrijfUpd" method="post">
                 <input type="hidden" name="bedrijf_id" value="@bedrijf.bedrijf_id"/>
-                <button id="UpdateJury" style="background-color: mediumpurple; border: none;">
+                <button id="UpdateJury" style="background-color: red; border: none; color: white; border-radius: 2px">
                     Bewerk
                 </button>
             </form>
@@ -62,7 +62,7 @@
                     <p class="card-text">@jury.jury_bio</p>
                     <form asp-page-handler="JuryUpd" method="post">
                         <input type="hidden" name="jury_id" value="@jury.jury_id"/>
-                        <button id="UpdateJury" style="background-color: mediumpurple; border: none;">
+                        <button id="UpdateJury" style="background-color: red; border: none; color: white; border-radius: 2px">
                             Bewerk
                         </button>
                     </form>

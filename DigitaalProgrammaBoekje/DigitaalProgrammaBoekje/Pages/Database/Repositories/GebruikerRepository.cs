@@ -14,7 +14,7 @@ public class GebruikerRepository
 
     public void DeleteGebruiker(int Gebruiker_id)
     {
-        //verwijdert gebruiker 
+        //verwijdert een bepaalde gebruiker 
         string sql = @"DELETE FROM Gebruikers WHERE gebruiker_id = @gebruiker_id";
         
         using var connection = GetConnection();

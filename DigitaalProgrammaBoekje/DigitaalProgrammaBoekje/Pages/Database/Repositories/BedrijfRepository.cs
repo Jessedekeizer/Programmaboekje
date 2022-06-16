@@ -13,7 +13,7 @@ public class BedrijfRepository
     }
     public IEnumerable<Bedrijf> GetAllbedrijf()
     {
-        //Haalt alles op van een bepaald bedrijf
+        //Haalt alles op de bedrijven
         string sql = "SELECT * FROM Bedrijf";
 
         using var connection = GetConnection();
@@ -32,7 +32,7 @@ public class BedrijfRepository
     
     public int AddBedrijf(string Name, string Link)
     {
-        //Voegt een jurylid toe
+        //Voegt een bedrijf toe
         string sql = @"
                 INSERT INTO bedrijf (bedrijf_naam, websitelink) 
                 VALUES (@Name, @Link); SELECT LAST_INSERT_ID()";
@@ -66,7 +66,7 @@ public class BedrijfRepository
     
     public IEnumerable<Bedrijf> UpdateLinkBedrijf(int bedrijf_id, string LinkUpd)
     {
-        //Hier kan je de velden van een jurylid aanpassen.
+        //Hier kan je de websitelink van een bedrijf aanpassen.
         string sql = @"
                 UPDATE bedrijf SET 
                    websitelink = @LinkUpd
@@ -79,7 +79,7 @@ public class BedrijfRepository
     
     public IEnumerable<Bedrijf> UpdateNaamBedrijf(int bedrijf_id, string NaamUpd)
     {
-        //Hier kan je de velden van een jurylid aanpassen.
+        //Hier kan je de naam van een bedrijf aanpassen.
         string sql = @"
                 UPDATE bedrijf SET 
                    bedrijf_naam = @NaamUpd
@@ -92,6 +92,7 @@ public class BedrijfRepository
     
     public IEnumerable<Bedrijf> Get1Bedrijf(int Bedrijf_id)
     {
+        //Hier haal je een bepaalt bedrijf op
         string sql = @"SELECT * FROM bedrijf WHERE bedrijf_id = @Bedrijf_id";
         using var connection = GetConnection();
         var bedrijf = connection.Query<Bedrijf>(sql, new {Bedrijf_id});
