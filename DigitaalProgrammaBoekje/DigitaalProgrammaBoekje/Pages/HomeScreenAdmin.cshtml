@@ -6,6 +6,36 @@
     ViewData["Title"] = "Home admin";
 }
 
+<div class="bg-modal">
+    <form method="post" enctype="multipart/form-data" style="height: 100%">
+        <div class="modal-content">
+
+            <div class="close">+</div>
+
+            <div class="row" style="margin-top: 50px">
+                <label id="Label1">Naam festival</label>
+                <input asp-for="Festival.Festival_naam" type="text" id="input1" class="form-control" placeholder="Festival Naam" required style="text-align: center"/>
+                <span class="invalid-feedback" asp-validation-for="Festival.Festival_naam"></span>
+            </div>
+            <div class="row">
+                <label id="Label1">Locatie festival</label>
+                <input asp-for="Festival.Festival_locatie" type="text" id="input1" class="form-control" placeholder="Festival Locatie" required style="text-align: center"/>
+                <span class="invalid-feedback" asp-validation-for="Festival.Festival_locatie"></span>
+            </div>
+            <div class="row">
+                <label id="Label1">datum festival</label>
+                <input asp-for="Festival.Festival_datum" type="date" id="input1" class="form-control" placeholder="Festival Datum" required style="text-align: center"/>
+                <span class="invalid-feedback" asp-validation-for="Festival.Festival_datum"></span>
+            </div>
+            <div class="row">
+                <label id="Label1">Logo festival</label>
+                <span class="kop spacing">Selecteer logo festival:</span>
+                <input for="photoButton" id="input1" type="file" name="frontPosted" class="photoButton" accept="image/jpeg, image/png, image/jpg"/>
+            </div>
+            <input type="submit" id="knop" style="background-color: #7d3ec9; color: white; border: none; border-radius: 3px; margin-top: 10px; height: 25px; width: 170px; margin-left: 212px" asp-page-handler="Upload">Voeg festival toe</input>
+        </div>
+    </form>
+</div>
 
 <div class="container" id="FestivalListGeneraetor">
     <div class="row col-12">

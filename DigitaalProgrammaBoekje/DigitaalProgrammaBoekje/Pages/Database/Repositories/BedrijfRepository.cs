@@ -63,4 +63,38 @@ public class BedrijfRepository
         using var connection = GetConnection();
         connection.Query<Bedrijf>(sql, new {Id, Name, Link});
     }
+    
+    public IEnumerable<Bedrijf> UpdateLinkBedrijf(int bedrijf_id, string LinkUpd)
+    {
+        //Hier kan je de velden van een jurylid aanpassen.
+        string sql = @"
+                UPDATE bedrijf SET 
+                   websitelink = @LinkUpd
+                WHERE bedrijf_id = @Bedrijf_id;";
+
+        using var connection = GetConnection();
+        var Link = connection.Query<Bedrijf>(sql, new {bedrijf_id, LinkUpd});
+        return Link;
+    }
+    
+    public IEnumerable<Bedrijf> UpdateNaamBedrijf(int bedrijf_id, string NaamUpd)
+    {
+        //Hier kan je de velden van een jurylid aanpassen.
+        string sql = @"
+                UPDATE bedrijf SET 
+                   bedrijf_naam = @NaamUpd
+                WHERE bedrijf_id = @Bedrijf_id;";
+
+        using var connection = GetConnection();
+        var Naam = connection.Query<Bedrijf>(sql, new {bedrijf_id, NaamUpd});
+        return Naam;
+    }
+    
+    public IEnumerable<Bedrijf> Get1Bedrijf(int Bedrijf_id)
+    {
+        string sql = @"SELECT * FROM bedrijf WHERE bedrijf_id = @Bedrijf_id";
+        using var connection = GetConnection();
+        var bedrijf = connection.Query<Bedrijf>(sql, new {Bedrijf_id});
+        return bedrijf;
+    }
 }
