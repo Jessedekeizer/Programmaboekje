@@ -44,7 +44,7 @@
                     <form method="post" asp-page-handler="UpdateUsern">
                         @if (Model.Warning == 2)
                         {
-                            <h3 id="warning" style="color: red">Username already in use</h3>
+                            <h3 id="warning" style="color: red">Naam is al in gebruik</h3>
                         }
                         <h7>Change Username to:</h7><input type="text" placeholder="nieuwe naam" name="UsernUpdate"/>
                         <button type="submit" id="ButtonAcc" name="Username">Verander naam</button>
@@ -79,7 +79,7 @@
                         <div class="row">
                             @if (Model.Warning == 1)
                             {
-                                <h3 id="warning" style="color: red">Current password is incorrect</h3>
+                                <h3 id="warning" style="color: red">Huidig wachtwoord is incorrect</h3>
                             }
                             <h7>Huidig wachtwoord:</h7><input type="password" placeholder="huidig wachtwoord" name="PasswordCurrent" style="width: 250px"/>
                         </div>

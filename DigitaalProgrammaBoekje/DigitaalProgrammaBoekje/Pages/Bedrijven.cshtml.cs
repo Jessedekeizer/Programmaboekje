@@ -27,4 +27,10 @@ public class Bedrijven : PageModel
         
         return RedirectToPage("/Update jury", new{Jury_id = jury_id});
     }
+    
+    public IActionResult OnPostBedrijfUpd([FromForm]int bedrijf_id)
+    {
+        
+        return RedirectToPage("/UpdateBedrijf", new{Bedrijf_id = bedrijf_id});
+    }
 }

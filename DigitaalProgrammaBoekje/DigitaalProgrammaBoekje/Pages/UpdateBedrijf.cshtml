@@ -1,0 +1,39 @@
+﻿@page
+@model DigitaalProgrammaBoekje.Pages.UpdateBedrijf
+
+@{
+    ViewData["Title"] = "Update Bedrijven";
+}
+
+<table class="table table-bordered">
+    <div class="col-6" style="background-color: white; border-left: 2px solid #56A28E;">
+        <h2 class="d-flex justify-content-center" style="margin-top: 10px">Bedrijf informatie</h2>
+        @foreach (var bedrijf in Model.Bedrijfs)
+        {
+            <tr>
+                <th>Naam: </th>
+                <form method="post" asp-page-handler="UpdateNaam">
+                    <input type="hidden" value="@bedrijf.bedrijf_id" name="bedrijf_id"/>
+                    <td>
+                        <input value="@bedrijf.bedrijf_naam" name="NaamUpd"/>
+                        <button type="submit" style="background-color: blue; color: white; border-radius: 8px; border: none; margin-left: 10px; width: 175px; height: 30px; margin-top: 10px" name="Username">Verander Naam</button>
+                    </td>
+                </form>
+            </tr>
+            <tr>
+                <th>Websitelink: </th>
+                <form method="post" asp-page-handler="UpdateLink">
+                    <input type="hidden" value="@bedrijf.bedrijf_id" name="bedrijf_id"/>
+                    <td>
+                        <input value="@bedrijf.websitelink" name="LinkUpd"/>
+                        <button type="submit" style="background-color: blue; color: white; border-radius: 8px; border: none; margin-left: 10px; width: 175px; height: 30px; margin-top: 10px" name="Username">Verander link</button>
+                    </td>
+                </form>
+            </tr>
+        }
+    </div>
+</table>
+
+<form method="post" asp-page-handler="Terug">
+    <button style="color: white; background-color: blue; border-radius: 4px; margin: 10px; border: transparent">Terug naar de bedrijven en juryleden</button>
+</form>

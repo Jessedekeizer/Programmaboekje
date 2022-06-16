@@ -14,7 +14,7 @@ public class FestivalRepository
     
     public IEnumerable<Festival> GetAll()
     {
-        //Haalt alles op van een bepaald festival
+        //Haalt alles de festivallen
         string sql = "SELECT * FROM Festival";
         using var connection = GetConnection();
         var festival = connection.Query<Festival>(sql);
@@ -24,7 +24,7 @@ public class FestivalRepository
     public IEnumerable<Festival> GetFestivalUser(int User_id)
     {
         //Haalt alles op van een bepaald festival
-        string sql = "SELECT * FROM Festival WHERE gebruikers_id = @User_id";
+        string sql = "SELECT * FROM Festival WHERE gebruiker_id = @User_id";
 
         using var connection = GetConnection();
         var festival = connection.Query<Festival>(sql, new {User_id});
@@ -33,6 +33,7 @@ public class FestivalRepository
     
     public IEnumerable<Festival> FestivalsGetYears()
     {
+        //sorteert de festivallen op jaar
         string sql = "SELECT * FROM Festival GROUP BY YEAR(Festival_datum)";
 
         using var connection = GetConnection();
@@ -50,18 +51,7 @@ public class FestivalRepository
         using var connection = GetConnection();
         connection.Query<Festival>(sql, new{Name, Location, Date, Logo, User});
     }
-    
-    public void AddTestFestival(string Name, string Location, DateTime Date, string Logo)
-    {
-        //Voeg een festival toe
-        string sql = @"
-                INSERT INTO festival (festival_naam, festival_locatie, festival_datum, festival_logo) 
-                VALUES (@Name,@Location, @Date, @Logo)";
 
-        using var connection = GetConnection();
-        connection.Query<Festival>(sql, new{Name, Location, Date, Logo});
-    }
-    
     public void DeleteFestival(int Festival_id)
     {
         //Verwijdert een bepaald festival

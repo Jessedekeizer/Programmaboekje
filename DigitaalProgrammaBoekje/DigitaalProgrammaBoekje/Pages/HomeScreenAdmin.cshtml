@@ -1,5 +1,6 @@
 ﻿@page
 @using DigitaalProgrammaBoekje.Pages.Database.Models
+@using DigitaalProgrammaBoekje.Helpers
 @model DigitaalProgrammaBoekje.Pages.HomeScreenAdmin
 
 @{
@@ -32,6 +33,7 @@
                 <span class="kop spacing">Selecteer logo festival:</span>
                 <input for="photoButton" id="input1" type="file" name="frontPosted" class="photoButton" accept="image/jpeg, image/png, image/jpg"/>
             </div>
+            <input type="hidden" name="gebuikerid" value="@Convert.ToInt32(HttpContext.Session.GetString(SessionConstant.Gebruiker_ID))"/>
             <input type="submit" id="knop" style="background-color: #7d3ec9; color: white; border: none; border-radius: 3px; margin-top: 10px; height: 25px; width: 170px; margin-left: 212px" asp-page-handler="Upload">Voeg festival toe</input>
         </div>
     </form>

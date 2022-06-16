@@ -20,19 +20,10 @@ public class BlokRepository
         var blok = connection.Query<Blok>(sql, new {blok_id});
         return blok;
     }
-    
-    public IEnumerable<Blok> GetFestival(int festival_id)
-    {
-        //Haalt alles op van een bepaald blok
-        string sql = "SELECT * FROM Blok WHERE festival_id = @festival_id ORDER BY bloknummer";
 
-        using var connection = GetConnection();
-        var blok = connection.Query<Blok>(sql, new {festival_id});
-        return blok;
-    }
-    
     public void AddBlok(int Blok_id, int Fest_id, TimeSpan Starttime, char Type, string Text)
     {
+        //Voegt een blok toe en als die al bestaat, dan update hij de bestaande
         if (Blok_id != 0)
         {
             UpdateBlok(Blok_id, Starttime, Type, Text);
@@ -74,6 +65,7 @@ public class BlokRepository
     
     public IEnumerable<Blok> GetAll(int Festival_id)
     {
+        //Haalt alle blokken op
         string sql = @"select * from blok b 
                 inner join festival f on b.festival_id = f.festival_id
                 left join orkestgroep o on b.blok_id = o.blok_id WHERE b.festival_id = @Festival_id  ORDER BY bloknummer";
@@ -90,6 +82,7 @@ public class BlokRepository
 
     public void ChangeRankingDown(int Bloknummer, int Blok_id, int Festival_id)
     {
+        //Verplaatst een blok 1 plek naar onder
         int BlokIncrease = Bloknummer + 1;
         
         string sql = @"Update blok SET 
@@ -106,6 +99,7 @@ public class BlokRepository
     
     public void ChangeRankingUp(int Bloknummer, int Blok_id, int Festival_id)
     {
+        //Verplaatst een blok 1 plek omhoog
         int BlokDecrease = Bloknummer - 1;
         string sql = @"Update blok SET 
                 bloknummer = bloknummer +1
@@ -121,6 +115,7 @@ public class BlokRepository
 
     public int CheckRanking (int Festival_id)
     {
+        //bekijkt op welke plek een bepaald blok staat
         string sql = @"SELECT MAX(bloknummer) FROM blok WHERE festival_id = @Festival_id";
         using var connection = GetConnection();
         int Check = connection.ExecuteScalar<int>(sql, new {Festival_id });

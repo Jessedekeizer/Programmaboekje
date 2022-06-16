@@ -10,124 +10,131 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <link rel="stylesheet" href="/css/Phone.css"/>
 
-<div class="col-1" id="ProgrammaOverview">
-    @foreach (var festival in Model.CurrentFestival)
-    {
-        <div>
-            <img id="img" src="~/content/@festival.Festival_logo" class="d-block" style="width: 100%"/>
+@if (@Model.Bloks.Count() != 0)
+{
+    <div class="col-1" id="ProgrammaOverview">
+        @foreach (var festival in Model.CurrentFestival)
+        {
+            <div>
+                <img id="img" src="~/content/@festival.Festival_logo" class="d-block" style="width: 100%"/>
+            </div>
+            <div style="text-align: center">
+                <h2>@festival.Festival_naam</h2>
+            </div>
+        }
+        <div style="text-align: center">
+            <h2>Agenda</h2>
+        </div>
+        <div id="blokitem">
+            <table class="table table-borderless">
+                @foreach (var blok in Model.Bloks)
+                {
+                    <tr>
+                        @if (blok.Blok_type != 't')
+                        {
+                            <td>@(blok.Begintijd.ToString(@"hh\:mm"))</td>
+                            @if (blok.Blok_type == 'o')
+                            {
+                                <td >
+                                    Orkestnaam: @blok.Orkestgroep.Orkestnaam
+                                    <br/>
+                                    <p style="white-space: pre-wrap;">@blok.Orkestgroep.Muziekstukken</p>
+                                </td>
+                                <td class="" style="text-align: right">
+                                    Punten:<br/>
+                                    @blok.Orkestgroep.Cijfer<br/>
+                                    Divisie:<br/>
+                                    @blok.Orkestgroep.divisie
+                                </td>
+                            }
+                            else
+                            {
+                                <td colspan="2">Pauze</td>
+                            }
+                        }
+                        else
+                        {
+                            <td colspan="3" style="white-space: pre-wrap; text-align: center">@blok.Tekstvak</td>
+                        }
+                    </tr>
+                }
+            </table>
         </div>
         <div style="text-align: center">
-            <h2>@festival.Festival_naam</h2>
+            <h2>Sponsoren</h2>
         </div>
-    }
-    <div style="text-align: center">
-        <h2>Agenda</h2>
-    </div>
-    <div id="blokitem">
-    <table class="table table-borderless">
-        @foreach (var blok in Model.Bloks)
-        {
-            <tr>
-                @if (blok.Blok_type != 't')
-                {
-                    <td>@(blok.Begintijd.ToString(@"hh\:mm"))</td>
-                    @if (blok.Blok_type == 'o')
-                    {
-                        <td >
-                            Orkestnaam: @blok.Orkestgroep.Orkestnaam
-                            <br/>
-                            <p style="white-space: pre-wrap;">@blok.Orkestgroep.Muziekstukken</p>
-                        </td>
-                        <td class="" style="text-align: right">
-                            Punten:<br/>
-                            @blok.Orkestgroep.Cijfer<br/>
-                            Divisie:<br/>
-                            @blok.Orkestgroep.divisie
-                        </td>
-                    }
-                    else
-                    {
-                        <td colspan="2">Pauze</td>
-                    }
-                }
-                else
-                {
-                    <td colspan="3" style="white-space: pre-wrap; text-align: center">@blok.Tekstvak</td>
-                }
-            </tr>
-        }
-    </table>
-    </div>
-    <div style="text-align: center">
-        <h2>Sponsoren</h2>
-    </div>
-    <div class="row">
-        <div id="demo" class="carousel slide" data-bs-ride="carousel">
+        <div class="row">
+            <div id="demo" class="carousel slide" data-bs-ride="carousel">
 
-            <div class="carousel-indicators">
-                @foreach (var reclame in Model.Sponsorts)
-                {
-                    if (reclame == Model.Sponsorts.First())
+                <div class="carousel-indicators">
+                    @foreach (var reclame in Model.Sponsorts)
                     {
-                        <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
+                        if (reclame == Model.Sponsorts.First())
+                        {
+                            <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
+                        }
+                        else
+                        {
+                            <button type="button" data-bs-target="#demo" data-bs-slide-to="@number1"></button>
+                            number1 = number1 + 1;
+                        }
                     }
-                    else
+                </div>
+
+                <div class="carousel-inner" style="height: 300px; width: 100%;">
+
+                    @foreach (var reclame in Model.Sponsorts)
                     {
-                        <button type="button" data-bs-target="#demo" data-bs-slide-to="@number1"></button>
-                        number1 = number1 + 1;
+                        if (reclame == Model.Sponsorts.First())
+                        {
+                            <div class="carousel-item active" style="align-items: center;">
+                                <a href="@reclame.Websitelink">
+                                    <img id="img" src="~/content/@reclame.Foto_link" class="d-block" style="height: 300px; width: 100%"/>
+                                </a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="carousel-item" style="align-items: center;">
+                                <a href="@reclame.Websitelink">
+                                    <img id="img" src="~/content/@reclame.Foto_link" class="d-block" style="height: 300px; width: 100%"/>
+                                </a>
+                            </div>
+                        }
                     }
-                }
+                </div>
+
+                <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </button>
             </div>
-
-            <div class="carousel-inner" style="height: 300px; width: 100%;">
-
-                @foreach (var reclame in Model.Sponsorts)
-                {
-                    if (reclame == Model.Sponsorts.First())
-                    {
-                        <div class="carousel-item active" style="align-items: center;">
-                            <a href="@reclame.Websitelink">
-                                <img id="img" src="~/content/@reclame.Foto_link" class="d-block" style="height: 300px; width: 100%"/>
-                            </a>
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="carousel-item" style="align-items: center;">
-                            <a href="@reclame.Websitelink">
-                                <img id="img" src="~/content/@reclame.Foto_link" class="d-block" style="height: 300px; width: 100%"/>
-                            </a>
-                        </div>
-                    }
-                }
-            </div>
-
-            <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon"></span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
-                <span class="carousel-control-next-icon"></span>
-            </button>
         </div>
-    </div>
-    <div style="text-align: center">
-        <h2>Juryleden</h2>
-    </div>
-    <div class="col container">
-        @if (Model.Jurylids != null)
-        {
-            foreach (var Jurylid in Model.Jurylids)
+        <div style="text-align: center">
+            <h2>Juryleden</h2>
+        </div>
+        <div class="col container">
+            @if (Model.Jurylids != null)
             {
-                <div class="col" id="cart">
-                    <div class="card justify-content-center" style="display: flex; align-items: center; margin-bottom:  5px; background-color: transparent; border: 4px solid white;">
-                        <img class="card-img-top justify-content-center" id="FImg1" style="object-fit: fill; height: 150px; width: 300px;" src="~/content/@Jurylid.jury_foto" alt="Card image cap">
-                        <div class="card-body" style="">
-                            <h5 class="card-title" style="margin: 0px">@Jurylid.jury_naam</h5>
-                            <p class="card-text" style="resize: none; white-space:  pre-wrap;">@Jurylid.jury_bio</p>
+                foreach (var Jurylid in Model.Jurylids)
+                {
+                    <div class="col" id="cart">
+                        <div class="card justify-content-center" style="display: flex; align-items: center; margin-bottom:  5px; background-color: transparent; border: 4px solid white;">
+                            <img class="card-img-top justify-content-center" id="FImg1" style="object-fit: fill; height: 150px; width: 300px;" src="~/content/@Jurylid.jury_foto" alt="Card image cap">
+                            <div class="card-body" style="">
+                                <h5 class="card-title" style="margin: 0px">@Jurylid.jury_naam</h5>
+                                <p class="card-text" style="resize: none; white-space:  pre-wrap;">@Jurylid.jury_bio</p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
             }
-        }
+        </div>
     </div>
-</div>
+}
+else
+{
+    <h6> Er is nog geen programma voor dit festival </h6>
+}
