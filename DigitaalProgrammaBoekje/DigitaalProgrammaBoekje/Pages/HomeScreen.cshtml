@@ -89,55 +89,120 @@
 
 <div class="container" id="FestivalListGeneraetor">
     <div class="row col-12">
+        <div>
+            <h1>Aankomende Festivallen</h1>
+        </div>
         @if (Model.Festivallist != null)
         {
             foreach (var Festivalitem in Model.Festivallist)
             {
-                <div class=" col-3" id="cart" style="width: 300px; height: 400px; margin: 10px; margin-top: 20px;">
-                    <div class="card" style="width: 300px; height: 300px;">
-                        <img class="card-img-top" id="FImg1" style="object-fit: fill; height: 150px; width: 300px;" src="~/content/@Festivalitem.Festival_logo" alt="Card image cap">
-                        <div class="card-body" style="height: 100px; width: 300px;">
-                            <div class="column" style="text-align: center">
-                                <h4 class="card-title" style="margin: 0px">@Festivalitem.Festival_naam</h4>
+                if (@Festivalitem.Festival_datum >= DateTime.Now)
+                {
+                    <div class=" col-3" id="cart" style="width: 300px; height: 400px; margin: 10px; margin-top: 20px;">
+                        <div class="card" style="width: 300px; height: 300px;">
+                            <img class="card-img-top" id="FImg1" style="object-fit: fill; height: 150px; width: 300px;" src="~/content/@Festivalitem.Festival_logo" alt="Card image cap">
+                            <div class="card-body" style="height: 100px; width: 300px;">
+                                <div class="column" style="text-align: center">
+                                    <h4 class="card-title" style="margin: 0px">@Festivalitem.Festival_naam</h4>
+                                </div>
+                                <div class="column" style="text-align: center;">
+                                    <p class="card-text">@(Festivalitem.Festival_datum.ToString("yyyy-MM-dd"))</p>
+                                </div>
+                                <div class="column" style="text-align: center">
+                                    <p class="card-text">@Festivalitem.Festival_locatie</p>
+                                </div>
+
                             </div>
-                            <div class="column" style="text-align: center;">
-                                <p class="card-text">@(Festivalitem.Festival_datum.ToString("yyyy-MM-dd"))</p>
-                            </div>
-                            <div class="column" style="text-align: center">
-                                <p class="card-text">@Festivalitem.Festival_locatie</p>
-                            </div>
+
+                            <a href="/programma?Festival_id=@Festivalitem.Festival_id" class="btn btn-primary stretched-link" style="height: 50px; color: white; background-color: red; border: none">Bekijk</a>
 
                         </div>
-
-                        <a href="/programma?Festival_id=@Festivalitem.Festival_id" class="btn btn-primary stretched-link" style="height: 50px; color: white; background-color: red; border: none">Bekijk</a>
-
-                    </div>
-                    @if (Convert.ToBoolean(ViewData["Logged_In"]))
-                    {
-                        if (Model.MeldAans.Count() > 0)
+                        @if (Convert.ToBoolean(ViewData["Logged_In"]))
                         {
-                            foreach (var meldAan in Model.MeldAans)
+                            if (Model.MeldAans.Count() > 0)
                             {
-                                <form method="post">
-                                    <input type="hidden" name="festival_id" value="@Festivalitem.Festival_id"/>
-                                    <input type="hidden" name="gebruiker_id" value="@Model.Gebruiker_id"/>
-                                    @if (meldAan.Festival_id == Festivalitem.Festival_id)
+                                foreach (var meldAan in Model.MeldAans)
+                                {
+                                    <form method="post">
+                                        <input type="hidden" name="festival_id" value="@Festivalitem.Festival_id"/>
+                                        <input type="hidden" name="gebruiker_id" value="@Model.Gebruiker_id"/>
+                                        @if (meldAan.Festival_id == Festivalitem.Festival_id)
                                         {
                                             @if (meldAan.Gebruiker_id == Model.Gebruiker_id)
                                             {
                                                 <button id="knop" asp-page-handler="Signout">Meld Af</button>
                                             }
                                         }
-                                </form>
+                                    </form>
+                                }
                             }
-                        }
-                        <form method="post" asp-page-handler="Signup">
+                            <form method="post" asp-page-handler="Signup">
                                 <input type="hidden" name="festival_id" value="@Festivalitem.Festival_id"/>
                                 <input type="hidden" name="gebruiker_id" value="@Model.Gebruiker_id"/>
                                 <button id="knop">Meld Aan</button>
                             </form>
-                    }
-                </div>
+                        }
+                    </div>
+                }
+            }
+        }
+    </div>
+    <div class="row col-12">
+        <div>
+            <h1>Verleden Festivallen</h1>
+        </div>
+        @if (Model.Festivallist != null)
+        {
+            foreach (var Festivalitem in Model.Festivallist)
+            {
+                if (@Festivalitem.Festival_datum < DateTime.Now)
+                {
+                    <div class=" col-3" id="cart" style="width: 300px; height: 400px; margin: 10px; margin-top: 20px;">
+                        <div class="card" style="width: 300px; height: 300px;">
+                            <img class="card-img-top" id="FImg1" style="object-fit: fill; height: 150px; width: 300px;" src="~/content/@Festivalitem.Festival_logo" alt="Card image cap">
+                            <div class="card-body" style="height: 100px; width: 300px;">
+                                <div class="column" style="text-align: center">
+                                    <h4 class="card-title" style="margin: 0px">@Festivalitem.Festival_naam</h4>
+                                </div>
+                                <div class="column" style="text-align: center;">
+                                    <p class="card-text">@(Festivalitem.Festival_datum.ToString("yyyy-MM-dd"))</p>
+                                </div>
+                                <div class="column" style="text-align: center">
+                                    <p class="card-text">@Festivalitem.Festival_locatie</p>
+                                </div>
+
+                            </div>
+
+                            <a href="/programma?Festival_id=@Festivalitem.Festival_id" class="btn btn-primary stretched-link" style="height: 50px; color: white; background-color: red; border: none">Bekijk</a>
+
+                        </div>
+                        @if (Convert.ToBoolean(ViewData["Logged_In"]))
+                        {
+                            if (Model.MeldAans.Count() > 0)
+                            {
+                                foreach (var meldAan in Model.MeldAans)
+                                {
+                                    <form method="post">
+                                        <input type="hidden" name="festival_id" value="@Festivalitem.Festival_id"/>
+                                        <input type="hidden" name="gebruiker_id" value="@Model.Gebruiker_id"/>
+                                        @if (meldAan.Festival_id == Festivalitem.Festival_id)
+                                        {
+                                            @if (meldAan.Gebruiker_id == Model.Gebruiker_id)
+                                            {
+                                                <button id="knop" asp-page-handler="Signout">Meld Af</button>
+                                            }
+                                        }
+                                    </form>
+                                }
+                            }
+                            <form method="post" asp-page-handler="Signup">
+                                <input type="hidden" name="festival_id" value="@Festivalitem.Festival_id"/>
+                                <input type="hidden" name="gebruiker_id" value="@Model.Gebruiker_id"/>
+                                <button id="knop">Meld Aan</button>
+                            </form>
+                        }
+                    </div>
+                }
             }
         }
     </div>
