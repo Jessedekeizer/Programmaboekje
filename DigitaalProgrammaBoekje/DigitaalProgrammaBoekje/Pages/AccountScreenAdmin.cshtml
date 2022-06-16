@@ -1,0 +1,119 @@
+﻿@page
+@using DigitaalProgrammaBoekje.Pages.Database.Models
+@model DigitaalProgrammaBoekje.Pages.AccountScreenAdmin
+
+@{
+    ViewData["Title"] = "Account";
+}
+
+<div class="container-fluid" id="Container" style="">
+    <div class="row" id="Rij" style="height: calc(100vh - 76px)">
+        <div class="col-6" style="background-color: white">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th style="width: 5%">ID</th>
+                    <th style="width: 5%">Naam</th>
+                    <th style="width: 5%" scope="col-1">Verwijder</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var organisator in Model.Organisators)
+                {
+                    <tr>
+                        <td>@organisator.gebruiker_id</td>
+                        <td>@organisator.naam</td>
+                        <td>
+                            <form asp-page-handler="DeleteOrganisator" method="post">
+                                <input type="hidden" name="gebruikerid" value="@organisator.gebruiker_id"/>
+                                <button id="functie" style="background-color: red; color:  white; border-radius: 8px; border: none; margin-left: 10px; width: 100px; height: 30px; margin-bottom: 3px">Verwijder</button>
+                            </form>
+                        </td>
+
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+        <div class="col-6" style="background-color: white; border-left: 2px solid #56A28E;">
+            <h2 class="d-flex justify-content-center" style="margin-top: 10px">Account informatie</h2>
+
+            <table class="table table-bordered">
+
+                @foreach (var gebruiker in Model.Gebruikers)
+                {
+                    <tr>
+                        <th>Username: </th>
+                        <td>@gebruiker.naam</td>
+                    </tr>
+                    <tr>
+                        <th>Email: </th>
+                        <td>@gebruiker.email</td>
+                    </tr>
+                }
+            </table>
+
+            <div class="container" style="margin-bottom: 25px">
+                <div class="row">
+                    <form method="post" asp-page-handler="UpdateUsern">
+                        @if (Model.Warning == 2)
+                        {
+                            <h3 id="warning" style="color: red">Username already in use</h3>
+                        }
+                        <h7>Change Username to:</h7><input type="text" placeholder="nieuwe naam" name="UsernUpdate"/>
+                        <button type="submit" style="background-color: blue; color: white; border-radius: 8px; border: none; margin-left: 10px; width: 175px; height: 30px; margin-top: 10px" name="Username">Verander naam</button>
+                    </form>
+                </div>
+                <div class="row">
+                    <form method="post" asp-page-handler="UpdatePassw">
+                        <div class="row">
+                            @if (Model.Warning == 1)
+                            {
+                                <h3 id="warning" style="color: red">Current password is incorrect</h3>
+                            }
+                            <h7>Huidig wachtwoord:</h7><input type="password" placeholder="huidig wachtwoord" name="PasswordCurrent" style="width: 250px"/>
+                        </div>
+                        <h7>Verander wachtwoord naar:</h7><input type="password" placeholder="nieuw wachtwoord" name="PasswordUpd"/>
+                        <button type="submit" style="background-color: blue; color: white; border-radius: 8px; border: none; margin-left: 10px; width: 175px; height: 30px; margin-top: 10px" name="Username">Verander wachtwoord</button>
+                    </form>
+                </div>
+                <div>
+
+                    <form method="post" asp-page-handler="Logout">
+                        <button type="submit" style="background-color: blue; color: white; border-radius: 8px; border: none; margin-left: 10px; width: 100px; height: 30px" name="Logout">Log uit</button>
+                    </form>
+                </div>
+                <div class="container border" style="padding:20px">
+                    <h2>Maak Organisator aan</h2>
+                    <form method="post" asp-page-handler="CreateOrganisator">
+                        <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+                        <div class="form-group row m-3">
+                            <div class="col-3">
+                                <label asp-for="RegisterCredential.Username"></label>
+                            </div>
+                            <div class="col-5">
+                                <input type="text" asp-for="RegisterCredential.Username" class="form-control" placeholder="Naam"/>
+                            </div>
+                            <span class="text-danger" asp-validation-for="RegisterCredential.Username"></span>
+                        </div>
+                        <div class="form-group row m-3">
+                            <div class="col-3">
+                                <label asp-for="RegisterCredential.Wachtwoord"></label>
+                            </div>
+                            <div class="col-5">
+                                <input type="password" asp-for="RegisterCredential.Wachtwoord" class="form-control" placeholder="Wachtwoord"/>
+                            </div>
+                            <span class="text-danger" asp-validation-for="RegisterCredential.Wachtwoord"></span>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-3 m-4">
+                                <input type="submit" class="btn btn-primary" value="Maak aan"/>
+                            </div>
+                            <span class="text-danger"> @Model.Warning2 </span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

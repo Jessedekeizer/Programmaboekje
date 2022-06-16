@@ -12,7 +12,7 @@ public class GebruikerRepository
         return new DbUtils().Connect();
     }
 
-    public void DeleteGebruiker(int Gebruiker_id)
+    public void DeleteOrganisator(int Gebruiker_id)
     {
         //verwijdert gebruiker 
         string sql = @"DELETE FROM Gebruikers WHERE gebruiker_id = @gebruiker_id";
@@ -28,6 +28,13 @@ public class GebruikerRepository
                         VALUES (@Username, @Email, @Password, @Functie, @Telefoonnummer, @Dirigent, @LedenAantal)";
         using var connection = GetConnection();
         connection.Query<Gebruiker>(sql, new{Username, Email, Password, Functie, Telefoonnummer, Dirigent, LedenAantal});
+    }
+    public void AddOrganisator(string Username, string Password)
+    {
+        string sql = @" INSERT INTO gebruikers (naam, wachtwoord, functie)
+                        VALUES (@Username, @Password, 'o')";
+        using var connection = GetConnection();
+        connection.Query<Gebruiker>(sql, new{Username, Password});
     }
     
     public bool checkUsername(string Username)
@@ -78,7 +85,13 @@ public class GebruikerRepository
         var gebruiker = connection.Query<Gebruiker>(sql, new {Gebruiker_id});
         return gebruiker;
     }
-    
+    public IEnumerable<Gebruiker> GetOrganisators()
+    {
+        string sql = @"SELECT * FROM gebruikers WHERE functie = 'o'";
+        using var connection = GetConnection();
+        var organisators = connection.Query<Gebruiker>(sql);
+        return organisators;
+    }
     public string UpdatePassword(int Gebruiker_id, string PasswordUpd)
     {
         string sql = @"UPDATE gebruikers SET wachtwoord = @PasswordUpd WHERE gebruiker_id = @Gebruiker_id";
