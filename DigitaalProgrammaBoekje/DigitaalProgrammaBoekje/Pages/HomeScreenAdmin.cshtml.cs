@@ -11,19 +11,27 @@ public class HomeScreenAdmin : PageModel
 {
     
         private string Photo;
+        private int User;
+        public int Year { get; set; }
+        
         private IWebHostEnvironment Environment;
         public IEnumerable<Festival> Festivallist { get; set; }
+        public IEnumerable<Festival> FestivalYears { get; set; }  
 
         [BindProperty] 
         public Festival Festival { get; set; }
+        
+        [ViewData]
+        public string Logged_In { get; set; }
 
         public HomeScreenAdmin(IWebHostEnvironment _environment)
         {
             Environment = _environment;
         }
 
-        public IActionResult OnGet()
+        public IActionResult OnGet([FromQuery] string Jaartal)
         {
+            Logged_In = Convert.ToString(new Rolechecker(HttpContext.Session).Loged_in());
             Rolechecker rolechecker = new Rolechecker(HttpContext.Session);
             if (!rolechecker.Loged_in())
             {
@@ -36,17 +44,35 @@ public class HomeScreenAdmin : PageModel
             }
             
             FestivalRepository festivallist = new FestivalRepository();
-            if (!rolechecker.checkUser())
+            if (!rolechecker.checkAdmin())
             {
-                Festivallist =
-                    festivallist.GetFestivalUser(
-                        Convert.ToInt32(HttpContext.Session.GetString(SessionConstant.Gebruiker_ID)));
+                if (Jaartal != null)
+                {
+                    Festivallist =
+                        festivallist.GetFestivalUser(
+                            Convert.ToInt32(HttpContext.Session.GetString(SessionConstant.Gebruiker_ID)),
+                            DateTime.ParseExact(Jaartal, "yyyy", null));
+                }
+                else
+                {
+                    Festivallist = festivallist.GetFestivalUser(Convert.ToInt32(HttpContext.Session.GetString(SessionConstant.Gebruiker_ID)), DateTime.Now);
+                }
             }
             else
             {
-                Festivallist = festivallist.GetAll();
+                if (Jaartal != null)
+                {
+                    Festivallist =
+                        festivallist.Getfestival(DateTime.ParseExact(Jaartal, "yyyy", null));
+                }
+                else
+                {
+                    Festivallist = festivallist.Getfestival(DateTime.Now);
+                }   
             }
-
+            Year = Convert.ToInt16(Jaartal);
+            FestivalYears = festivallist.FestivalsGetYears();
+            
             return Page();
         }
 
@@ -60,7 +86,7 @@ public class HomeScreenAdmin : PageModel
             return RedirectToPage("/EditScreen");
         }
 
-        public IActionResult OnPostUpload(List<IFormFile> frontPosted, [FromForm] int gebruikerid)
+        public IActionResult OnPostUpload(List<IFormFile> frontPosted)
         {
             string path = Path.Combine(this.Environment.WebRootPath, "content");
             if (!Directory.Exists(path))
@@ -91,9 +117,9 @@ public class HomeScreenAdmin : PageModel
                 }
             }
 
-            
+            User = Convert.ToInt32(HttpContext.Session.GetString(SessionConstant.Gebruiker_ID));
             FestivalRepository festival = new FestivalRepository();
-            festival.AddFestival(Festival.Festival_naam, Festival.Festival_locatie, Festival.Festival_datum, Photo, gebruikerid);
+            festival.AddFestival(Festival.Festival_naam, Festival.Festival_locatie, Festival.Festival_datum, Photo, User);
             return RedirectToPage("/HomeScreenAdmin");
         }
     }

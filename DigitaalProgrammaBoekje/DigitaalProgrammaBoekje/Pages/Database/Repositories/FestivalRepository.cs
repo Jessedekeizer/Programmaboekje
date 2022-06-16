@@ -21,13 +21,13 @@ public class FestivalRepository
         return festival;
     }
     
-    public IEnumerable<Festival> GetFestivalUser(int User_id)
+    public IEnumerable<Festival> GetFestivalUser(int User_id, DateTime Jaar)
     {
         //Haalt alles op van een bepaald festival
-        string sql = "SELECT * FROM Festival WHERE gebruiker_id = @User_id";
+        string sql = "SELECT * FROM Festival WHERE gebruiker_id = @User_id AND YEAR(festival_datum) = YEAR(@Jaar)";
 
         using var connection = GetConnection();
-        var festival = connection.Query<Festival>(sql, new {User_id});
+        var festival = connection.Query<Festival>(sql, new {User_id, Jaar});
         return festival;
     }
     
