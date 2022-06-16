@@ -8,6 +8,18 @@
     margin-top: 5px;
 }
 
+#ButtonAcc{
+    background-color: red;
+    color: white;
+    border-radius: 8px;
+    border: none;
+    margin-left: 10px;
+    width: 175px;
+    height: 30px;
+    margin-top: 10px;
+}
+
+
 #knop:hover{
     background-color: red;
 }

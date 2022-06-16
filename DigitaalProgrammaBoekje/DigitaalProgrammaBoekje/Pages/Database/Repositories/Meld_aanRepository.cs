@@ -10,6 +10,14 @@ public class Meld_aanRepository
     {
         return new DbUtils().Connect();
     }
+
+    public IEnumerable<Meld_aan> GetAll()
+    {
+        string sql = @"Select * From meld_aan";
+        using var connection = GetConnection();
+        var result = connection.Query<Meld_aan>(sql);
+        return result;
+    }
     
     public void AddToFestival(int Festival_id, int Gebruiker_id)
     {

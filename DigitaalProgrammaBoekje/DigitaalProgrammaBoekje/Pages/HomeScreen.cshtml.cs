@@ -1,20 +1,25 @@
 ﻿using System.Globalization;
+using DigitaalProgrammaBoekje.Helpers;
 using DigitaalProgrammaBoekje.Pages.Database.Models;
 using DigitaalProgrammaBoekje.Pages.Database.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Renci.SshNet;
 
 namespace DigitaalProgrammaBoekje.Pages;
 
 public class HomeScreen : PageModel
 {
    private string Photo;
+   
            private IWebHostEnvironment Environment;
            public IEnumerable<Festival> Festivallist { get; set; }
            
            public IEnumerable<Festival> FestivalYears { get; set; }  
            
+           public IEnumerable<Meld_aan> MeldAans { get; set; }
+
 
            [BindProperty] 
            public Festival Festival { get; set; }
@@ -23,19 +28,23 @@ public class HomeScreen : PageModel
           public string Logged_In { get; set; }
           
           public int Year { get; set; }
+          
+          public int Gebruiker_id { get; set; }
    
            
            public IActionResult OnGet([FromQuery]string Jaartal)
            {
-               
+               MeldAans = new Meld_aanRepository().GetAll();
                
                Logged_In = Convert.ToString(new Rolechecker(HttpContext.Session).Loged_in());
                if (Convert.ToBoolean(Logged_In))
                {
                    if (!new Rolechecker(HttpContext.Session).checkUser())
                    {
+                       
                        return RedirectToPage("/HomeScreenAdmin");
                    }
+                   Gebruiker_id = Convert.ToInt16(HttpContext.Session.GetString(SessionConstant.Gebruiker_ID));
                }
                Year = Convert.ToInt16(Jaartal);
                
@@ -55,9 +64,16 @@ public class HomeScreen : PageModel
                return Page();
            }
    
-           public IActionResult OnPostAddFestival()
+           public IActionResult OnPostSignup([FromForm]int festival_id, [FromForm] int gebruiker_id)
            {
-               return Page();
+               new Meld_aanRepository().AddToFestival(festival_id, gebruiker_id);
+               return RedirectToPage();
+           }
+           
+           public IActionResult OnPostSignout([FromForm]int festival_id, [FromForm] int gebruiker_id)
+           {
+               new Meld_aanRepository().RemoveFromFestival(festival_id, gebruiker_id);
+               return RedirectToPage();
            }
    
            public IActionResult OnPostUpload(List<IFormFile> frontPosted)

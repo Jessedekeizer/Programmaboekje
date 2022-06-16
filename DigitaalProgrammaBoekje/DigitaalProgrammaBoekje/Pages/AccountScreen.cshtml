@@ -7,11 +7,9 @@
 }
 
 <div class="container-fluid" id="Container" style="">
-    <div class="row" id="Rij" style="height: calc(100vh - 76px)">
-        <div class="col-6" style="background-color: white">
-            <h7 style="margin-left: 10px; margin-right: 10px">Hoi</h7>
-        </div>
-        <div class="col-6" style="background-color: white; border-left: 2px solid #56A28E;">
+    <div class="row justify-content-center" id="Rij" style="height: calc(100vh - 76px)">
+        
+        <div class="" style="background-color: white;">
             <h2 class="d-flex justify-content-center" style="margin-top: 10px">Account informatie</h2>
 
             <table class="table table-bordered">
@@ -49,31 +47,31 @@
                             <h3 id="warning" style="color: red">Username already in use</h3>
                         }
                         <h7>Change Username to:</h7><input type="text" placeholder="nieuwe naam" name="UsernUpdate"/>
-                        <button type="submit" style="background-color: blue; color: white; border-radius: 8px; border: none; margin-left: 10px; width: 175px; height: 30px; margin-top: 10px" name="Username">Verander naam</button>
+                        <button type="submit" id="ButtonAcc" name="Username">Verander naam</button>
                     </form>
                 </div>
                 <div class="row">
                     <form method="post" asp-page-handler="UpdateMail">
                         <h7>Verander Email naar:</h7><input type="text" placeholder="nieuwe email" name="EmailUpd"/>
-                        <button type="submit" style="background-color: blue; color: white; border-radius: 8px; border: none; margin-left: 10px; width: 175px; height: 30px; margin-top: 10px" name="Username">Verander Email</button>
+                        <button type="submit" id="ButtonAcc" name="Username">Verander Email</button>
                     </form>
                 </div>
                 <div class="row">
                     <form method="post" asp-page-handler="UpdateNummer">
                         <h7>Verander telefoonnummer naar:</h7><input type="text" placeholder="nieuw nummer" name="NummerUpd"/>
-                        <button type="submit" style="background-color: blue; color: white; border-radius: 8px; border: none; margin-left: 10px; width: 175px; height: 30px; margin-top: 10px" name="Username">Verander nummer</button>
+                        <button type="submit" id="ButtonAcc" name="Username">Verander nummer</button>
                     </form>
                 </div>
                 <div class="row">
                     <form method="post" asp-page-handler="UpdateDirigent">
                         <h7>Verander dirigent naar:</h7><input type="text" placeholder="nieuwe dirigent" name="DirigentUpd"/>
-                        <button type="submit" style="background-color: blue; color: white; border-radius: 8px; border: none; margin-left: 10px; width: 175px; height: 30px; margin-top: 10px" name="Username">Verander dirigent</button>
+                        <button type="submit" id="ButtonAcc" name="Username">Verander dirigent</button>
                     </form>
                 </div>
                 <div class="row">
                     <form method="post" asp-page-handler="UpdateLeden">
                         <h7>Verander aantal leden naar:</h7><input type="text" placeholder="nieuw aantal leden" name="LedenUpd"/>
-                        <button type="submit" style="background-color: blue; color: white; border-radius: 8px; border: none; margin-left: 10px; width: 175px; height: 30px; margin-top: 10px" name="Username">Verander aantal leden</button>
+                        <button type="submit" id="ButtonAcc" name="Username">Verander aantal leden</button>
                     </form>
                 </div>
                 <div class="row">
@@ -86,13 +84,13 @@
                             <h7>Huidig wachtwoord:</h7><input type="password" placeholder="huidig wachtwoord" name="PasswordCurrent" style="width: 250px"/>
                         </div>
                         <h7>Verander wachtwoord naar:</h7><input type="password" placeholder="nieuw wachtwoord" name="PasswordUpd"/>
-                        <button type="submit" style="background-color: blue; color: white; border-radius: 8px; border: none; margin-left: 10px; width: 175px; height: 30px; margin-top: 10px" name="Username">Verander wachtwoord</button>
+                        <button type="submit" id="ButtonAcc" name="Username">Verander wachtwoord</button>
                     </form>
                 </div>
                 <div>
 
                     <form method="post" asp-page-handler="Logout">
-                        <button type="submit" style="background-color: blue; color: white; border-radius: 8px; border: none; margin-left: 10px; width: 100px; height: 30px" name="Logout">Log uit</button>
+                        <button type="submit" id="ButtonAcc" name="Logout">Log uit</button>
                     </form>
                 </div>
             </div>

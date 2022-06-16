@@ -3,7 +3,7 @@ namespace DigitaalProgrammaBoekje.Pages.Database.Models;
 
 public class Festival
 {
-    public string Festival_id { get; set; }
+    public int Festival_id { get; set; }
     [Required, MinLength(2), MaxLength(128)]
     public string Festival_naam { get; set; }
     [Required, MinLength(2), MaxLength(128)]
