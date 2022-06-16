@@ -98,7 +98,7 @@
                             <p style="white-space: pre-wrap;">@blok.Orkestgroep.Muziekstukken</p>
                         </td>
                         <td>
-                            Cijfer:<br/>
+                            Punten:<br/>
                             @blok.Orkestgroep.Cijfer<br/>
                             Divisie:<br/>
                             @blok.Orkestgroep.divisie
@@ -189,7 +189,6 @@
                             </div>
                             <a href="iets">
                                 <img src="~/content/@reclame.Foto_link" class="d-block" style="width: 100%"/>
-
                             </a>
                         </div>
                     }
@@ -204,7 +203,7 @@
             </button>
         </div>
     </div>
-    <div class="row">
+    <div class="row justify-content-center">
         @if (Model.Jurylist != null)
         {
             foreach (var Jurylid in Model.Jurylist)
@@ -218,20 +217,23 @@
                         </div>
                     </div>
                 </div>
-                <div class="d-flex; flex-column">
-                    <form method="post" asp-page-handler="Updatejury">
-                        <input type="hidden" value="@Jurylid.jury_id" name="jury_id"/>
-                        <button type="submit">
-                            <i class="fa fa-pencil"></i>
-                        </button>
-                    </form>
-                    <form method="post" asp-page-handler="Unassignjury">
-                        <input type="hidden" value="@Jurylid.jury_id" name="jury_id"/>
-                        <button type="submit">
-                            <i class="fa fa-trash"></i>
-                        </button>
-                    </form>
-
+                <div class="d-flex flex-wrap justify-content-around">
+                    <div>
+                        <form method="post" asp-page-handler="Updatejury">
+                            <input type="hidden" value="@Jurylid.jury_id" name="jury_id"/>
+                            <button type="submit">
+                                <i class="fa fa-pencil"></i>
+                            </button>
+                        </form>
+                    </div>
+                    <div>
+                        <form method="post" asp-page-handler="Unassignjury">
+                            <input type="hidden" value="@Jurylid.jury_id" name="jury_id"/>
+                            <button type="submit">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </form>
+                    </div>
                 </div>
             }
         }
@@ -253,8 +255,8 @@
     else
     {
         <div class="col-3">
-            <button href="/EditScreen" >Annuleer</button>
-            </div>
+            <button href="/EditScreen">Annuleer</button>
+        </div>
     }
     <div class="col-9">
         <div class="tab-content" id="nav-tabContent">
