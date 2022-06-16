@@ -37,8 +37,16 @@
     <h6>Bedrijven:</h6>
     @foreach (var bedrijf in Model.Bedrijfs)
     {
-        <div>@bedrijf.bedrijf_naam</div>
-        <div>@bedrijf.websitelink</div>
+        <div class="container" style="border: 1px solid gray; margin: 4px; width: 250px">
+            <div>@bedrijf.bedrijf_naam</div>
+            <div>@bedrijf.websitelink</div>
+            <form asp-page-handler="BedrijfUpd" method="post">
+                <input type="hidden" name="bedrijf_id" value="@bedrijf.bedrijf_id"/>
+                <button id="UpdateJury" style="background-color: mediumpurple; border: none;">
+                    Bewerk
+                </button>
+            </form>
+        </div>
     }
 </div>
 
