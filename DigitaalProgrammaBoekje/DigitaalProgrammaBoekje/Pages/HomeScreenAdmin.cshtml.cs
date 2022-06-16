@@ -91,7 +91,7 @@ public class HomeScreenAdmin : PageModel
                 }
             }
 
-
+            
             FestivalRepository festival = new FestivalRepository();
             festival.AddFestival(Festival.Festival_naam, Festival.Festival_locatie, Festival.Festival_datum, Photo, 1);
             return RedirectToPage("/HomeScreenAdmin");

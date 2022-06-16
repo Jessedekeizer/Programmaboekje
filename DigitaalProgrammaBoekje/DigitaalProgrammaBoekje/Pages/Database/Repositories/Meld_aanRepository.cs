@@ -13,6 +13,7 @@ public class Meld_aanRepository
     
     public void AddToFestival(int Festival_id, int Gebruiker_id)
     {
+        //Query voor het toevoegen van een Aanmelding(of het gelezen is en de notes)
         string sql = @"INSERT INTO Meld_aan(festival_id, gebruiker_id)
             VALUES (@Festival_id, @Gebruiker_id)";
 
@@ -30,6 +31,7 @@ public class Meld_aanRepository
     }
     public void ShowFestivalMeld_aan(int Festival_id)
     {
+        
         string sql = @"SELECT Gb.naam FROM Gebruikers Gb
         LEFT JOIN Meld_aan M ON M.gebruiker_id = Gb.gebruiker_id
         WHERE M.festival_id = @Festival_id";
