@@ -72,4 +72,9 @@ public class Update_jury : PageModel
         Jurylids = new JurylidRepository().UpdateFotoJury(jury_id, Photo);
         return RedirectToPage(new {Jury_id = jury_id});
     }
+
+    public IActionResult OnPostTerug()
+    {
+        return RedirectToPage("/Bedrijven");
+    }
 }

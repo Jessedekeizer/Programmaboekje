@@ -32,7 +32,7 @@
             </tr>
             <tr>
                 <th>Foto: </th>
-                <form method="post" enctype="multipart/form-data" asp-page-handler="Update">
+                <form method="post" enctype="multipart/form-data" asp-page-handler="Upload">
                     <input type="hidden" value="@jury.jury_id" name="jury_id"/>
                     <td>
                         <img style="object-fit: fill; height: 200px; width: 200px;" src="~/content/@jury.jury_foto" alt="Card image cap">
@@ -44,3 +44,7 @@
         }
     </div>
 </table>
+
+<form method="post" asp-page-handler="Terug">
+    <button style="color: white; background-color: blue; border-radius: 4px; margin: 10px; border: transparent">Terug naar de bedrijven en juryleden</button>
+</form>
