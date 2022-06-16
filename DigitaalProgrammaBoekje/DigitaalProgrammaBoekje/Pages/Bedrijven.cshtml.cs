@@ -14,12 +14,24 @@ public class Bedrijven : PageModel
     
     public Jurylid Jurylid { get; set; }
 
-    public void OnGet()
+    public IActionResult OnGet()
     {
-        Jurylids = new JurylidRepository().GetAllJury();
+        if (new Rolechecker(HttpContext.Session).Loged_in())
+        {
+            if (new Rolechecker(HttpContext.Session).checkUser())
+            {
+                RedirectToPage("/HomeScreen");
+            }
+            Jurylids = new JurylidRepository().GetAllJury();
 
-        Bedrijfs = new BedrijfRepository().GetAllbedrijf();
-        
+            Bedrijfs = new BedrijfRepository().GetAllbedrijf();
+        }
+        else
+        {
+            RedirectToPage("/Login");
+        }
+
+        return Page();
     }
 
     public IActionResult OnPostJuryUpd([FromForm]int jury_id)

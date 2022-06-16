@@ -12,6 +12,18 @@ public class UpdateBedrijf : PageModel
     
     public IActionResult OnGet([FromQuery] int bedrijf_id)
     {
+        if (new Rolechecker(HttpContext.Session).Loged_in())
+        {
+            if (new Rolechecker(HttpContext.Session).checkUser())
+            {
+                RedirectToPage("/HomeScreen");
+            }
+        }
+        else
+        {
+            RedirectToPage("/Login");
+        }
+        
         Bedrijfs = new BedrijfRepository().Get1Bedrijf(bedrijf_id);
         return Page();
     }

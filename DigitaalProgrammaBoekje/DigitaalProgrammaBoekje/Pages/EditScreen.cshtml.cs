@@ -68,6 +68,19 @@ public class EditScreen : PageModel
 
     public IActionResult OnGet([FromQuery] int blok_id, [FromQuery] int jury_id, [FromQuery] int bedrijf_id)
     {
+        if (new Rolechecker(HttpContext.Session).Loged_in())
+        {
+            if (new Rolechecker(HttpContext.Session).checkUser())
+            {
+                RedirectToPage("/HomeScreen");
+            }
+        }
+        else
+        {
+            RedirectToPage("/Login");
+        }
+        
+        
         Festival_id = Convert.ToInt16(Request.Cookies["Festival_id"]);
         QRgenerator("https://localhost:7224/programma?Festival_id=" + Festival_id);
 

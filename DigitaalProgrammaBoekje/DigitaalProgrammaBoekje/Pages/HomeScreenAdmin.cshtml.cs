@@ -36,7 +36,7 @@ public class HomeScreenAdmin : PageModel
             }
             
             FestivalRepository festivallist = new FestivalRepository();
-            if (rolechecker.checkOrganisator())
+            if (!rolechecker.checkUser())
             {
                 Festivallist =
                     festivallist.GetFestivalUser(

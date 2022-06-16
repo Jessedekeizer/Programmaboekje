@@ -25,6 +25,8 @@ public class AccountScreenAdmin : PageModel
         string Logged_in = HttpContext.Session.GetString(SessionConstant.Gebruiker_ID);
         if (Logged_in == null)
             return RedirectToPage("/Login");
+        if (!new Rolechecker(HttpContext.Session).checkAdmin())
+            return RedirectToPage("/AccountScreen");
         Warning = warning;
         Warning2 = warning2;
         Gebruikers = new GebruikerRepository().GetUser(Int32.Parse(HttpContext.Session.GetString(SessionConstant.Gebruiker_ID)));

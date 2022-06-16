@@ -20,6 +20,18 @@ public class Update_jury : PageModel
 
     public IActionResult OnGet([FromQuery] int jury_id)
     {
+        if (new Rolechecker(HttpContext.Session).Loged_in())
+        {
+            if (new Rolechecker(HttpContext.Session).checkUser())
+            {
+                RedirectToPage("/HomeScreen");
+            }
+        }
+        else
+        {
+            RedirectToPage("/Login");
+        }
+        
         Jurylids = new JurylidRepository().Get1Jury(jury_id);
         return Page();
     }
