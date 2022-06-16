@@ -40,7 +40,7 @@ public class HomeScreenAdmin : PageModel
             {
                 Festivallist =
                     festivallist.GetFestivalUser(
-                        Convert.ToInt16(HttpContext.Session.GetString(SessionConstant.Gebruiker_ID)));
+                        Convert.ToInt32(HttpContext.Session.GetString(SessionConstant.Gebruiker_ID)));
             }
             else
             {
@@ -60,7 +60,7 @@ public class HomeScreenAdmin : PageModel
             return RedirectToPage("/EditScreen");
         }
 
-        public IActionResult OnPostUpload(List<IFormFile> frontPosted)
+        public IActionResult OnPostUpload(List<IFormFile> frontPosted, [FromForm] int gebruikerid)
         {
             string path = Path.Combine(this.Environment.WebRootPath, "content");
             if (!Directory.Exists(path))
@@ -93,7 +93,7 @@ public class HomeScreenAdmin : PageModel
 
 
             FestivalRepository festival = new FestivalRepository();
-            festival.AddFestival(Festival.Festival_naam, Festival.Festival_locatie, Festival.Festival_datum, Photo, 1);
+            festival.AddFestival(Festival.Festival_naam, Festival.Festival_locatie, Festival.Festival_datum, Photo, gebruikerid);
             return RedirectToPage("/HomeScreenAdmin");
         }
     }
