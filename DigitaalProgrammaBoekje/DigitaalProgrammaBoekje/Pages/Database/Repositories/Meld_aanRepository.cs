@@ -49,15 +49,14 @@ public class Meld_aanRepository
         using var connection = GetConnection();
         connection.Query(sql, new {Festival_id, Gebruiker_id});
     }
-    public void ShowFestivalMeld_aan(int Festival_id)
+    public IEnumerable<Gebruiker> ShowFestivalMeld_aan(int Festival_id)
     {
-        
-        string sql = @"SELECT Gb.naam FROM Gebruikers Gb
+        string sql = @"SELECT Gb.* FROM Gebruikers Gb
         LEFT JOIN Meld_aan M ON M.gebruiker_id = Gb.gebruiker_id
         WHERE M.festival_id = @Festival_id";
-            
-            
+        
         using var connection = GetConnection();
-        connection.Query(sql, new {Festival_id});
+        var result = connection.Query<Gebruiker>(sql, new {Festival_id});
+        return result;
     }
 }
