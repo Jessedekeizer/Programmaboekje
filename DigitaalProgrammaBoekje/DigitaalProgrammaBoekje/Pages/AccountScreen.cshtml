@@ -87,8 +87,15 @@
                         <button type="submit" id="ButtonAcc" name="Username">Verander wachtwoord</button>
                     </form>
                 </div>
+                @if (Model.is_organisator)
+                {
+                    <div>
+                        <form action="/Bedrijven">
+                                        <input id="knop" type="submit" value="Jury/Bedrijven bewerken" />
+                                    </form>
+                    </div>
+                }
                 <div>
-
                     <form method="post" asp-page-handler="Logout">
                         <button type="submit" id="ButtonAcc" name="Logout">Log uit</button>
                     </form>

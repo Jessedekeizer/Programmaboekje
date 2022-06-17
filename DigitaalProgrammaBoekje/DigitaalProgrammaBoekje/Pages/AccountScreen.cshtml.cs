@@ -11,6 +11,7 @@ public class AccountScreen : PageModel
 {
     public int Warning { get; set; }
     public string Gebruikersnaam { get; set; }
+    public bool is_organisator { get; set; }
     public IEnumerable<Gebruiker> Gebruikers { get; set; }
     
     public IActionResult OnGet(int warning)
@@ -20,6 +21,8 @@ public class AccountScreen : PageModel
             return RedirectToPage("/Login");
         if (new Rolechecker(HttpContext.Session).checkAdmin())
             return RedirectToPage("/AccountScreenAdmin");
+        is_organisator = new Rolechecker(HttpContext.Session).checkOrganisator();
+        
         Warning = warning;
         Gebruikers = new GebruikerRepository().GetUser(Int32.Parse(HttpContext.Session.GetString(SessionConstant.Gebruiker_ID)));
         return Page();

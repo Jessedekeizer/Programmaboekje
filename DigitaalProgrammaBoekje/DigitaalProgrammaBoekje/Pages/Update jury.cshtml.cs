@@ -43,9 +43,10 @@ public class Update_jury : PageModel
         return RedirectToPage(new {Jury_id = jury_id});
     }
 
-    public IActionResult OnPostUpdateBio([FromForm] string BioUpd, [FromForm] int jury_id)
+    public IActionResult OnPostUpdateBio([FromForm] int jury_id)
     {
-        Jurylids = new JurylidRepository().UpdatebioJury(jury_id, BioUpd);
+        string note = Request.Form["TextJury"];
+        Jurylids = new JurylidRepository().UpdatebioJury(jury_id, note);
 
         return RedirectToPage(new {Jury_id = jury_id});
     }

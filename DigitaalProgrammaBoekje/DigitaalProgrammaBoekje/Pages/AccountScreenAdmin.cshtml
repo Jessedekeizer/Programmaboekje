@@ -61,7 +61,7 @@
                             <h3 id="warning" style="color: red">Username already in use</h3>
                         }
                         <h7>Change Username to:</h7><input type="text" placeholder="nieuwe naam" name="UsernUpdate"/>
-                        <button type="submit" style="background-color: blue; color: white; border-radius: 8px; border: none; margin-left: 10px; width: 175px; height: 30px; margin-top: 10px" name="Username">Verander naam</button>
+                        <button type="submit" style="background-color: red; color: white; border-radius: 8px; border: none; margin-left: 10px; width: 175px; height: 30px; margin-top: 10px" name="Username">Verander naam</button>
                     </form>
                 </div>
                 <div class="row">
@@ -74,13 +74,13 @@
                             <h7>Huidig wachtwoord:</h7><input type="password" placeholder="huidig wachtwoord" name="PasswordCurrent" style="width: 250px"/>
                         </div>
                         <h7>Verander wachtwoord naar:</h7><input type="password" placeholder="nieuw wachtwoord" name="PasswordUpd"/>
-                        <button type="submit" style="background-color: blue; color: white; border-radius: 8px; border: none; margin-left: 10px; width: 175px; height: 30px; margin-top: 10px" name="Username">Verander wachtwoord</button>
+                        <button type="submit" style="background-color: red; color: white; border-radius: 8px; border: none; margin-left: 10px; width: 175px; height: 30px; margin-top: 10px" name="Username">Verander wachtwoord</button>
                     </form>
                 </div>
                 <div>
 
                     <form method="post" asp-page-handler="Logout">
-                        <button type="submit" style="background-color: blue; color: white; border-radius: 8px; border: none; margin-left: 10px; width: 100px; height: 30px" name="Logout">Log uit</button>
+                        <button type="submit" style="background-color: red; color: white; border-radius: 8px; border: none; margin-left: 10px; width: 100px; height: 30px" name="Logout">Log uit</button>
                     </form>
                 </div>
                 <div class="container border" style="padding:20px">
@@ -107,10 +107,15 @@
                         </div>
                         <div class="form-group row">
                             <div class="col-3 m-4">
-                                <input type="submit" class="btn btn-primary" value="Maak aan"/>
+                                <input type="submit" class="btn" id="knop" value="Maak aan"/>
                             </div>
                             <span class="text-danger"> @Model.Warning2 </span>
                         </div>
+                    </form>
+                </div>
+                <div>
+                    <form action="/Bedrijven">
+                        <input id="knop" type="submit" value="Jury/Bedrijven bewerken"/>
                     </form>
                 </div>
             </div>

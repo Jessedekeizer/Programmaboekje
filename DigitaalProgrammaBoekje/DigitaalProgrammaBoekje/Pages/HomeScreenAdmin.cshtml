@@ -40,17 +40,15 @@
                         </a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" style="color: white;" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 
                             @if (Model.Year == 0)
                             {
-                                @DateTime.Now.Year
-                                ;
+                                @DateTime.Now.Year;
                             }
                             else
                             {
-                                @Model.Year
-                                ;
+                                @Model.Year;
                             }
 
                         </a>
@@ -120,7 +118,7 @@
                 <span class="kop spacing">Selecteer logo festival:</span>
                 <input for="photoButton" id="input1" type="file" name="frontPosted" class="photoButton" accept="image/jpeg, image/png, image/jpg"/>
             </div>
-            <input type="submit" id="knop" style="background-color: #7d3ec9; color: white; border: none; border-radius: 3px; margin-top: 10px; height: 25px; width: 170px; margin-left: 212px" asp-page-handler="Upload">Voeg festival toe</input>
+            <input type="submit" id="knop" style="background-color: red; color: white; border: none; border-radius: 3px; margin-top: 10px; height: 25px; width: 170px; margin-left: 212px" asp-page-handler="Upload">Voeg festival toe</input>
         </div>
     </form>
 </div>
