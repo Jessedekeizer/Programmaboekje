@@ -19,7 +19,7 @@ public class AccountScreen : PageModel
         if (Logged_in == null)
             return RedirectToPage("/Login");
         if (new Rolechecker(HttpContext.Session).checkAdmin())
-            RedirectToPage("/AccountScreenAdmin");
+            return RedirectToPage("/AccountScreenAdmin");
         Warning = warning;
         Gebruikers = new GebruikerRepository().GetUser(Int32.Parse(HttpContext.Session.GetString(SessionConstant.Gebruiker_ID)));
         return Page();
