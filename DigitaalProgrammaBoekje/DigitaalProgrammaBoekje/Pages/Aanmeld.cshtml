@@ -1,0 +1,35 @@
+﻿@page
+@model DigitaalProgrammaBoekje.Pages.Aanmeld
+
+@{
+    ViewData["Title"] ="Aangemeld Page";
+}
+<div class="col-12">
+    @if (Model.Gebruikers.Count() != 0)
+    {
+        <h1>Aangemelde Orkesten</h1>
+        <table class="table table-bordered">
+            <thead>
+            <th style="margin: 10px">Email</th>
+            <th>Naam</th>
+            <th>Telefoonnummer</th>
+            <th>Dirigent</th>
+            <th>Leden aantal</th>
+            </thead>
+            <tbody>
+            @foreach (var gebruikers in Model.Gebruikers)
+            {
+                <td>@gebruikers.email</td>
+                <td>@gebruikers.naam</td>
+                <td>@gebruikers.telefoonnummer</td>
+                <td>@gebruikers.dirigent</td>
+                <td>@gebruikers.Leden_aantal</td>
+            }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <h1>Er is niemand aangemeld</h1>
+    }
+</div>
