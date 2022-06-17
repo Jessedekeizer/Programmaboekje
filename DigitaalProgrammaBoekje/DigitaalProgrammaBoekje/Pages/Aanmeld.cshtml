@@ -2,15 +2,15 @@
 @model DigitaalProgrammaBoekje.Pages.Aanmeld
 
 @{
-    Layout = null;
+    ViewData["Title"] ="Aangemeld Page";
 }
-<div>
+<div class="col-12">
     @if (Model.Gebruikers.Count() != 0)
     {
         <h1>Aangemelde Orkesten</h1>
-        <table>
+        <table class="table table-bordered">
             <thead>
-            <th>Email</th>
+            <th style="margin: 10px">Email</th>
             <th>Naam</th>
             <th>Telefoonnummer</th>
             <th>Dirigent</th>
